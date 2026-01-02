@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal, input, effect, untracked } from '@angular/core';
-import { CurrencyPipe, DecimalPipe, PercentPipe, CommonModule } from '@angular/common';
-import { form, required, min, max, Field } from '@angular/forms/signals';
+import { CurrencyPipe, CommonModule } from '@angular/common';
+import { form, required, min, max, Field, FieldTree } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
 import { InputComponent } from '@shared/ui/input.component';
 import { CardComponent } from '@shared/ui/card.component';
@@ -17,10 +17,10 @@ import { CalculatorConfig } from '../data/models';
     InputComponent,
     CardComponent,
     DynamicListInputComponent,
+    CardComponent,
+    DynamicListInputComponent,
     Field,
     CurrencyPipe,
-    DecimalPipe,
-    PercentPipe,
   ],
   template: `
     @if (config()) {
@@ -33,27 +33,44 @@ import { CalculatorConfig } from '../data/models';
                   <app-input
                     [id]="field.key"
                     [label]="field.label"
-                    [field]="calcForm()[field.key]"
+                    [field]="$any(getField(field.key))"
                     type="number"
                     [prefix]="field.prefix"
                     [suffix]="field.suffix"
-                    [placeholder]="field.placeholder"
+                    [placeholder]="field.placeholder || ''"
                   />
                 } @else if (field.type === 'list') {
                   <app-dynamic-list-input
                     [id]="field.key"
                     [label]="field.label"
-                    [values]="data()[field.key]"
-                    (valuesChange)="updateList(field.key, $event)"
+                    [items]="data()[field.key]"
+                    (changed)="updateList(field.key, $event)"
                   />
+                } @else if (field.type === 'select') {
+                  <div class="space-y-1.5">
+                    <label [for]="field.key" class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">
+                      {{ field.label }}
+                    </label>
+                    <select
+                      [id]="field.key"
+                      [value]="data()[field.key]"
+                      (change)="updateField(field.key, $any($event.target).value)"
+                      class="w-full h-12 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none cursor-pointer"
+                    >
+                      @for (opt of field.options; track opt.value) {
+                        <option [value]="opt.value">{{ opt.label }}</option>
+                      }
+                    </select>
+                  </div>
                 }
+
               }
             </div>
           </app-card>
 
           <app-card [title]="config()!.results[0]?.label || 'Results'" subtitle="Calculated output">
             <div class="flex flex-col items-center justify-center h-full py-10 text-center">
-              @if (calcForm().valid()) {
+              @if (calcForm()().valid()) {
                 <div class="space-y-6 w-full animate-in zoom-in duration-500">
                   @for (res of config()!.results; track res.label) {
                     <div class="relative inline-block">
@@ -130,7 +147,7 @@ export class DynamicCalculatorComponent {
     const cfg = this.config();
     if (!cfg) return form(signal({}), () => { });
 
-    return form(this.data, (schema) => {
+    return form(this.data, (schema: any) => {
       cfg.fields.forEach(f => {
         if (f.required) required(schema[f.key]);
         if (f.min !== undefined) min(schema[f.key], f.min);
@@ -139,9 +156,13 @@ export class DynamicCalculatorComponent {
     });
   });
 
+  getField(key: string): FieldTree<any, any> {
+    return (this.calcForm() as any)[key];
+  }
+
   results = computed(() => {
     const cfg = this.config();
-    if (!cfg || this.calcForm().invalid()) return [];
+    if (!cfg || !this.calcForm()().valid()) return [];
 
     const d = this.data();
     return cfg.results.map(res => {
@@ -156,6 +177,10 @@ export class DynamicCalculatorComponent {
 
   updateList(key: string, values: (string | number)[]) {
     this.data.update(d => ({ ...d, [key]: values }));
+  }
+
+  updateField(key: string, value: any) {
+    this.data.update(d => ({ ...d, [key]: value }));
   }
 
   getThemeClass(color?: string) {
@@ -178,14 +203,14 @@ export class DynamicCalculatorComponent {
     }
   }
 
-  formatResult(val: any, type: string): string {
-    if (val === undefined || val === null || isNaN(val)) return '0';
+  formatResult(val: unknown, type: string): string {
+    if (val === undefined || val === null || (typeof val === 'number' && isNaN(val))) return '0';
 
     if (type === 'currency') {
-      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val as number);
     }
     if (type === 'percent') {
-      return (val * 100).toFixed(2) + '%';
+      return ((val as number) * 100).toFixed(2) + '%';
     }
     return Number(val).toLocaleString(undefined, { maximumFractionDigits: 4 });
   }

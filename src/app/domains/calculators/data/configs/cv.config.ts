@@ -18,7 +18,7 @@ export const CV_CONFIG: CalculatorConfig = {
             label: 'Coefficient of Variation',
             type: 'number',
             themeColor: 'indigo',
-            calculate: (d) => financialService.calculateCoefficientVariation({ values: d.values.map(Number) })
+            calculate: (d) => financialService.calculateCoefficientOfVariation({ values: d.values.map(Number) })
         }
     ],
     insights: 'CV is used to compare the degree of variation from one data series to another, even if their means are drastically different.',

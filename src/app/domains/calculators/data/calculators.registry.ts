@@ -27,6 +27,8 @@ import { CV_CONFIG } from './configs/cv.config';
 import { SKEW_KURT_CONFIG } from './configs/skew-kurt.config';
 import { HPR_CONFIG } from './configs/hpr.config';
 import { RBD_EAY_CONFIG } from './configs/rbd-eay.config';
+import { CONVEXITY_CONFIG } from './configs/convexity.config';
+import { TVM_SOLVER_CONFIG } from './configs/tvm-solver.config';
 
 export const CALCULATORS_REGISTRY: CalculatorConfig[] = [
     FUTURE_VALUE_CONFIG,
@@ -57,4 +59,6 @@ export const CALCULATORS_REGISTRY: CalculatorConfig[] = [
     SKEW_KURT_CONFIG,
     HPR_CONFIG,
     RBD_EAY_CONFIG,
+    CONVEXITY_CONFIG,
+    TVM_SOLVER_CONFIG,
 ];

@@ -72,12 +72,12 @@ export type FieldType = 'number' | 'list' | 'select' | 'text';
 export interface FieldConfig {
     key: string;
     label: string;
-    type: FieldType;
-    defaultValue: string | number | string[] | number[];
+    type: 'number' | 'list' | 'select';
+    defaultValue?: unknown;
     placeholder?: string;
     prefix?: string;
     suffix?: string;
-    options?: { label: string; value: any }[];
+    options?: { label: string; value: string }[];
     required?: boolean;
     min?: number;
     max?: number;
@@ -87,7 +87,7 @@ export interface ResultConfig {
     label: string;
     type: 'currency' | 'percent' | 'number' | 'amortization' | 'black-scholes' | 'dupont';
     themeColor?: string;
-    calculate: (data: any) => any;
+    calculate: (data: Record<string, any>) => any;
 }
 
 export interface CalculatorConfig extends CalculatorDef {
