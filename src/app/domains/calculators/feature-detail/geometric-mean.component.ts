@@ -55,7 +55,7 @@ import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.compone
 export class GeometricMeanComponent {
   private financialService = inject(FinancialService);
 
-  returns = signal<any[]>([10, 5, -2, 8]);
+  returns = signal<(number | string)[]>([10, 5, -2, 8]);
 
   allValid = computed(() => {
     const r = this.returns();

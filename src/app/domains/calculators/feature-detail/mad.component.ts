@@ -54,7 +54,7 @@ import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.compone
 export class MadComponent {
   private financialService = inject(FinancialService);
 
-  values = signal<any[]>([10, 20, 30, 40, 50]);
+  values = signal<(number | string)[]>([10, 20, 30, 40, 50]);
 
   allValid = computed(() => {
     const v = this.values();

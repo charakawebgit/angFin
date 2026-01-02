@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { form, required, min, Field } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
 import { FinancialService } from '@core/math/financial.service';
@@ -51,6 +51,7 @@ import { SelectComponent } from '@shared/ui/select.component';
               type="number"
             />
             <app-select
+              id="paymentFreq"
               label="Payment Frequency"
               [value]="frequency()"
               [options]="freqOptions"
