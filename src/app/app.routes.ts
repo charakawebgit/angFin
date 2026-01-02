@@ -10,6 +10,10 @@ export const routes: Routes = [
         loadComponent: () => import('./domains/calculators/feature-detail/future-value.component').then(m => m.FutureValueComponent),
     },
     {
+        path: 'calculators/pv',
+        loadComponent: () => import('./domains/calculators/feature-detail/present-value.component').then(m => m.PresentValueComponent),
+    },
+    {
         path: '**',
         redirectTo: '',
     }
