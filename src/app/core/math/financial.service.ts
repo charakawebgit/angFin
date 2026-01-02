@@ -34,7 +34,7 @@ export class FinancialService {
   }
 
   private npvForIrr(rate: Decimal, cashFlows: number[]): Decimal {
-    return cashFlows.reduce((acc, cf, t) => {
+    return cashFlows.reduce((acc: Decimal, cf, t) => {
       const cfD = new Decimal(cf);
       return acc.add(cfD.div(new Decimal(1).add(rate).pow(t)));
     }, new Decimal(0));
@@ -57,7 +57,7 @@ export class FinancialService {
   calculateNpv({ initialInvestment, cashFlows, discountRate }: M.NpvParams): number {
     const initialInvestmentD = new Decimal(initialInvestment);
     const discountRateD = new Decimal(discountRate);
-    const pvCashFlows = cashFlows.reduce((acc, cf, index) => {
+    const pvCashFlows = cashFlows.reduce((acc: Decimal, cf, index) => {
       const cfD = new Decimal(cf);
       return acc.add(cfD.div(new Decimal(1).add(discountRateD).pow(index + 1)));
     }, new Decimal(0));
@@ -75,8 +75,11 @@ export class FinancialService {
     let npvAtHigh = this.npvForIrr(high, cashFlows);
 
     while (npvAtLow.mul(npvAtHigh).isPositive() && iterations < 10) {
-      if (npvAtLow.abs().lt(npvAtHigh.abs())) low = low.sub(1.0);
-      else high = high.add(1.0);
+      if (npvAtLow.abs().lt(npvAtHigh.abs())) {
+        low = low.sub(1.0);
+      } else {
+        high = high.add(1.0);
+      }
       npvAtLow = this.npvForIrr(low, cashFlows);
       npvAtHigh = this.npvForIrr(high, cashFlows);
       iterations++;
@@ -90,8 +93,12 @@ export class FinancialService {
       mid = low.add(high).div(2);
       const npvAtMid = this.npvForIrr(mid, cashFlows);
       if (npvAtMid.abs().lt(PRECISION)) return mid.toNumber();
-      if (npvAtLow.mul(npvAtMid).isNegative()) high = mid;
-      else { low = mid; npvAtLow = npvAtMid; }
+      if (npvAtLow.mul(npvAtMid).isNegative()) {
+        high = mid;
+      } else {
+        low = mid;
+        npvAtLow = npvAtMid;
+      }
       iterations++;
     }
     return null;
@@ -213,8 +220,11 @@ export class FinancialService {
       });
       if (new Decimal(priceAtMid).sub(params.currentPrice).abs().lt(PRECISION))
         return mid.toNumber();
-      if (new Decimal(priceAtMid).gt(params.currentPrice)) low = mid;
-      else high = mid;
+      if (new Decimal(priceAtMid).gt(params.currentPrice)) {
+        low = mid;
+      } else {
+        high = mid;
+      }
     }
     return null;
   }
@@ -451,7 +461,7 @@ export class FinancialService {
 
   calculateGeometricMean({ returns }: M.GeometricMeanParams): number {
     const product = returns.reduce(
-      (acc, r) => acc.mul(new Decimal(1).add(r)),
+      (acc: Decimal, r) => acc.mul(new Decimal(1).add(r)),
       new Decimal(1)
     );
     return product
@@ -462,14 +472,14 @@ export class FinancialService {
 
   private getMean(values: number[]): Decimal {
     return values
-      .reduce((acc, v) => acc.add(v), new Decimal(0))
+      .reduce((acc: Decimal, v) => acc.add(v), new Decimal(0))
       .div(values.length);
   }
 
   calculateMeanAbsoluteDeviation({ values }: M.MeanAbsoluteDeviationParams): number {
     const mean = this.getMean(values);
     return values
-      .reduce((acc, v) => acc.add(new Decimal(v).sub(mean).abs()), new Decimal(0))
+      .reduce((acc: Decimal, v) => acc.add(new Decimal(v).sub(mean).abs()), new Decimal(0))
       .div(values.length)
       .toNumber();
   }
@@ -477,7 +487,7 @@ export class FinancialService {
   calculatePopulationVariance({ values }: M.PopulationVarianceParams): number {
     const mean = this.getMean(values);
     return values
-      .reduce((acc, v) => acc.add(new Decimal(v).sub(mean).pow(2)), new Decimal(0))
+      .reduce((acc: Decimal, v) => acc.add(new Decimal(v).sub(mean).pow(2)), new Decimal(0))
       .div(values.length)
       .toNumber();
   }
@@ -491,7 +501,7 @@ export class FinancialService {
   calculateSampleVariance({ values }: M.SampleVarianceParams): number {
     const mean = this.getMean(values);
     return values
-      .reduce((acc, v) => acc.add(new Decimal(v).sub(mean).pow(2)), new Decimal(0))
+      .reduce((acc: Decimal, v) => acc.add(new Decimal(v).sub(mean).pow(2)), new Decimal(0))
       .div(values.length - 1)
       .toNumber();
   }
@@ -539,7 +549,7 @@ export class FinancialService {
     const stdDev = new Decimal(this.calculateSampleVariance({ values })).sqrt();
     if (stdDev.isZero()) return 0;
     const sumCubed = values.reduce(
-      (acc, v) => acc.add(new Decimal(v).sub(mean).div(stdDev).pow(3)),
+      (acc: Decimal, v) => acc.add(new Decimal(v).sub(mean).div(stdDev).pow(3)),
       new Decimal(0)
     );
     return n.div(n.sub(1).mul(n.sub(2))).mul(sumCubed).toNumber();
@@ -552,7 +562,7 @@ export class FinancialService {
     if (stdDev.isZero())
       throw new Error('Standard deviation is zero. Kurtosis is undefined.');
     const sumFourth = values.reduce(
-      (acc, v) => acc.add(new Decimal(v).sub(mean).div(stdDev).pow(4)),
+      (acc: Decimal, v) => acc.add(new Decimal(v).sub(mean).div(stdDev).pow(4)),
       new Decimal(0)
     );
     const term1 = n.mul(n.add(1)).div(n.sub(1).mul(n.sub(2)).mul(n.sub(3)));
@@ -581,7 +591,11 @@ export class FinancialService {
     let fLow = f(low),
       fHigh = f(high);
     for (let i = 0; i < 10 && fLow.mul(fHigh).isPositive(); i++) {
-      fLow.abs().lt(fHigh.abs()) ? (low = low.sub(1.0)) : (high = high.add(1.0));
+      if (fLow.abs().lt(fHigh.abs())) {
+        low = low.sub(1.0);
+      } else {
+        high = high.add(1.0);
+      }
       fLow = f(low);
       fHigh = f(high);
     }
@@ -651,7 +665,7 @@ export class FinancialService {
         )
           .neg()
           .toNumber();
-      case 'N':
+      case 'N': {
         if (r === undefined || pvD === undefined || pmtD === undefined || fvD === undefined)
           throw new Error('Missing inputs for N.');
         if (r.isZero()) return pvD.add(fvD).div(pmtD).neg().toNumber();
@@ -662,12 +676,14 @@ export class FinancialService {
         return Decimal.ln(term.div(term2))
           .div(Decimal.ln(new Decimal(1).add(r)))
           .toNumber();
-      case 'IY':
+      }
+      case 'IY': {
         if (!nD || pvD === undefined || pmtD === undefined || fvD === undefined)
           throw new Error('Missing inputs for I/Y.');
         const res = this.solveTvmRate(nD, pvD, pmtD, fvD);
         if (!res) throw new Error('Could not calculate I/Y.');
         return res.mul(cpy).mul(100).toNumber();
+      }
       default:
         throw new Error('Invalid variable.');
     }

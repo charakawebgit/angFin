@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { form, required, min, Field } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
 import { FinancialService } from '@core/math/financial.service';
@@ -7,21 +7,22 @@ import { CardComponent } from '@shared/ui/card.component';
 import { InputComponent } from '@shared/ui/input.component';
 
 @Component({
-    selector: 'app-ear',
-    standalone: true,
-    imports: [
-        LucideAngularModule,
-        CardComponent,
-        InputComponent,
-        Field,
-        DecimalPipe,
-    ],
-    template: `
+  selector: 'app-ear',
+  standalone: true,
+  imports: [
+    LucideAngularModule,
+    CardComponent,
+    InputComponent,
+    Field,
+    DecimalPipe,
+  ],
+  template: `
     <div class="max-w-4xl mx-auto space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <app-card title="Inputs">
           <div class="space-y-4">
             <app-input
+              id="nominalRate"
               label="Nominal Annual Rate (%)"
               [field]="earForm.rate"
               type="number"
@@ -29,6 +30,7 @@ import { InputComponent } from '@shared/ui/input.component';
               suffix="%"
             />
             <app-input
+              id="compoundingPeriods"
               label="Compounding Periods per Year"
               [field]="earForm.periods"
               type="number"
@@ -39,10 +41,10 @@ import { InputComponent } from '@shared/ui/input.component';
 
         <app-card title="Effective Annual Return">
           <div class="flex flex-col items-center justify-center h-full py-8 text-center">
-            @if (earForm().valid) {
+            @if (earForm().valid()) {
               <div class="space-y-2">
                 <span class="text-5xl font-black text-blue-600">
-                  {{ result() | decimal: '1.2-4' }}%
+                  {{ result() | number: '1.2-4' }}%
                 </span>
                 <p class="text-sm text-slate-500 max-w-[200px]">
                   The actual annual interest rate when compounding is considered.
@@ -59,7 +61,7 @@ import { InputComponent } from '@shared/ui/input.component';
       </div>
 
       <app-card title="Formula">
-        <div class="bg-slate-50 p-4 rounded-lg font-mono text-sm text-center">
+        <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg font-mono text-sm text-center">
           EAR = (1 + Nominal Rate / m)^m - 1
         </div>
       </app-card>
@@ -67,22 +69,29 @@ import { InputComponent } from '@shared/ui/input.component';
   `,
 })
 export class EarComponent {
-    private financialService = inject(FinancialService);
+  private financialService = inject(FinancialService);
 
-    earForm = form(() => ({
-        rate: signal<number>(5, { validators: [required, min(0)] }),
-        periods: signal<number>(12, { validators: [required, min(1)] }),
-    }));
+  data = signal({
+    rate: 5,
+    periods: 12,
+  });
 
-    result = computed(() => {
-        const f = this.earForm();
-        if (f.invalid) return 0;
+  earForm = form(this.data, (schema) => {
+    required(schema.rate);
+    min(schema.rate, 0);
+    required(schema.periods);
+    min(schema.periods, 1);
+  });
 
-        return (
-            this.financialService.calculateEffectiveAnnualReturn({
-                rate: f.rate.value() / 100,
-                periods: f.periods.value(),
-            }) * 100
-        );
-    });
+  result = computed(() => {
+    if (this.earForm().invalid()) return 0;
+
+    const d = this.data();
+    return (
+      this.financialService.calculateEffectiveAnnualReturn({
+        rate: d.rate / 100,
+        periods: d.periods,
+      }) * 100
+    );
+  });
 }
