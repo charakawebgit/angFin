@@ -3,18 +3,18 @@ import { CurrencyPipe } from '@angular/common';
 import { form, required, min, Field } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
 import { FinancialService } from '@core/math/financial.service';
-import { InputComponent } from '@shared/ui/input.component';
 import { CardComponent } from '@shared/ui/card.component';
+import { InputComponent } from '@shared/ui/input.component';
 
 @Component({
-  selector: 'app-present-value',
+  selector: 'app-perpetuity',
   standalone: true,
   imports: [
     LucideAngularModule,
-    InputComponent,
     CardComponent,
-    CurrencyPipe,
+    InputComponent,
     Field,
+    CurrencyPipe,
   ],
   template: `
     <div class="max-w-4xl mx-auto space-y-6">
@@ -22,77 +22,75 @@ import { CardComponent } from '@shared/ui/card.component';
         <app-card title="Inputs">
           <div class="space-y-4">
             <app-input
-              id="futureValue"
-              label="Future Value (FV)"
-              [field]="pvForm.fv"
+              id="pmt"
+              label="Periodic Payment"
+              [field]="perpForm.pmt"
               type="number"
+              placeholder="e.g. 100"
               prefix="$"
             />
             <app-input
-              id="discountRate"
-              label="Discount Rate per Period (%)"
-              [field]="pvForm.rate"
+              id="rate"
+              label="Discount Rate (%)"
+              [field]="perpForm.rate"
               type="number"
+              placeholder="e.g. 5"
               suffix="%"
-            />
-            <app-input
-              id="numberOfPeriods"
-              label="Number of Periods"
-              [field]="pvForm.periods"
-              type="number"
             />
           </div>
         </app-card>
 
         <app-card title="Present Value">
           <div class="flex flex-col items-center justify-center h-full py-8 text-center">
-            @if (pvForm().valid()) {
+            @if (perpForm().valid()) {
               <div class="space-y-2">
                 <span class="text-5xl font-black text-blue-600">
                   {{ result() | currency }}
                 </span>
                 <p class="text-sm text-slate-500 max-w-[200px]">
-                  The current worth of {{ data().fv | currency }} to be received in the future.
+                  The current worth of an infinite stream of equal cash flows.
                 </p>
               </div>
             } @else {
               <div class="text-slate-400 space-y-2">
-                <lucide-icon name="hour-glass" class="w-12 h-12 mx-auto opacity-20" />
-                <p>Determine the present value of future sums</p>
+                <lucide-icon name="shield-check" class="w-12 h-12 mx-auto opacity-20" />
+                <p>Enter valid values to see the valuation</p>
               </div>
             }
           </div>
         </app-card>
       </div>
+
+      <app-card title="Formula">
+        <div class="bg-slate-50 p-4 rounded-lg font-mono text-sm text-center">
+          PV = Payment / Rate
+        </div>
+      </app-card>
     </div>
   `,
 })
-export class PresentValueComponent {
-  private readonly financialService = inject(FinancialService);
+export class PerpetuityComponent {
+  private financialService = inject(FinancialService);
 
   data = signal({
-    fv: 1000,
+    pmt: 100,
     rate: 5,
-    periods: 10,
   });
 
-  pvForm = form(this.data, (schema) => {
-    required(schema.fv);
-    min(schema.fv, 0);
+  perpForm = form(this.data, (schema) => {
+    required(schema.pmt);
+    min(schema.pmt, 0);
     required(schema.rate);
-    min(schema.rate, 0);
-    required(schema.periods);
-    min(schema.periods, 1);
+    min(schema.rate, 0.0001);
   });
 
   result = computed(() => {
-    if (this.pvForm().invalid()) return 0;
+    if (this.perpForm().invalid()) return 0;
 
     const d = this.data();
-    return this.financialService.calculatePresentValue({
-      fv: d.fv,
+    return this.financialService.calculatePerpetuity({
+      pmt: d.pmt,
       rate: d.rate / 100,
-      periods: d.periods,
     });
   });
 }

@@ -1,20 +1,20 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { form, required, min, Field } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
 import { FinancialService } from '@core/math/financial.service';
-import { InputComponent } from '@shared/ui/input.component';
 import { CardComponent } from '@shared/ui/card.component';
+import { InputComponent } from '@shared/ui/input.component';
 
 @Component({
-  selector: 'app-present-value',
+  selector: 'app-rbd',
   standalone: true,
   imports: [
     LucideAngularModule,
-    InputComponent,
     CardComponent,
-    CurrencyPipe,
+    InputComponent,
     Field,
+    DecimalPipe,
   ],
   template: `
     <div class="max-w-4xl mx-auto space-y-6">
@@ -22,43 +22,43 @@ import { CardComponent } from '@shared/ui/card.component';
         <app-card title="Inputs">
           <div class="space-y-4">
             <app-input
-              id="futureValue"
-              label="Future Value (FV)"
-              [field]="pvForm.fv"
+              id="faceValue"
+              label="Face Value"
+              [field]="rbdForm.faceValue"
               type="number"
               prefix="$"
             />
             <app-input
-              id="discountRate"
-              label="Discount Rate per Period (%)"
-              [field]="pvForm.rate"
+              id="purchasePrice"
+              label="Purchase Price"
+              [field]="rbdForm.purchasePrice"
               type="number"
-              suffix="%"
+              prefix="$"
             />
             <app-input
-              id="numberOfPeriods"
-              label="Number of Periods"
-              [field]="pvForm.periods"
+              id="daysToMaturity"
+              label="Days to Maturity"
+              [field]="rbdForm.days"
               type="number"
             />
           </div>
         </app-card>
 
-        <app-card title="Present Value">
+        <app-card title="Bank Discount Yield">
           <div class="flex flex-col items-center justify-center h-full py-8 text-center">
-            @if (pvForm().valid()) {
+            @if (rbdForm().valid()) {
               <div class="space-y-2">
                 <span class="text-5xl font-black text-blue-600">
-                  {{ result() | currency }}
+                  {{ result() | number: '1.2-4' }}%
                 </span>
                 <p class="text-sm text-slate-500 max-w-[200px]">
-                  The current worth of {{ data().fv | currency }} to be received in the future.
+                  Standard yield convention for T-bills using a 360-day year.
                 </p>
               </div>
             } @else {
               <div class="text-slate-400 space-y-2">
-                <lucide-icon name="hour-glass" class="w-12 h-12 mx-auto opacity-20" />
-                <p>Determine the present value of future sums</p>
+                <lucide-icon name="banknote" class="w-12 h-12 mx-auto opacity-20" />
+                <p>Provide price and maturity details</p>
               </div>
             }
           </div>
@@ -67,32 +67,32 @@ import { CardComponent } from '@shared/ui/card.component';
     </div>
   `,
 })
-export class PresentValueComponent {
-  private readonly financialService = inject(FinancialService);
+export class RbdComponent {
+  private financialService = inject(FinancialService);
 
   data = signal({
-    fv: 1000,
-    rate: 5,
-    periods: 10,
+    faceValue: 1000,
+    purchasePrice: 985,
+    days: 90,
   });
 
-  pvForm = form(this.data, (schema) => {
-    required(schema.fv);
-    min(schema.fv, 0);
-    required(schema.rate);
-    min(schema.rate, 0);
-    required(schema.periods);
-    min(schema.periods, 1);
+  rbdForm = form(this.data, (schema) => {
+    required(schema.faceValue);
+    required(schema.purchasePrice);
+    required(schema.days);
+    min(schema.days, 1);
   });
 
   result = computed(() => {
-    if (this.pvForm().invalid()) return 0;
+    if (this.rbdForm().invalid()) return 0;
 
     const d = this.data();
-    return this.financialService.calculatePresentValue({
-      fv: d.fv,
-      rate: d.rate / 100,
-      periods: d.periods,
-    });
+    return (
+      this.financialService.calculateBankDiscountYield({
+        faceValue: d.faceValue,
+        purchasePrice: d.purchasePrice,
+        days: d.days,
+      }) * 100
+    );
   });
 }

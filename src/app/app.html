@@ -1,5 +1,21 @@
-<main class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 p-8">
-  <div class="max-w-6xl mx-auto">
-    <router-outlet />
+<header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+        <lucide-icon name="trending-up" class="w-5 h-5" />
+      </div>
+      <span class="text-xl font-black tracking-tight text-slate-900 dark:text-white">angFin</span>
+    </div>
+
+    @if (!isRoot()) {
+      <a routerLink="/" class="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors group">
+        <lucide-icon name="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+        Back to Dashboard
+      </a>
+    }
   </div>
+</header>
+
+<main class="min-h-[calc(100vh-4rem)] bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-8 px-4 sm:px-8">
+  <router-outlet />
 </main>
