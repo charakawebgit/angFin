@@ -1,12 +1,11 @@
 import { Component, computed, inject, signal, input, effect, untracked } from '@angular/core';
-import { CurrencyPipe, CommonModule } from '@angular/common';
-import { form, required, min, max, Field, FieldTree } from '@angular/forms/signals';
+import { CommonModule } from '@angular/common';
+import { form, required, min, max, Field } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
 import { InputComponent } from '@shared/ui/input.component';
 import { CardComponent } from '@shared/ui/card.component';
 import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 import { CalculatorService } from '../data/calculator.service';
-import { CalculatorConfig } from '../data/models';
 
 @Component({
   selector: 'app-dynamic-calculator',
@@ -20,7 +19,6 @@ import { CalculatorConfig } from '../data/models';
     CardComponent,
     DynamicListInputComponent,
     Field,
-    CurrencyPipe,
   ],
   template: `
     @if (config()) {
