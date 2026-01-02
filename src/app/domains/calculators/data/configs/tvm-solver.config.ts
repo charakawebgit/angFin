@@ -37,15 +37,18 @@ export const TVM_SOLVER_CONFIG: CalculatorConfig = {
             label: 'Calculated Result',
             type: 'number',
             themeColor: 'indigo',
-            calculate: (d) => financialService.solveTvm({
-                solveFor: d.solveFor,
-                n: d.n,
-                iy: d.iy,
-                pv: d.pv,
-                pmt: d.pmt,
-                fv: d.fv,
-                cpy: d.cpy
-            })
+            calculate: (d) => {
+                const params = {
+                    solveFor: d['solveFor'] as any,
+                    n: Number(d['n']),
+                    iy: Number(d['iy']),
+                    pv: Number(d['pv']),
+                    pmt: Number(d['pmt']),
+                    fv: Number(d['fv']),
+                    cpy: Number(d['cpy'])
+                };
+                return financialService.solveTvm(params);
+            }
         }
     ],
     insights: 'The TVM Solver allows you to find one variable when the other four are known. Remember that cash outflows (like investments) are usually negative, and inflows are positive.',

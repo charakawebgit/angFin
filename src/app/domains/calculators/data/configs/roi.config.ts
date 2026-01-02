@@ -1,4 +1,7 @@
 import { CalculatorConfig } from '../models';
+import { FinancialService } from '@core/math/financial.service';
+
+const financialService = new FinancialService();
 
 export const ROI_CONFIG: CalculatorConfig = {
     id: 'roi',
@@ -12,7 +15,12 @@ export const ROI_CONFIG: CalculatorConfig = {
         { key: 'amountSpent', label: 'Amount Invested (Cost)', type: 'number', defaultValue: 1000, prefix: '$', required: true, min: 1 },
     ],
     results: [
-        { mathFunction: 'calculateRoi', label: 'Return on Investment', type: 'percent' }
+        {
+            calculate: (d) => financialService.calculateRoi({ amountGained: d['amountGained'], amountSpent: d['amountSpent'] }),
+            label: 'Return on Investment',
+            type: 'percent',
+            themeColor: 'emerald'
+        }
     ],
     insights: 'Return on Investment (ROI) is a performance measure used to evaluate the efficiency of an investment or compare the efficiencies of several different investments.',
     formula: 'ROI = (Net Profit / Cost of Investment) * 100'

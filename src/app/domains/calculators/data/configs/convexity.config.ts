@@ -23,11 +23,11 @@ export const CONVEXITY_CONFIG: CalculatorConfig = {
             type: 'number',
             themeColor: 'emerald',
             calculate: (d) => financialService.calculateConvexity({
-                faceValue: d.faceValue,
-                couponRate: d.couponRate / 100,
-                marketRate: d.marketRate / 100,
-                years: d.years,
-                frequency: d.frequency
+                faceValue: d['faceValue'],
+                couponRate: d['couponRate'] / 100,
+                marketRate: d['marketRate'] / 100,
+                years: d['years'],
+                frequency: d['frequency']
             })
         }
     ],

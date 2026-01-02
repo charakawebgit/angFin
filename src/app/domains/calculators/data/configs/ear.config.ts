@@ -1,4 +1,7 @@
 import { CalculatorConfig } from '../models';
+import { FinancialService } from '@core/math/financial.service';
+
+const financialService = new FinancialService();
 
 export const EAR_CONFIG: CalculatorConfig = {
     id: 'ear',
@@ -12,7 +15,12 @@ export const EAR_CONFIG: CalculatorConfig = {
         { key: 'periods', label: 'Compounding Periods per Year', type: 'number', defaultValue: 12, required: true, min: 1 },
     ],
     results: [
-        { mathFunction: 'calculateEffectiveAnnualReturn', label: 'Actual Annual Yield', type: 'percent', themeColor: 'amber' }
+        {
+            calculate: (d) => financialService.calculateEffectiveAnnualReturn({ rate: d['rate'] / 100, periods: d['periods'] }),
+            label: 'Effective Annual Return',
+            type: 'percent',
+            themeColor: 'emerald'
+        }
     ],
     insights: 'The **Effective Annual Return (EAR)** is the real return on a savings account or any interest-paying investment when compounding is considered.',
     formula: 'EAR = (1 + Nominal Rate / m)^m - 1'

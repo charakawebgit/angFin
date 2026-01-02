@@ -21,9 +21,9 @@ export const DDM_CONFIG: CalculatorConfig = {
             type: 'currency',
             themeColor: 'emerald',
             calculate: (d) => financialService.calculateDdm({
-                dividend: d.dividend,
-                returnRate: d.returnRate / 100,
-                growthRate: d.growthRate / 100
+                dividend: d['dividend'],
+                returnRate: d['returnRate'] / 100,
+                growthRate: d['growthRate'] / 100
             })
         }
     ],

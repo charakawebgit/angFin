@@ -3,7 +3,7 @@ import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './header.component';
 import { FooterComponent } from './footer.component';
 import { filter } from 'rxjs';
-import { CalculatorService } from '../../domains/calculators/data/calculator.service';
+import { CalculatorService } from '../../../domains/calculators/data/calculator.service';
 import { MetaService } from '../../../core/services/meta.service';
 
 @Component({

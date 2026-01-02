@@ -20,9 +20,9 @@ export const PRESENT_VALUE_CONFIG: CalculatorConfig = {
             label: 'Current Valuation',
             type: 'currency',
             calculate: (d) => financialService.calculatePresentValue({
-                fv: d.fv,
-                rate: d.rate / 100,
-                periods: d.periods
+                fv: d['fv'],
+                rate: d['rate'] / 100,
+                periods: d['periods']
             })
         }
     ],

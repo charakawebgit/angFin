@@ -23,11 +23,11 @@ export const PORTFOLIO_RISK_CONFIG: CalculatorConfig = {
             type: 'percent',
             themeColor: 'rose',
             calculate: (d) => financialService.calculateTwoAssetPortfolioStdDev({
-                w1: d.w1 / 100,
-                s1: d.s1 / 100,
-                w2: d.w2 / 100,
-                s2: d.s2 / 100,
-                corr: d.corr
+                w1: d['w1'] / 100,
+                s1: d['s1'] / 100,
+                w2: d['w2'] / 100,
+                s2: d['s2'] / 100,
+                corr: d['corr']
             })
         }
     ],

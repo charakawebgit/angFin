@@ -20,9 +20,9 @@ export const FUTURE_VALUE_CONFIG: CalculatorConfig = {
             label: 'Total Estimated Value',
             type: 'currency',
             calculate: (d) => financialService.calculateFutureValue({
-                pv: d.pv,
-                rate: d.rate / 100,
-                periods: d.periods
+                pv: d['pv'],
+                rate: d['rate'] / 100,
+                periods: d['periods']
             })
         }
     ],

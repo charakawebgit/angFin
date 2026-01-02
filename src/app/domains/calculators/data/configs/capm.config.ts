@@ -21,9 +21,9 @@ export const CAPM_CONFIG: CalculatorConfig = {
             type: 'percent',
             themeColor: 'rose',
             calculate: (d) => financialService.calculateCapm({
-                riskFreeRate: d.riskFreeRate / 100,
-                marketReturn: d.marketReturn / 100,
-                beta: d.beta
+                riskFreeRate: d['riskFreeRate'] / 100,
+                marketReturn: d['marketReturn'] / 100,
+                beta: d['beta']
             })
         }
     ],

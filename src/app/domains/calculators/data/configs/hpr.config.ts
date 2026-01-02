@@ -20,8 +20,8 @@ export const HPR_CONFIG: CalculatorConfig = {
             type: 'percent',
             themeColor: 'emerald',
             calculate: (d) => financialService.calculateHoldingPeriodReturn({
-                beginningValue: d.beginningValue,
-                endingValue: d.endingValue
+                beginningValue: d['beginningValue'],
+                endingValue: d['endingValue']
             })
         }
     ],

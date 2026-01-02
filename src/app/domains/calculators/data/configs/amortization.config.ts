@@ -21,18 +21,18 @@ export const AMORTIZATION_CONFIG: CalculatorConfig = {
             type: 'currency',
             themeColor: 'indigo',
             calculate: (d) => financialService.calculateAmortization({
-                loanAmount: d.loanAmount,
-                interestRate: d.interestRate / 100,
-                loanTerm: d.loanTerm
+                loanAmount: d['loanAmount'],
+                interestRate: d['interestRate'] / 100,
+                loanTerm: d['loanTerm']
             }).summary.monthlyPayment
         },
         {
             label: 'Total Interest',
             type: 'currency',
             calculate: (d) => financialService.calculateAmortization({
-                loanAmount: d.loanAmount,
-                interestRate: d.interestRate / 100,
-                loanTerm: d.loanTerm
+                loanAmount: d['loanAmount'],
+                interestRate: d['interestRate'] / 100,
+                loanTerm: d['loanTerm']
             }).summary.totalInterest
         }
     ],

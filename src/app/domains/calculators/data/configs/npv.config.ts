@@ -20,9 +20,9 @@ export const NPV_CONFIG: CalculatorConfig = {
             label: 'Net Present Value',
             type: 'currency',
             calculate: (d) => financialService.calculateNpv({
-                initialInvestment: d.initialInvestment,
-                cashFlows: d.cashFlows.map(Number),
-                discountRate: d.discountRate / 100
+                initialInvestment: d['initialInvestment'],
+                cashFlows: d['cashFlows'].map(Number),
+                discountRate: d['discountRate'] / 100
             })
         }
     ],

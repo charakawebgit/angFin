@@ -23,11 +23,11 @@ export const YTM_CONFIG: CalculatorConfig = {
             type: 'percent',
             themeColor: 'amber',
             calculate: (d) => financialService.calculateYtm({
-                currentPrice: d.currentPrice,
-                faceValue: d.faceValue,
-                couponRate: d.couponRate / 100,
-                years: d.years,
-                frequency: d.frequency
+                currentPrice: d['currentPrice'],
+                faceValue: d['faceValue'],
+                couponRate: d['couponRate'] / 100,
+                years: d['years'],
+                frequency: d['frequency']
             })
         }
     ],

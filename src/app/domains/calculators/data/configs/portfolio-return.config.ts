@@ -20,8 +20,8 @@ export const PORTFOLIO_RETURN_CONFIG: CalculatorConfig = {
             type: 'percent',
             themeColor: 'sky',
             calculate: (d) => financialService.calculatePortfolioReturn({
-                weights: d.weights.map((v: any) => Number(v) / 100),
-                returns: d.returns.map((v: any) => Number(v) / 100)
+                weights: d['weights'].map((v: any) => Number(v) / 100),
+                returns: d['returns'].map((v: any) => Number(v) / 100)
             })
         }
     ],

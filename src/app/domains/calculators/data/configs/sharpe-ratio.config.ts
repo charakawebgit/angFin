@@ -21,9 +21,9 @@ export const SHARPE_RATIO_CONFIG: CalculatorConfig = {
             type: 'number',
             themeColor: 'amber',
             calculate: (d) => financialService.calculateSharpeRatio({
-                portfolioReturn: d.portfolioReturn / 100,
-                riskFreeRate: d.riskFreeRate / 100,
-                stdDev: d.stdDev / 100
+                portfolioReturn: d['portfolioReturn'] / 100,
+                riskFreeRate: d['riskFreeRate'] / 100,
+                stdDev: d['stdDev'] / 100
             })
         }
     ],

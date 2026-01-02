@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal, input, effect, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { form, required, min, max, Field } from '@angular/forms/signals';
+import { form, required, min, max, Field, FieldTree } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
 import { InputComponent } from '@shared/ui/input.component';
 import { CardComponent } from '@shared/ui/card.component';
@@ -14,8 +14,6 @@ import { CalculatorService } from '../data/calculator.service';
     CommonModule,
     LucideAngularModule,
     InputComponent,
-    CardComponent,
-    DynamicListInputComponent,
     CardComponent,
     DynamicListInputComponent,
     Field,
@@ -123,7 +121,7 @@ export class DynamicCalculatorComponent {
   private calcService = inject(CalculatorService);
 
   config = computed(() => this.calcService.getConfigById(this.id()));
-  data = signal<any>({});
+  data = signal<Record<string, any>>({});
 
   // Initialize data when config changes
   constructor() {
@@ -131,7 +129,7 @@ export class DynamicCalculatorComponent {
       const cfg = this.config();
       if (cfg) {
         untracked(() => {
-          const initialData: any = {};
+          const initialData: Record<string, unknown> = {};
           cfg.fields.forEach(f => {
             initialData[f.key] = f.defaultValue;
           });
@@ -155,7 +153,7 @@ export class DynamicCalculatorComponent {
   });
 
   getField(key: string): FieldTree<any, any> {
-    return (this.calcForm() as any)[key];
+    return (this.calcForm() as unknown as Record<string, FieldTree<any, any>>)[key];
   }
 
   results = computed(() => {

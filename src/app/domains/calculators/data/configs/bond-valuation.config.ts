@@ -23,11 +23,11 @@ export const BOND_VALUATION_CONFIG: CalculatorConfig = {
             type: 'currency',
             themeColor: 'emerald',
             calculate: (d) => financialService.calculateBondPrice({
-                faceValue: d.faceValue,
-                couponRate: d.couponRate / 100,
-                marketRate: d.marketRate / 100,
-                years: d.years,
-                frequency: d.frequency
+                faceValue: d['faceValue'],
+                couponRate: d['couponRate'] / 100,
+                marketRate: d['marketRate'] / 100,
+                years: d['years'],
+                frequency: d['frequency']
             })
         }
     ],

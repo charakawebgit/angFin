@@ -17,7 +17,7 @@ export const IRR_CONFIG: CalculatorConfig = {
         {
             label: 'Annualized Return (IRR)',
             type: 'percent',
-            calculate: (d) => financialService.calculateIrr({ cashFlows: d.cashFlows.map(Number) })
+            calculate: (d) => financialService.calculateIrr({ cashFlows: d['cashFlows'].map(Number) })
         }
     ],
     insights: 'The **IRR** is a critical metric for capital budgeting. It represents the efficiency of an investment by finding the discount rate that makes NPV zero.',

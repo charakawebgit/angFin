@@ -20,8 +20,8 @@ export const CAP_RATE_CONFIG: CalculatorConfig = {
             type: 'percent',
             themeColor: 'sky',
             calculate: (d) => financialService.calculateCapRate({
-                noi: d.noi,
-                propertyValue: d.propertyValue
+                noi: d['noi'],
+                propertyValue: d['propertyValue']
             })
         }
     ],

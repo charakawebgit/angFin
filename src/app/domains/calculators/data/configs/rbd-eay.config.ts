@@ -21,17 +21,17 @@ export const RBD_EAY_CONFIG: CalculatorConfig = {
             type: 'percent',
             themeColor: 'amber',
             calculate: (d) => financialService.calculateBankDiscountYield({
-                faceValue: d.faceValue,
-                purchasePrice: d.purchasePrice,
-                days: d.days
+                faceValue: d['faceValue'],
+                purchasePrice: d['purchasePrice'],
+                days: d['days']
             })
         },
         {
             label: 'Effective Annual Yield (Eay)',
             type: 'percent',
             calculate: (d) => {
-                const hpy = (d.faceValue - d.purchasePrice) / d.purchasePrice;
-                return financialService.calculateEffectiveAnnualYield({ hpy, days: d.days });
+                const hpy = (d['faceValue'] - d['purchasePrice']) / d['purchasePrice'];
+                return financialService.calculateEffectiveAnnualYield({ hpy, days: d['days'] });
             }
         }
     ],

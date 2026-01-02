@@ -18,12 +18,12 @@ export const VARIANCE_STDDEV_CONFIG: CalculatorConfig = {
             label: 'Standard Deviation (Sample)',
             type: 'number',
             themeColor: 'sky',
-            calculate: (d) => financialService.calculateStandardDeviation({ values: d.values.map(Number) })
+            calculate: (d) => financialService.calculateStandardDeviation({ values: d['values'].map(Number) })
         },
         {
             label: 'Variance (Sample)',
             type: 'number',
-            calculate: (d) => financialService.calculateSampleVariance({ values: d.values.map(Number) })
+            calculate: (d) => financialService.calculateSampleVariance({ values: d['values'].map(Number) })
         }
     ],
     insights: 'Standard deviation is the square root of variance. It is used to quantify the amount of variation or dispersion of a set of data values.',

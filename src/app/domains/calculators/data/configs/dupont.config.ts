@@ -22,20 +22,20 @@ export const DUPONT_CONFIG: CalculatorConfig = {
             type: 'percent',
             themeColor: 'indigo',
             calculate: (d) => financialService.calculateDupont({
-                netIncome: d.netIncome,
-                revenue: d.revenue,
-                assets: d.assets,
-                equity: d.equity
+                netIncome: d['netIncome'],
+                revenue: d['revenue'],
+                assets: d['assets'],
+                equity: d['equity']
             }).roe
         },
         {
             label: 'Profit Margin',
             type: 'percent',
             calculate: (d) => financialService.calculateDupont({
-                netIncome: d.netIncome,
-                revenue: d.revenue,
-                assets: d.assets,
-                equity: d.equity
+                netIncome: d['netIncome'],
+                revenue: d['revenue'],
+                assets: d['assets'],
+                equity: d['equity']
             }).profitMargin
         }
     ],

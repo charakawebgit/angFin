@@ -23,11 +23,11 @@ export const BLACK_SCHOLES_CONFIG: CalculatorConfig = {
             type: 'currency',
             themeColor: 'emerald',
             calculate: (d) => financialService.calculateBlackScholes({
-                stockPrice: d.stockPrice,
-                strikePrice: d.strikePrice,
-                time: d.time,
-                riskFreeRate: d.riskFreeRate / 100,
-                volatility: d.volatility / 100
+                stockPrice: d['stockPrice'],
+                strikePrice: d['strikePrice'],
+                time: d['time'],
+                riskFreeRate: d['riskFreeRate'] / 100,
+                volatility: d['volatility'] / 100
             }).callPrice
         },
         {
@@ -35,11 +35,11 @@ export const BLACK_SCHOLES_CONFIG: CalculatorConfig = {
             type: 'currency',
             themeColor: 'rose',
             calculate: (d) => financialService.calculateBlackScholes({
-                stockPrice: d.stockPrice,
-                strikePrice: d.strikePrice,
-                time: d.time,
-                riskFreeRate: d.riskFreeRate / 100,
-                volatility: d.volatility / 100
+                stockPrice: d['stockPrice'],
+                strikePrice: d['strikePrice'],
+                time: d['time'],
+                riskFreeRate: d['riskFreeRate'] / 100,
+                volatility: d['volatility'] / 100
             }).putPrice
         }
     ],

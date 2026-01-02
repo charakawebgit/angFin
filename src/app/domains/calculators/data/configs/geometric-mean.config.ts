@@ -19,7 +19,7 @@ export const GEOMETRIC_MEAN_CONFIG: CalculatorConfig = {
             type: 'percent',
             themeColor: 'emerald',
             calculate: (d) => financialService.calculateGeometricMean({
-                returns: d.returns.map((v: any) => Number(v) / 100)
+                returns: d['returns'].map((v: any) => Number(v) / 100)
             })
         }
     ],

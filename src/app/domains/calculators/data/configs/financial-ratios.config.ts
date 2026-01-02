@@ -23,25 +23,25 @@ export const FINANCIAL_RATIOS_CONFIG: CalculatorConfig = {
             type: 'number',
             themeColor: 'sky',
             calculate: (d) => financialService.calculateFinancialRatios({
-                currentAssets: d.currentAssets,
-                currentLiabilities: d.currentLiabilities
+                currentAssets: d['currentAssets'],
+                currentLiabilities: d['currentLiabilities']
             }).currentRatio
         },
         {
             label: 'Quick Ratio',
             type: 'number',
             calculate: (d) => financialService.calculateFinancialRatios({
-                currentAssets: d.currentAssets,
-                currentLiabilities: d.currentLiabilities,
-                inventory: d.inventory
+                currentAssets: d['currentAssets'],
+                currentLiabilities: d['currentLiabilities'],
+                inventory: d['inventory']
             }).quickRatio
         },
         {
             label: 'Debt to Equity',
             type: 'number',
             calculate: (d) => financialService.calculateFinancialRatios({
-                totalDebt: d.totalDebt,
-                totalEquity: d.totalEquity
+                totalDebt: d['totalDebt'],
+                totalEquity: d['totalEquity']
             }).debtToEquity
         }
     ],

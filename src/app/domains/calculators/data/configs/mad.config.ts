@@ -18,7 +18,7 @@ export const MAD_CONFIG: CalculatorConfig = {
             label: 'MAD',
             type: 'number',
             themeColor: 'amber',
-            calculate: (d) => financialService.calculateMeanAbsoluteDeviation({ values: d.values.map(Number) })
+            calculate: (d) => financialService.calculateMeanAbsoluteDeviation({ values: d['values'].map(Number) })
         }
     ],
     insights: 'MAD provides a measure of variability in a dataset that is less sensitive to outliers than standard deviation.',

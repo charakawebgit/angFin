@@ -23,11 +23,11 @@ export const WACC_CONFIG: CalculatorConfig = {
             type: 'percent',
             themeColor: 'rose',
             calculate: (d) => financialService.calculateWacc({
-                equityValue: d.equityValue,
-                debtValue: d.debtValue,
-                costOfEquity: d.costOfEquity / 100,
-                costOfDebt: d.costOfDebt / 100,
-                taxRate: d.taxRate / 100
+                equityValue: d['equityValue'],
+                debtValue: d['debtValue'],
+                costOfEquity: d['costOfEquity'] / 100,
+                costOfDebt: d['costOfDebt'] / 100,
+                taxRate: d['taxRate'] / 100
             })
         }
     ],

@@ -23,22 +23,22 @@ export const DURATION_CONFIG: CalculatorConfig = {
             type: 'number',
             themeColor: 'sky',
             calculate: (d) => financialService.calculateDuration({
-                faceValue: d.faceValue,
-                couponRate: d.couponRate / 100,
-                marketRate: d.marketRate / 100,
-                years: d.years,
-                frequency: d.frequency
+                faceValue: d['faceValue'],
+                couponRate: d['couponRate'] / 100,
+                marketRate: d['marketRate'] / 100,
+                years: d['years'],
+                frequency: d['frequency']
             }).modified
         },
         {
             label: 'Macaulay Duration',
             type: 'number',
             calculate: (d) => financialService.calculateDuration({
-                faceValue: d.faceValue,
-                couponRate: d.couponRate / 100,
-                marketRate: d.marketRate / 100,
-                years: d.years,
-                frequency: d.frequency
+                faceValue: d['faceValue'],
+                couponRate: d['couponRate'] / 100,
+                marketRate: d['marketRate'] / 100,
+                years: d['years'],
+                frequency: d['frequency']
             }).macaulay
         }
     ],

@@ -18,12 +18,12 @@ export const SKEW_KURT_CONFIG: CalculatorConfig = {
             label: 'Sample Skewness',
             type: 'number',
             themeColor: 'sky',
-            calculate: (d) => financialService.calculateSampleSkewness({ values: d.values.map(Number) })
+            calculate: (d) => financialService.calculateSampleSkewness({ values: d['values'].map(Number) })
         },
         {
             label: 'Excess Kurtosis',
             type: 'number',
-            calculate: (d) => financialService.calculateExcessKurtosis({ values: d.values.map(Number) })
+            calculate: (d) => financialService.calculateExcessKurtosis({ values: d['values'].map(Number) })
         }
     ],
     insights: 'Skewness indicates if the data is biased to one side. Kurtosis indicates if the data has heavy tails or is peaked.',
