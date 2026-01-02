@@ -1,8 +1,9 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { CardComponent } from '@shared/ui/card.component';
 import { CalculatorService } from '../data/calculator.service';
+import { MetaService } from '@core/services/meta.service';
 
 @Component({
   selector: 'app-calculator-list',
@@ -94,10 +95,11 @@ import { CalculatorService } from '../data/calculator.service';
     </div>
   `,
 })
-export class CalculatorListComponent {
+export class CalculatorListComponent implements OnInit {
   private calcService = inject(CalculatorService);
-  calculators = this.calcService.calculatorsList;
+  private metaService = inject(MetaService);
 
+  calculators = this.calcService.calculatorsList;
   selectedCategory = signal<string>('All');
 
   categories = computed(() => {
@@ -110,4 +112,9 @@ export class CalculatorListComponent {
     if (selected === 'All') return this.calculators();
     return this.calculators().filter((c) => c.category === selected);
   });
+
+  ngOnInit() {
+    this.metaService.updateTitle('Dashboard');
+    this.metaService.updateMeta('Professional financial intelligence toolkit for calculations in TVM, Stats, Fixed Income, and Equity.');
+  }
 }

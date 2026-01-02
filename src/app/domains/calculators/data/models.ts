@@ -66,3 +66,36 @@ export interface CalculatorDef {
     icon: string;
     category: string;
 }
+
+export type FieldType = 'number' | 'list' | 'select' | 'text';
+
+export interface FieldConfig {
+    key: string;
+    label: string;
+    type: FieldType;
+    defaultValue: string | number | string[] | number[];
+    placeholder?: string;
+    prefix?: string;
+    suffix?: string;
+    options?: { label: string; value: any }[];
+    required?: boolean;
+    min?: number;
+    max?: number;
+}
+
+export interface ResultConfig {
+    label: string;
+    type: 'currency' | 'percent' | 'number' | 'amortization' | 'black-scholes' | 'dupont';
+    themeColor?: string;
+    calculate: (data: any) => any;
+}
+
+export interface CalculatorConfig extends CalculatorDef {
+    subtitle?: string;
+    fields: FieldConfig[];
+    results: ResultConfig[];
+    insights?: string;
+    formula?: string;
+    references?: { title: string; url: string }[];
+}
+
