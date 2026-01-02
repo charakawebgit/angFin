@@ -7,21 +7,22 @@ import { CardComponent } from '@shared/ui/card.component';
 import { InputComponent } from '@shared/ui/input.component';
 
 @Component({
-    selector: 'app-cap-rate',
-    standalone: true,
-    imports: [
-        LucideAngularModule,
-        CardComponent,
-        InputComponent,
-        Field,
-        DecimalPipe,
-    ],
-    template: `
+  selector: 'app-cap-rate',
+  standalone: true,
+  imports: [
+    LucideAngularModule,
+    CardComponent,
+    InputComponent,
+    Field,
+    DecimalPipe,
+  ],
+  template: `
     <div class="max-w-4xl mx-auto space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <app-card title="Inputs">
           <div class="space-y-4">
             <app-input
+              id="noi"
               label="Net Operating Income (NOI)"
               [field]="capForm.noi"
               type="number"
@@ -29,6 +30,7 @@ import { InputComponent } from '@shared/ui/input.component';
               prefix="$"
             />
             <app-input
+              id="propertyValue"
               label="Property Value"
               [field]="capForm.propertyValue"
               type="number"
@@ -40,10 +42,10 @@ import { InputComponent } from '@shared/ui/input.component';
 
         <app-card title="Capitalization Rate">
           <div class="flex flex-col items-center justify-center h-full py-8 text-center">
-            @if (capForm().valid) {
+            @if (capForm().valid()) {
               <div class="space-y-2">
                 <span class="text-5xl font-black text-blue-600">
-                  {{ result() | decimal: '1.2-2' }}%
+                  {{ result() | number: '1.2-2' }}%
                 </span>
                 <p class="text-sm text-slate-500 max-w-[200px]">
                   The expected rate of return on a real estate investment property.
@@ -60,7 +62,7 @@ import { InputComponent } from '@shared/ui/input.component';
       </div>
 
       <app-card title="Formula">
-        <div class="bg-slate-50 p-4 rounded-lg font-mono text-sm text-center">
+        <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg font-mono text-sm text-center">
           Cap Rate = NOI / Property Value
         </div>
       </app-card>
@@ -68,22 +70,27 @@ import { InputComponent } from '@shared/ui/input.component';
   `,
 })
 export class CapRateComponent {
-    private financialService = inject(FinancialService);
+  private financialService = inject(FinancialService);
 
-    capForm = form(() => ({
-        noi: signal<number>(50000, { validators: [required, min(0)] }),
-        propertyValue: signal<number>(1000000, { validators: [required, min(1)] }),
-    }));
+  data = signal({
+    noi: 50000,
+    propertyValue: 1000000,
+  });
 
-    result = computed(() => {
-        const f = this.capForm();
-        if (f.invalid) return 0;
+  capForm = form(this.data, (schema) => {
+    required(schema.noi);
+    min(schema.noi, 0);
+    required(schema.propertyValue);
+    min(schema.propertyValue, 1);
+  });
 
-        return (
-            this.financialService.calculateCapRate({
-                noi: f.noi.value(),
-                propertyValue: f.propertyValue.value(),
-            }) * 100
-        );
-    });
+  result = computed(() => {
+    if (this.capForm().invalid()) return 0;
+    const d = this.data();
+
+    return this.financialService.calculateCapRate({
+      noi: d.noi,
+      propertyValue: d.propertyValue,
+    }) * 100;
+  });
 }

@@ -6,20 +6,21 @@ import { CardComponent } from '@shared/ui/card.component';
 import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 
 @Component({
-    selector: 'app-portfolio-return',
-    standalone: true,
-    imports: [
-        LucideAngularModule,
-        CardComponent,
-        DynamicListInputComponent,
-        DecimalPipe,
-    ],
-    template: `
+  selector: 'app-portfolio-return',
+  standalone: true,
+  imports: [
+    LucideAngularModule,
+    CardComponent,
+    DynamicListInputComponent,
+    DecimalPipe,
+  ],
+  template: `
     <div class="max-w-4xl mx-auto space-y-6 pb-12">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <app-card title="Portfolio Composition">
           <div class="space-y-6">
             <app-dynamic-list-input
+              id="portfolioWeights"
               label="Asset Weights (%)"
               [items]="weights()"
               (changed)="weights.set($event)"
@@ -28,6 +29,7 @@ import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.compone
               [minItems]="1"
             />
             <app-dynamic-list-input
+              id="portfolioReturns"
               label="Asset Returns (%)"
               [items]="returns()"
               (changed)="returns.set($event)"
@@ -44,7 +46,7 @@ import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.compone
                @if (allValid() && isBalanced()) {
                  <div class="space-y-2">
                    <span class="text-5xl font-black text-blue-600">
-                     {{ result() | decimal: '1.2-4' }}%
+                     {{ result() | number: '1.2-4' }}%
                    </span>
                    <p class="text-sm text-slate-500 max-w-[200px]">
                       The total expected return of the portfolio based on asset weights.
@@ -65,14 +67,14 @@ import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.compone
            </app-card>
 
            @if (allValid() && isBalanced()) {
-             <app-card class="bg-blue-50 border-blue-100">
+             <app-card class="bg-blue-50 dark:bg-blue-900/10 border-blue-100 dark:border-blue-800/50">
                <div class="flex justify-between items-center">
-                 <span class="text-sm font-bold text-blue-700 uppercase tracking-widest">Total Weight</span>
-                 <span class="text-xl font-black" [class]="totalWeight() === 100 ? 'text-emerald-600' : 'text-amber-500'">
-                   {{ totalWeight() | decimal: '1.0-2' }}%
+                 <span class="text-sm font-bold text-blue-700 dark:text-blue-400 uppercase tracking-widest">Total Weight</span>
+                 <span class="text-xl font-black" [class]="totalWeight() === 100 ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-500 dark:text-amber-400'">
+                   {{ totalWeight() | number: '1.0-2' }}%
                  </span>
                </div>
-               <p class="text-xs text-blue-600 mt-1 opacity-70">Weights should ideally sum to 100%.</p>
+               <p class="text-xs text-blue-600 dark:text-blue-400 mt-1 opacity-70">Weights should ideally sum to 100%.</p>
              </app-card>
            }
         </div>
@@ -81,27 +83,29 @@ import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.compone
   `,
 })
 export class PortfolioReturnComponent {
-    private financialService = inject(FinancialService);
+  private financialService = inject(FinancialService);
 
-    weights = signal<number[]>([40, 30, 30]);
-    returns = signal<number[]>([12, 8, 4]);
+  weights = signal<(number | string)[]>([40, 30, 30]);
+  returns = signal<(number | string)[]>([12, 8, 4]);
 
-    isBalanced = computed(() => this.weights().length === this.returns().length);
+  isBalanced = computed(() => this.weights().length === this.returns().length);
 
-    allValid = computed(() => {
-        return this.weights().every(v => v !== null && v !== undefined && v !== '' && !isNaN(Number(v))) &&
-            this.returns().every(v => v !== null && v !== undefined && v !== '' && !isNaN(Number(v)));
-    });
+  allValid = computed(() => {
+    const w = this.weights();
+    const r = this.returns();
+    return w.every(v => v !== null && v !== undefined && v !== '' && !isNaN(Number(v))) &&
+      r.every(v => v !== null && v !== undefined && v !== '' && !isNaN(Number(v)));
+  });
 
-    totalWeight = computed(() => {
-        return this.weights().reduce((sum, w) => sum + Number(w), 0);
-    });
+  totalWeight = computed(() => {
+    return this.weights().reduce((sum, w) => sum + Number(w), 0);
+  });
 
-    result = computed(() => {
-        if (!this.allValid() || !this.isBalanced()) return 0;
-        return this.financialService.calculatePortfolioReturn({
-            weights: this.weights().map(v => Number(v) / 100),
-            returns: this.returns().map(v => Number(v) / 100),
-        }) * 100;
-    });
+  result = computed(() => {
+    if (!this.allValid() || !this.isBalanced()) return 0;
+    return this.financialService.calculatePortfolioReturn({
+      weights: this.weights().map(v => Number(v) / 100),
+      returns: this.returns().map(v => Number(v) / 100),
+    }) * 100;
+  });
 }

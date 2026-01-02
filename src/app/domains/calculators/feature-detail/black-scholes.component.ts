@@ -7,44 +7,49 @@ import { CardComponent } from '@shared/ui/card.component';
 import { InputComponent } from '@shared/ui/input.component';
 
 @Component({
-    selector: 'app-black-scholes',
-    standalone: true,
-    imports: [
-        LucideAngularModule,
-        CardComponent,
-        InputComponent,
-        Field,
-        CurrencyPipe,
-    ],
-    template: `
+  selector: 'app-black-scholes',
+  standalone: true,
+  imports: [
+    LucideAngularModule,
+    CardComponent,
+    InputComponent,
+    Field,
+    CurrencyPipe,
+  ],
+  template: `
     <div class="max-w-4xl mx-auto space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <app-card title="Model Inputs">
           <div class="space-y-4">
             <app-input
+              id="bsStockPrice"
               label="Asset Price"
               [field]="bsForm.stockPrice"
               type="number"
               prefix="$"
             />
             <app-input
+              id="bsStrikePrice"
               label="Strike Price"
               [field]="bsForm.strikePrice"
               type="number"
               prefix="$"
             />
             <app-input
+              id="bsTime"
               label="Time to Expiration (Years)"
               [field]="bsForm.time"
               type="number"
             />
             <app-input
+              id="bsRiskFreeRate"
               label="Risk-Free Rate (%)"
               [field]="bsForm.riskFreeRate"
               type="number"
               suffix="%"
             />
             <app-input
+              id="bsVolatility"
               label="Volatility (%)"
               [field]="bsForm.volatility"
               type="number"
@@ -56,7 +61,7 @@ import { InputComponent } from '@shared/ui/input.component';
         <div class="space-y-6">
            <app-card title="Call Option Price">
              <div class="flex flex-col items-center justify-center py-4 text-center">
-                @if (bsForm().valid) {
+                @if (bsForm().valid()) {
                   <span class="text-4xl font-black text-blue-600">{{ result().callPrice | currency }}</span>
                 } @else {
                   <span class="text-slate-300">--</span>
@@ -66,7 +71,7 @@ import { InputComponent } from '@shared/ui/input.component';
 
            <app-card title="Put Option Price">
              <div class="flex flex-col items-center justify-center py-4 text-center">
-                @if (bsForm().valid) {
+                @if (bsForm().valid()) {
                   <span class="text-4xl font-black text-indigo-600">{{ result().putPrice | currency }}</span>
                 } @else {
                   <span class="text-slate-300">--</span>
@@ -79,26 +84,38 @@ import { InputComponent } from '@shared/ui/input.component';
   `,
 })
 export class BlackScholesComponent {
-    private financialService = inject(FinancialService);
+  private financialService = inject(FinancialService);
 
-    bsForm = form(() => ({
-        stockPrice: signal<number>(100, { validators: [required, min(0.01)] }),
-        strikePrice: signal<number>(100, { validators: [required, min(0.01)] }),
-        time: signal<number>(1, { validators: [required, min(0.0001)] }),
-        riskFreeRate: signal<number>(5, { validators: [required] }),
-        volatility: signal<number>(20, { validators: [required, min(0.0001)] }),
-    }));
+  data = signal({
+    stockPrice: 100,
+    strikePrice: 100,
+    time: 1,
+    riskFreeRate: 5,
+    volatility: 20,
+  });
 
-    result = computed(() => {
-        const f = this.bsForm();
-        if (f.invalid) return { callPrice: 0, putPrice: 0 };
+  bsForm = form(this.data, (schema) => {
+    required(schema.stockPrice);
+    min(schema.stockPrice, 0.01);
+    required(schema.strikePrice);
+    min(schema.strikePrice, 0.01);
+    required(schema.time);
+    min(schema.time, 0.0001);
+    required(schema.riskFreeRate);
+    required(schema.volatility);
+    min(schema.volatility, 0.0001);
+  });
 
-        return this.financialService.calculateBlackScholes({
-            stockPrice: f.stockPrice.value(),
-            strikePrice: f.strikePrice.value(),
-            time: f.time.value(),
-            riskFreeRate: f.riskFreeRate.value() / 100,
-            volatility: f.volatility.value() / 100,
-        });
+  result = computed(() => {
+    if (this.bsForm().invalid()) return { callPrice: 0, putPrice: 0 };
+    const d = this.data();
+
+    return this.financialService.calculateBlackScholes({
+      stockPrice: d.stockPrice,
+      strikePrice: d.strikePrice,
+      time: d.time,
+      riskFreeRate: d.riskFreeRate / 100,
+      volatility: d.volatility / 100,
     });
+  });
 }
