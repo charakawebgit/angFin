@@ -98,7 +98,7 @@ export class PortfolioReturnComponent {
   });
 
   totalWeight = computed(() => {
-    return this.weights().reduce((sum, w) => sum + Number(w), 0);
+    return (this.weights() as (number | string)[]).reduce((sum: number, w) => sum + Number(w), 0);
   });
 
   result = computed(() => {

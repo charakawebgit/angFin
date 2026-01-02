@@ -65,6 +65,7 @@ import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.compone
 
       <app-card title="Cash Flows">
         <app-dynamic-list-input
+          id="futureCashFlows"
           label="Future Cash Flows (CF1, CF2, ...)"
           [items]="cashFlows()"
           (changed)="cashFlows.set($event)"
@@ -88,10 +89,12 @@ export class NpvComponent {
     required(schema.rate);
   });
 
-  cashFlows = signal<number[]>([2000, 3000, 4000, 5000]);
+  cashFlows = signal<(number | string)[]>([2000, 3000, 4000, 5000]);
 
   allCashFlowsValid = computed(() => {
-    return this.cashFlows().every((cf) => cf !== null && cf !== undefined && cf !== '' && !isNaN(Number(cf)));
+    return (this.cashFlows() as (number | string)[]).every(
+      (cf) => cf !== null && cf !== undefined && cf !== '' && !isNaN(Number(cf))
+    );
   });
 
   result = computed(() => {

@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { form, required, min, Field } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
 import { FinancialService } from '@core/math/financial.service';
@@ -15,7 +15,6 @@ import { InputComponent } from '@shared/ui/input.component';
     InputComponent,
     Field,
     CurrencyPipe,
-    DecimalPipe,
   ],
   template: `
     <div class="max-w-6xl mx-auto space-y-6 pb-12">

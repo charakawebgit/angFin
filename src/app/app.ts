@@ -1,19 +1,11 @@
-import { Component, inject } from '@angular/core';
-import { RouterOutlet, RouterLink, Router } from '@angular/router';
-import { LucideAngularModule } from 'lucide-angular';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, LucideAngularModule, CommonModule],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  private router = inject(Router);
-
-  isRoot(): boolean {
-    return this.router.url === '/' || this.router.url === '';
-  }
-}
+export class App { }

@@ -70,10 +70,10 @@ export class SkewKurtComponent {
 
   allValid = computed(() => {
     // Skewness needs n >= 3, Kurtosis needs n >= 4
-    const v = this.values();
+    const v = this.values() as (number | string)[];
     return (
       v.length >= 4 &&
-      v.every((val) => val !== null && val !== undefined && val !== '' && !isNaN(Number(val)))
+      v.every((val) => val !== null && val !== undefined && String(val) !== '' && !isNaN(Number(val)))
     );
   });
 

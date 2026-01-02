@@ -426,9 +426,15 @@ export class FinancialService {
     beginningValue,
     endingValue,
   }: M.HoldingPeriodReturnParams): number {
-    const b = new Decimal(beginningValue),
-      e = new Decimal(endingValue);
-    return e.sub(b).div(b).toNumber();
+    const begin = new Decimal(beginningValue);
+    const end = new Decimal(endingValue);
+    return end.sub(begin).div(begin).toNumber();
+  }
+
+  calculateRoi({ amountGained, amountSpent }: M.RoiParams): number {
+    const gain = new Decimal(amountGained);
+    const cost = new Decimal(amountSpent);
+    return gain.sub(cost).div(cost).toNumber();
   }
 
   calculateBankDiscountYield({
@@ -460,14 +466,19 @@ export class FinancialService {
   }
 
   calculateGeometricMean({ returns }: M.GeometricMeanParams): number {
-    const product = returns.reduce(
-      (acc: Decimal, r) => acc.mul(new Decimal(1).add(r)),
-      new Decimal(1)
-    );
-    return product
-      .pow(new Decimal(1).div(returns.length))
-      .sub(1)
-      .toNumber();
+    let product = new Decimal(1);
+    for (const r of returns) {
+      product = product.times(new Decimal(r).plus(1));
+    }
+    return product.pow(new Decimal(1).div(returns.length)).minus(1).toNumber();
+  }
+
+  calculatePortfolioReturn({ weights, returns }: M.PortfolioReturnParams): number {
+    let totalReturn = new Decimal(0);
+    for (let i = 0; i < weights.length; i++) {
+      totalReturn = totalReturn.plus(new Decimal(weights[i]).times(returns[i]));
+    }
+    return totalReturn.toNumber();
   }
 
   private getMean(values: number[]): Decimal {

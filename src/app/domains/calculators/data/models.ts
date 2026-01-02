@@ -16,9 +16,11 @@ export interface EffectiveAnnualReturnParams { rate: number; periods: number; }
 export interface HoldingPeriodReturnParams { beginningValue: number; endingValue: number; }
 export interface BankDiscountYieldParams { faceValue: number; purchasePrice: number; days: number; }
 export interface EffectiveAnnualYieldParams { hpy: number; days: number; }
+export interface RoiParams { amountGained: number; amountSpent: number; }
 
 // --- Portfolio Management & Risk ---
 export interface GeometricMeanParams { returns: number[]; }
+export interface PortfolioReturnParams { weights: number[]; returns: number[]; }
 export interface MeanAbsoluteDeviationParams { values: number[]; }
 export interface PopulationVarianceParams { values: number[]; }
 export interface SampleVarianceParams { values: number[]; }

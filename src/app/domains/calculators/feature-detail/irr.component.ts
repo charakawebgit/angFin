@@ -93,10 +93,10 @@ export class IrrComponent {
   cashFlows = signal<(number | string)[]>([-10000, 3000, 4200, 5800]);
 
   allValid = computed(() => {
-    const cf = this.cashFlows();
+    const cf = this.cashFlows() as (number | string)[];
     return (
       cf.length >= 2 &&
-      cf.every((v) => v !== null && v !== undefined && v !== '' && !isNaN(Number(v)))
+      cf.every((v) => v !== null && v !== undefined && String(v) !== '' && !isNaN(Number(v)))
     );
   });
 

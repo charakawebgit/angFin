@@ -65,11 +65,11 @@ import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.compone
 export class CvComponent {
   private financialService = inject(FinancialService);
 
-  values = signal<number[]>([10, 12, 11, 13, 15]);
+  values = signal<(number | string)[]>([10, 12, 11, 13, 15]);
 
   allValuesValid = computed(() => {
-    const v = this.values();
-    return v.length >= 2 && v.every((val) => val !== null && val !== undefined && val !== '' && !isNaN(Number(val)));
+    const v = this.values() as (number | string)[];
+    return v.length >= 2 && v.every((val) => val !== null && val !== undefined && String(val) !== '' && !isNaN(Number(val)));
   });
 
   result = computed(() => {
