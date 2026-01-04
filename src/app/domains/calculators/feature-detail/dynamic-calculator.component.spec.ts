@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DynamicCalculatorComponent } from './dynamic-calculator.component';
 import { CalculatorService } from '../data/calculator.service';
-import { signal } from '@angular/core';
+import { signal, importProvidersFrom } from '@angular/core';
 import { CalculatorConfig } from '../data/models';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe, toHaveNoViolations } from 'vitest-axe';
+import { LucideAngularModule, Calculator, SearchX } from 'lucide-angular';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 expect.extend(toHaveNoViolations);
 
@@ -13,7 +15,7 @@ describe('DynamicCalculatorComponent', () => {
 
     // Mock CalculatorService
     const mockCalculatorService = {
-        loadConfig: (id: string) => { },
+        loadConfig: (_id: string) => { /* noop */ },
         activeConfig: signal<CalculatorConfig | null>({
             id: 'test-calc',
             title: 'Test Calculator',
@@ -33,7 +35,9 @@ describe('DynamicCalculatorComponent', () => {
         await TestBed.configureTestingModule({
             imports: [DynamicCalculatorComponent],
             providers: [
-                { provide: CalculatorService, useValue: mockCalculatorService }
+                { provide: CalculatorService, useValue: mockCalculatorService },
+                provideAnimationsAsync(),
+                importProvidersFrom(LucideAngularModule.pick({ Calculator, SearchX }))
             ]
         }).compileComponents();
 
