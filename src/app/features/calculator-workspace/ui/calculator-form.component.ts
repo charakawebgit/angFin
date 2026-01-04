@@ -5,7 +5,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { InputComponent } from '@shared/ui/input.component';
 import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 import { CardComponent } from '@shared/ui/card.component';
-import { CalculatorConfig, CalculatorData } from '@entities/calculator/model/types';
+import { CalculatorConfig, CalculatorData, FieldConfig } from '@entities/calculator/model/types';
 
 @Component({
   selector: 'app-calculator-form',
@@ -67,7 +67,7 @@ export class CalculatorFormComponent {
   config = input.required<CalculatorConfig>();
   data = input.required<CalculatorData>();
   valid = output<boolean>();
-  dataChanged = output<{ key: string, value: unknown }>();
+  dataChanged = output<{ key: string; value: CalculatorData[string] }>();
 
   // Use local writable signal for the form, initialized from the data input
   localData = signal<CalculatorData>({});
@@ -88,7 +88,7 @@ export class CalculatorFormComponent {
         // We need an injection context for the form library
         const newForm = runInInjectionContext(this.injector, () => {
           return form(this.localData, (schema: Record<string, unknown>) => {
-            cfg.fields.forEach(f => {
+            cfg.fields.forEach((f: FieldConfig) => {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const field = schema[f.key] as any;
               if (f.required) required(field);
@@ -128,8 +128,8 @@ export class CalculatorFormComponent {
     return (f as unknown as Record<string, FieldTree<string | number, string | number>>)[key];
   }
 
-  updateData(key: string, value: unknown) {
-    this.dataChanged.emit({ key, value });
+  updateData(key: string, value: CalculatorData[string]) {
+    this.dataChanged.emit({ key, value: value as CalculatorData[string] });
   }
 
   asList(val: unknown): (string | number)[] {

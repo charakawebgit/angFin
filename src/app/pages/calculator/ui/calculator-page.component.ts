@@ -101,7 +101,7 @@ export class DynamicCalculatorComponent {
     });
   });
 
-  updateData(key: string, value: unknown) {
+  updateData(key: string, value: import('@entities/calculator/model/types').CalculatorData[string]) {
     this.data.update(d => ({ ...d, [key]: value }));
   }
 
