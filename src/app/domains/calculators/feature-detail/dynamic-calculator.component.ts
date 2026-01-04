@@ -66,11 +66,11 @@ import { CalculatorData } from '../data/models';
           </app-card>
 
           <app-card [title]="config()!.results[0]?.label || 'Results'" subtitle="Calculated output">
-            <div class="flex flex-col items-center justify-center h-full py-10 text-center">
+            <div class="flex flex-col items-center justify-center h-full py-10 text-center" aria-live="polite">
               @if (calcForm()().valid()) {
-                <div class="space-y-6 w-full animate-in zoom-in duration-500">
+                <div class="space-y-8 w-full animate-in zoom-in duration-500">
                   @for (res of config()!.results; track res.label) {
-                    <div class="relative inline-block">
+                    <div class="relative flex flex-col items-center">
                       <div class="absolute -inset-4 blur-2xl rounded-full opacity-10" [class]="getThemeClass(res.themeColor)"></div>
                       <div class="relative">
                         <span class="text-6xl font-black bg-clip-text text-transparent bg-gradient-to-br tracking-tight" [class]="getGradientClass(res.themeColor)">
