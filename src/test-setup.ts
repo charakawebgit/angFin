@@ -1,4 +1,4 @@
-import '@analogjs/vitest-angular/setup-zone';
+import '@analogjs/vitest-angular/setup-zoneless';
 import {
     BrowserDynamicTestingModule,
     platformBrowserDynamicTesting,
