@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import Decimal from 'decimal.js';
-import * as M from '@domains/calculators/data/models';
 import * as Inv from './investment.utils';
 import * as Fi from './fixed-income.utils';
 import * as Stat from './stats.utils';

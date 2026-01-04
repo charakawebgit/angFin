@@ -11,9 +11,7 @@ import { FormsModule } from '@angular/forms';
         <label [for]="id()" class="text-sm font-semibold text-slate-700 dark:text-slate-300">
           {{ label() }}
         </label>
-        <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded-md">
-          {{ items()?.length || 0 }} Items
-        </span>
+          {{ items().length }} Items
       </div>
 
       <div class="flex gap-2">
