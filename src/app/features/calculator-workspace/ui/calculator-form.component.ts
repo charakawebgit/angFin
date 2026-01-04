@@ -22,10 +22,10 @@ import { buildFormSchema } from '@shared/lib/forms/field-to-schema.utils';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (calcForm()) {
-      <app-card [title]="config().subtitle || 'Parameters'" subtitle="Fill in the required fields">
+    @if (calcForm() && config()) {
+      <app-card [title]="config()!.subtitle || 'Parameters'" subtitle="Fill in the required fields">
         <div class="space-y-5">
-          @for (field of config().fields; track field.key) {
+          @for (field of config()!.fields; track field.key) {
             @if (field.type === 'number') {
               <app-input
                 [id]="field.key"

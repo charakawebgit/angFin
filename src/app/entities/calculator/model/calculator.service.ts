@@ -28,7 +28,6 @@ export class CalculatorService {
     }
 
     async loadConfig(id: string): Promise<void> {
-        console.log(`[CalculatorService] Loading config for: ${id}`);
         this.loading.set(true);
         this.currentConfig.set(null);
 
@@ -36,7 +35,6 @@ export class CalculatorService {
         if (item) {
             try {
                 const result = await item.load();
-                console.log(`[CalculatorService] Successfully loaded config for ${id}:`, result);
 
                 // Every registry item returns an object with a 'config' key
                 if (result && result['config']) {
