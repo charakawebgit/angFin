@@ -1,17 +1,7 @@
-import '@angular/compiler';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
-import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 
-try {
-    TestBed.initTestEnvironment(
-        BrowserDynamicTestingModule,
-        platformBrowserDynamicTesting()
-    );
-} catch {
-    // Ignore if already initialized
-}
 import { CalculatorFormComponent } from './calculator-form.component';
 import { CalculatorConfig } from '../../data/models';
 import { provideRouter } from '@angular/router';

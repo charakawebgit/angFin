@@ -101,7 +101,7 @@ export class DynamicCalculatorComponent {
     });
   });
 
-  updateData(key: string, value: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+  updateData(key: string, value: unknown) {
     this.data.update(d => ({ ...d, [key]: value }));
   }
 

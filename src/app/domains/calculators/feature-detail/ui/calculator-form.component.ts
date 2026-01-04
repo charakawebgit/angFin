@@ -73,7 +73,7 @@ export class CalculatorFormComponent {
   localData = signal<CalculatorData>({});
 
   // Use a writable signal initialized to null
-  calcForm = signal<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
+  calcForm = signal<unknown>(null);
 
   private injector = inject(Injector);
 
@@ -87,7 +87,7 @@ export class CalculatorFormComponent {
       untracked(() => {
         // We need an injection context for the form library
         const newForm = runInInjectionContext(this.injector, () => {
-          return form(this.localData, (schema: Record<string, any>) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+          return form(this.localData, (schema: Record<string, unknown>) => {
             cfg.fields.forEach(f => {
               if (f.required) required(schema[f.key]);
               if (f.min !== undefined) min(schema[f.key], f.min);
@@ -113,14 +113,14 @@ export class CalculatorFormComponent {
     effect(() => {
       const f = this.calcForm();
       if (f) {
-        this.valid.emit(f().valid());
+        this.valid.emit((f() as { valid: () => boolean }).valid());
       }
     });
   }
 
   getField(key: string): FieldTree<string | number, string | number> {
     const f = this.calcForm();
-    if (!f) return {} as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    if (!f) return {} as FieldTree<string | number, string | number>;
     return (f as unknown as Record<string, FieldTree<string | number, string | number>>)[key];
   }
 
