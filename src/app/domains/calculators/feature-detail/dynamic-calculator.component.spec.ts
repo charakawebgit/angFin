@@ -3,11 +3,12 @@ import { DynamicCalculatorComponent } from './dynamic-calculator.component';
 import { CalculatorService } from '../data/calculator.service';
 import { signal, importProvidersFrom } from '@angular/core';
 import { CalculatorConfig } from '../data/models';
-import { axe, toHaveNoViolations } from 'vitest-axe';
+import * as matchers from 'vitest-axe';
+import { axe } from 'vitest-axe';
 import { LucideAngularModule, Calculator, SearchX } from 'lucide-angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-expect.extend(toHaveNoViolations);
+expect.extend(matchers);
 
 describe('DynamicCalculatorComponent', () => {
     let component: DynamicCalculatorComponent;
@@ -15,7 +16,7 @@ describe('DynamicCalculatorComponent', () => {
 
     // Mock CalculatorService
     const mockCalculatorService = {
-        loadConfig: (_id: string) => { /* noop */ },
+        loadConfig: () => { /* noop */ },
         activeConfig: signal<CalculatorConfig | null>({
             id: 'test-calc',
             title: 'Test Calculator',
@@ -25,7 +26,7 @@ describe('DynamicCalculatorComponent', () => {
                 { key: 'input1', type: 'number', label: 'Input 1', defaultValue: 10, required: true }
             ],
             results: [
-                { key: 'result1', label: 'Result 1', calculate: (data) => (Number(data['input1']) || 0) * 2 }
+                { label: 'Result 1', type: 'number', calculate: (data) => (Number(data['input1']) || 0) * 2 }
             ]
         }),
         isLoading: signal(false)
