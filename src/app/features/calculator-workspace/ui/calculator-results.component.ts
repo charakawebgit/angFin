@@ -2,7 +2,7 @@ import { Component, input, signal, ChangeDetectionStrategy } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 import { CardComponent } from '@shared/ui/card.component';
-import { CalculatorConfig } from '@entities/calculator/model/types';
+import { CalculatorConfig, ResultValue } from '@entities/calculator/model/types';
 
 @Component({
   selector: 'app-calculator-results',
@@ -68,21 +68,21 @@ import { CalculatorConfig } from '@entities/calculator/model/types';
 })
 export class CalculatorResultsComponent {
   config = input.required<CalculatorConfig>();
-  results = input.required<unknown[]>();
+  results = input.required<ResultValue[]>();
   isValid = input.required<boolean>();
 
   copiedField = signal<string | null>(null);
 
-  copyToClipboard(value: unknown, fieldId: string) {
-    const text = value?.toString() || '';
+  copyToClipboard(value: ResultValue, fieldId: string) {
+    const text = value && typeof value === 'object' ? JSON.stringify(value) : String(value ?? '');
     navigator.clipboard.writeText(text).then(() => {
       this.copiedField.set(fieldId);
       setTimeout(() => this.copiedField.set(null), 2000);
     });
   }
 
-  getProgressBarWidth(value: unknown): string {
-    const numValue = Number(value);
+  getProgressBarWidth(value: ResultValue): string {
+    const numValue = Number(value as number);
     if (isNaN(numValue)) return '0%';
     const clamped = Math.min(Math.max(numValue, 0), 100);
     return `${clamped}%`;
@@ -108,9 +108,9 @@ export class CalculatorResultsComponent {
     }
   }
 
-  formatResult(val: unknown, type: string): string {
+  formatResult(val: ResultValue, type: string): string {
     if (val === undefined || val === null) return '0';
-    const numVal = Number(val);
+    const numVal = Number(val as number);
     if (isNaN(numVal)) return '0';
 
     if (type === 'currency') {

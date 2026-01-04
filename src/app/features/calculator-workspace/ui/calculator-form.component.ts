@@ -1,13 +1,14 @@
 import { Component, input, output, ChangeDetectionStrategy, effect, signal, untracked, inject, Injector, runInInjectionContext } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { form, required, min, max, Field, FieldTree } from '@angular/forms/signals';
+import { form, Field, FieldTree } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
 import { InputComponent } from '@shared/ui/input.component';
 import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 import { CardComponent } from '@shared/ui/card.component';
-import { CalculatorConfig, CalculatorData, FieldConfig } from '@entities/calculator/model/types';
+import { CalculatorConfig, CalculatorData } from '@entities/calculator/model/types';
+import { buildFormSchema } from '@shared/lib/forms/field-to-schema.utils';
 
-type FormSignal = (() => any) & { valid?: () => boolean };
+// The `form()` return shape is intentionally left loosely typed here.
 
 @Component({
   selector: 'app-calculator-form',
@@ -67,8 +68,10 @@ type FormSignal = (() => any) & { valid?: () => boolean };
 })
 
 export class CalculatorFormComponent {
-  config = input.required<CalculatorConfig>();
-  data = input.required<CalculatorData>();
+  // Use optional inputs to make the component resilient in tests and host
+  // environments; effects guard access until values are available.
+  config = input<CalculatorConfig>();
+  data = input<CalculatorData>();
   valid = output<boolean>();
   dataChanged = output<{ key: string; value: CalculatorData[string] }>();
 
@@ -76,7 +79,9 @@ export class CalculatorFormComponent {
   localData = signal<CalculatorData>({});
 
   // Use a writable signal initialized to null
-  calcForm = signal<FormSignal | null>(null);
+  // use `any` here because the `form()` return type is complex and inferred differently
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  calcForm = signal<any | null>(null);
 
   private injector = inject(Injector);
 
@@ -84,23 +89,16 @@ export class CalculatorFormComponent {
     // Initialize form when config changes
     effect(() => {
       const cfg = this.config();
+      if (!cfg) return;
 
-      // Use untracked to escape the reactive context of the effect, 
+      // Use untracked to escape the reactive context of the effect,
       // allowing the internal effects of 'form()' to be created safely.
       untracked(() => {
         // We need an injection context for the form library
         const newForm = runInInjectionContext(this.injector, () => {
-          // use any for the schema here because form's internal Schema types are complex
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          return form(this.localData, (schema: any) => {
-            cfg.fields.forEach((f: FieldConfig) => {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const field = schema[f.key] as any;
-              if (f.required) required(field);
-              if (f.min !== undefined) min(field, f.min);
-              if (f.max !== undefined) max(field, f.max);
-            });
-          });
+          // Build the schema using a centralized helper (keeps the dynamic
+          // schema logic in one place).
+          return form(this.localData, buildFormSchema(cfg.fields));
         });
         this.calcForm.set(newForm);
       });
@@ -109,6 +107,7 @@ export class CalculatorFormComponent {
     // Sync external data changes into local data
     effect(() => {
       const d = this.data();
+      if (d == null) return;
       untracked(() => {
         if (JSON.stringify(d) !== JSON.stringify(this.localData())) {
           this.localData.set(d);
@@ -120,8 +119,8 @@ export class CalculatorFormComponent {
     effect(() => {
       const f = this.calcForm();
       if (f) {
-        this.valid.emit(f().valid());
-      }
+          this.valid.emit(Boolean(f().valid?.()));
+        }
     });
   }
 
@@ -129,7 +128,7 @@ export class CalculatorFormComponent {
     const f = this.calcForm();
     if (!f) return {} as FieldTree<string | number, string | number>;
     const formObj = f();
-    return formObj[key];
+    return formObj[key] as FieldTree<string | number, string | number>;
   }
 
   updateData(key: string, value: CalculatorData[string]) {

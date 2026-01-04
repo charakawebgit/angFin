@@ -85,7 +85,14 @@ export interface FieldConfig {
 
 export type CalculatorData = Record<string, number | number[] | string | (string | number)[] | undefined>;
 
-export interface ResultConfig<T = unknown> {
+export type ResultValue = number | string | Record<string, unknown> | (number | string | Record<string, unknown>)[];
+
+export interface ResultItem {
+    value: ResultValue;
+    meta?: Record<string, unknown>;
+}
+
+export interface ResultConfig<T = ResultValue> {
     label: string;
     type: 'currency' | 'percent' | 'number' | 'amortization' | 'black-scholes' | 'dupont';
     themeColor?: string;
