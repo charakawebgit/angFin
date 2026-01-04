@@ -2,7 +2,7 @@ import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 import { CardComponent } from '@shared/ui/card.component';
-import { CalculatorConfig } from '../../data/models';
+import { CalculatorConfig } from '@entities/calculator/model/types';
 
 @Component({
     selector: 'app-calculator-info',

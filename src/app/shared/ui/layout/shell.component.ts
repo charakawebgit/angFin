@@ -3,8 +3,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { trigger, transition, style, animate, query } from '@angular/animations';
 import { filter } from 'rxjs';
-import { CalculatorService } from '../../../domains/calculators/data/calculator.service';
-import { MetaService } from '../../../core/services/meta.service';
+import { CalculatorService } from '@entities/calculator/model/calculator.service';
+import { MetaService } from '@core/services/meta.service';
 import { HeaderComponent } from './header.component';
 import { FooterComponent } from './footer.component';
 

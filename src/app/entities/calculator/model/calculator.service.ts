@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
-import { CalculatorDef, CalculatorConfig, CalculatorRegistryItem } from './models';
-import { CALCULATORS_REGISTRY } from './calculators.registry';
+import { CalculatorDef, CalculatorConfig, CalculatorRegistryItem } from '@entities/calculator/model/types';
+import { CALCULATORS_REGISTRY } from '@entities/calculator/lib/registry';
 
 @Injectable({
     providedIn: 'root',

@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import * as M from '@domains/calculators/data/models';
+import * as M from '@entities/calculator/model/types';
 
 Decimal.set({ precision: 50 });
 
@@ -17,7 +17,7 @@ export function calculatePresentValue({ fv, rate, periods }: M.PresentValueParam
 
 export function calculateNpv({ initialInvestment, cashFlows, discountRate }: M.NpvParams): number {
   const rD = new Decimal(discountRate);
-  const npv = cashFlows.reduce((acc, cf, t) => {
+  const npv = cashFlows.reduce((acc: Decimal, cf: number, t: number) => {
     const cfD = new Decimal(cf);
     return acc.add(cfD.div(new Decimal(1).add(rD).pow(t + 1)));
   }, new Decimal(initialInvestment).neg());
@@ -31,7 +31,7 @@ export function calculateIrr({ cashFlows }: M.IrrParams): number {
   const precision = new Decimal('1e-10');
 
   const npvForIrr = (rate: Decimal, cfs: number[]): Decimal => {
-    return cfs.reduce((acc: Decimal, cf, t) => {
+    return cfs.reduce((acc: Decimal, cf: number, t: number) => {
       const cfD = new Decimal(cf);
       return acc.add(cfD.div(new Decimal(1).add(rate).pow(t)));
     }, new Decimal(0));

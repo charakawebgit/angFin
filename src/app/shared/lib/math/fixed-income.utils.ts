@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import * as M from '@domains/calculators/data/models';
+import * as M from '@entities/calculator/model/types';
 
 Decimal.set({ precision: 50 });
 

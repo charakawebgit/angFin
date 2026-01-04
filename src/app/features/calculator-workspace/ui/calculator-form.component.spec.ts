@@ -3,7 +3,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, it, expect, beforeEach } from 'vitest';
 
 import { CalculatorFormComponent } from './calculator-form.component';
-import { CalculatorConfig } from '../../data/models';
+import { CalculatorConfig } from '@entities/calculator/model/types';
 import { provideRouter } from '@angular/router';
 import { LucideAngularModule, Calculator } from 'lucide-angular';
 

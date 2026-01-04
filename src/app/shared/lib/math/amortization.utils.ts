@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import * as M from '@domains/calculators/data/models';
+import * as M from '@entities/calculator/model/types';
 
 export function calculateAmortization({ loanAmount, interestRate, loanTerm }: M.AmortizationParams): M.AmortizationResult {
   const p = new Decimal(loanAmount);

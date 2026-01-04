@@ -4,7 +4,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { FormsModule } from '@angular/forms';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { CardComponent } from '@shared/ui/card.component';
-import { CalculatorService } from '../data/calculator.service';
+import { CalculatorService } from '@entities/calculator/model/calculator.service';
 import { MetaService } from '@core/services/meta.service';
 
 @Component({

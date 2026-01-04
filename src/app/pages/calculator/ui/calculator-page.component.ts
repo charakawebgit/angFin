@@ -1,11 +1,11 @@
 import { Component, computed, inject, signal, input, ChangeDetectionStrategy, linkedSignal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
-import { CalculatorService } from '../data/calculator.service';
-import { CalculatorData } from '../data/models';
-import { CalculatorFormComponent } from './ui/calculator-form.component';
-import { CalculatorResultsComponent } from './ui/calculator-results.component';
-import { CalculatorInfoComponent } from './ui/calculator-info.component';
+import { CalculatorService } from '@entities/calculator/model/calculator.service';
+import { CalculatorData } from '@entities/calculator/model/types';
+import { CalculatorFormComponent } from '@features/calculator-workspace/ui/calculator-form.component';
+import { CalculatorResultsComponent } from '@features/calculator-workspace/ui/calculator-results.component';
+import { CalculatorInfoComponent } from '@features/calculator-workspace/ui/calculator-info.component';
 
 @Component({
   selector: 'app-dynamic-calculator',
