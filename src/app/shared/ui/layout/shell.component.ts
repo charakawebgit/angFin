@@ -1,4 +1,5 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, effect } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { trigger, transition, style, animate, query } from '@angular/animations';
 import { filter } from 'rxjs';
@@ -50,33 +51,35 @@ import { FooterComponent } from './footer.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShellComponent {
-  // ... existing injects
-
-  prepareRoute(outlet: RouterOutlet) {
-    return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
-  }
   private router = inject(Router);
   private calcService = inject(CalculatorService);
   private metaService = inject(MetaService);
 
-  constructor() {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event) => {
-      const navEnd = event as NavigationEnd;
-      const url = navEnd.urlAfterRedirects;
-      const id = url.split('/')[1];
+  private navEvents = toSignal(
+    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+  );
 
-      if (id) {
-        const calc = this.calcService.getById(id);
-        if (calc) {
-          this.metaService.updateTitle(calc.title);
-          this.metaService.updateMeta(calc.description);
+  constructor() {
+    effect(() => {
+      const event = this.navEvents();
+      if (event) {
+        const urlParts = event.urlAfterRedirects.split('/');
+        const id = urlParts[urlParts.length - 1];
+
+        if (id) {
+          const cfg = this.calcService.getConfigById(id);
+          if (cfg) {
+            this.metaService.updateTitle(cfg.title);
+            this.metaService.updateMeta(cfg.description);
+            return;
+          }
         }
-      } else {
-        this.metaService.updateTitle('Dashboard');
-        this.metaService.updateMeta('Professional financial intelligence toolkit.');
+        this.metaService.resetTitle();
       }
     });
+  }
+
+  prepareRoute(outlet: RouterOutlet) {
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
   }
 }

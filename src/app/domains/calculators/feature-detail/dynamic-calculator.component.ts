@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, input, effect, untracked, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, signal, input, ChangeDetectionStrategy, linkedSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { form, required, min, max, Field, FieldTree } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
@@ -153,25 +153,18 @@ export class DynamicCalculatorComponent {
   private calcService = inject(CalculatorService);
 
   config = computed(() => this.calcService.getConfigById(this.id()));
-  data = signal<CalculatorData>({});
+  data = linkedSignal<CalculatorData>(() => {
+    const cfg = this.config();
+    if (!cfg) return {};
+
+    const initialData: CalculatorData = {};
+    cfg.fields.forEach(f => {
+      initialData[f.key] = f.defaultValue as CalculatorData[string];
+    });
+    return initialData;
+  });
 
   copiedField = signal<string | null>(null);
-
-  // Initialize data when config changes
-  constructor() {
-    effect(() => {
-      const cfg = this.config();
-      if (cfg) {
-        untracked(() => {
-          const initialData: CalculatorData = {};
-          cfg.fields.forEach(f => {
-            initialData[f.key] = f.defaultValue as CalculatorData[string];
-          });
-          this.data.set(initialData);
-        });
-      }
-    });
-  }
 
   copyToClipboard(value: unknown, fieldId: string) {
     const text = value?.toString() || '';
