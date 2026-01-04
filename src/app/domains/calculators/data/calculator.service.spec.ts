@@ -1,6 +1,39 @@
 import { TestBed } from '@angular/core/testing';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CalculatorService } from './calculator.service';
+import { CalculatorConfig, CalculatorRegistryItem } from './models';
+
+const mocks = vi.hoisted(() => {
+    const mockConfig: CalculatorConfig = {
+        id: 'future-value',
+        title: 'Future Value',
+        description: 'Test Description',
+        icon: 'test-icon',
+        category: 'Test Category',
+        fields: [],
+        results: []
+    };
+
+    const mockRegistry: CalculatorRegistryItem[] = [
+        {
+            id: 'future-value',
+            title: 'Future Value',
+            description: 'Test',
+            icon: 'test',
+            category: 'Test',
+            load: vi.fn().mockResolvedValue({ config: mockConfig })
+        }
+    ];
+
+    return {
+        mockConfig,
+        mockRegistry
+    };
+});
+
+vi.mock('./calculators.registry', () => ({
+    CALCULATORS_REGISTRY: mocks.mockRegistry
+}));
 
 describe('CalculatorService', () => {
     let service: CalculatorService;
@@ -18,11 +51,10 @@ describe('CalculatorService', () => {
 
     it('should have a list of calculators initially', () => {
         expect(service.calculatorsList().length).toBeGreaterThan(0);
+        expect(service.calculatorsList()[0].id).toBe('future-value');
     });
 
     it('should load a config correctly', async () => {
-        // Note: This tests the async loading flow
-        // Future expansion: Mock the dynamic import if needed
         await service.loadConfig('future-value');
 
         expect(service.isLoading()).toBe(false);

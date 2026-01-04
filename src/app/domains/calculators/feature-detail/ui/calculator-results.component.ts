@@ -109,14 +109,16 @@ export class CalculatorResultsComponent {
   }
 
   formatResult(val: unknown, type: string): string {
-    if (val === undefined || val === null || (typeof val === 'number' && isNaN(val))) return '0';
+    if (val === undefined || val === null) return '0';
+    const numVal = Number(val);
+    if (isNaN(numVal)) return '0';
 
     if (type === 'currency') {
-      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val as number);
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(numVal);
     }
     if (type === 'percent') {
-      return ((val as number) * 100).toFixed(2) + '%';
+      return (numVal * 100).toFixed(2) + '%';
     }
-    return Number(val).toLocaleString(undefined, { maximumFractionDigits: 4 });
+    return numVal.toLocaleString(undefined, { maximumFractionDigits: 4 });
   }
 }

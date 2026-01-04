@@ -37,7 +37,7 @@ import { CalculatorConfig, CalculatorData } from '../../data/models';
               <app-dynamic-list-input
                 [id]="field.key"
                 [label]="field.label"
-                [items]="$any(localData()[field.key] || [])"
+                [items]="asList(localData()[field.key])"
                 (changed)="updateData(field.key, $event)"
               />
             } @else if (field.type === 'select') {
@@ -48,7 +48,7 @@ import { CalculatorConfig, CalculatorData } from '../../data/models';
                 <select
                   [id]="field.key"
                   [value]="localData()[field.key]"
-                  (change)="updateData(field.key, $any($event.target).value)"
+                  (change)="onSelectChange(field.key, $event)"
                   class="w-full h-12 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none cursor-pointer"
                 >
                   @for (opt of field.options; track opt.value) {
@@ -89,9 +89,11 @@ export class CalculatorFormComponent {
         const newForm = runInInjectionContext(this.injector, () => {
           return form(this.localData, (schema: Record<string, unknown>) => {
             cfg.fields.forEach(f => {
-              if (f.required) required(schema[f.key]);
-              if (f.min !== undefined) min(schema[f.key], f.min);
-              if (f.max !== undefined) max(schema[f.key], f.max);
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const field = schema[f.key] as any;
+              if (f.required) required(field);
+              if (f.min !== undefined) min(field, f.min);
+              if (f.max !== undefined) max(field, f.max);
             });
           });
         });
@@ -113,7 +115,9 @@ export class CalculatorFormComponent {
     effect(() => {
       const f = this.calcForm();
       if (f) {
-        this.valid.emit((f() as { valid: () => boolean }).valid());
+        // Cast to any to access the signal call signature and valid property
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        this.valid.emit((f as any)().valid());
       }
     });
   }
@@ -126,5 +130,14 @@ export class CalculatorFormComponent {
 
   updateData(key: string, value: unknown) {
     this.dataChanged.emit({ key, value });
+  }
+
+  asList(val: unknown): (string | number)[] {
+    return Array.isArray(val) ? val as (string | number)[] : [];
+  }
+
+  onSelectChange(key: string, event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.updateData(key, select.value);
   }
 }
