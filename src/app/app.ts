@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import Decimal from 'decimal.js';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,8 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class App { }
+export class App {
+  constructor() {
+    Decimal.set({ precision: 50 });
+  }
+}

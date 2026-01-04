@@ -1,8 +1,6 @@
 import Decimal from 'decimal.js';
 import * as M from '@domains/calculators/data/models';
 
-Decimal.set({ precision: 50 });
-
 export function calculateAmortization({ loanAmount, interestRate, loanTerm }: M.AmortizationParams): M.AmortizationResult {
   const p = new Decimal(loanAmount);
   const annualRate = new Decimal(interestRate);

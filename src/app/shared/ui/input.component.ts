@@ -15,7 +15,7 @@ interface FieldStateShape {
   template: `
     <div class="flex flex-col gap-1.5">
       @if (label()) {
-        <label [for]="id()" class="text-sm font-semibold text-slate-700 dark:text-slate-300 px-0.5">
+        <label [for]="id()" class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">
           {{ label() }}
         </label>
       }

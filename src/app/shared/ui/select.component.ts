@@ -1,11 +1,13 @@
 import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-select',
+  imports: [LucideAngularModule],
   template: `
     <div class="space-y-1.5 flex flex-col">
       @if (label()) {
-        <label [for]="id()" class="text-[12px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">
+        <label [for]="id()" class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">
           {{ label() }}
         </label>
       }
@@ -21,9 +23,7 @@ import { Component, input, output, ChangeDetectionStrategy } from '@angular/core
           }
         </select>
         <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 dark:text-slate-500 group-focus-within:text-blue-500 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m6 9 6 6 6-6"/>
-          </svg>
+          <lucide-icon name="chevron-down" class="w-4 h-4" />
         </div>
       </div>
     </div>

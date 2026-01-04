@@ -41,17 +41,17 @@ import { CalculatorData } from '../data/models';
                     [id]="field.key"
                     [label]="field.label"
                     [items]="$any(data()[field.key] || [])"
-                    (changed)="updateList(field.key, $event)"
+                    (changed)="updateData(field.key, $event)"
                   />
                 } @else if (field.type === 'select') {
-                  <div class="space-y-1.5">
-                    <label [for]="field.key" class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">
+                  <div class="space-y-1.5 flex flex-col">
+                    <label [for]="field.key" class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">
                       {{ field.label }}
                     </label>
                     <select
                       [id]="field.key"
                       [value]="data()[field.key]"
-                      (change)="updateField(field.key, $any($event.target).value)"
+                      (change)="updateData(field.key, $any($event.target).value)"
                       class="w-full h-12 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none cursor-pointer"
                     >
                       @for (opt of field.options; track opt.value) {
@@ -172,11 +172,7 @@ export class DynamicCalculatorComponent {
     });
   });
 
-  updateList(key: string, values: (string | number)[]) {
-    this.data.update(d => ({ ...d, [key]: values }));
-  }
-
-  updateField(key: string, value: string | number) {
+  updateData(key: string, value: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     this.data.update(d => ({ ...d, [key]: value }));
   }
 
