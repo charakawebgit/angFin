@@ -29,6 +29,7 @@
   "devDependencies": {
     "@analogjs/vitest-angular": "^2.2.0",
     "@angular/build": "^21.0.4",
+    "@angular/platform-browser-dynamic": "^21.0.6",
     "@angular/cli": "^21.0.4",
     "@angular/compiler-cli": "^21.0.4",
     "@tailwindcss/postcss": "^4.1.18",
