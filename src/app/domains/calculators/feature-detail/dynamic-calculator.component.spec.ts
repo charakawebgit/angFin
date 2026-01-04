@@ -3,8 +3,9 @@ import { DynamicCalculatorComponent } from './dynamic-calculator.component';
 import { CalculatorService } from '../data/calculator.service';
 import { signal, importProvidersFrom } from '@angular/core';
 import { CalculatorConfig } from '../data/models';
-import * as matchers from 'vitest-axe';
+import * as matchers from 'vitest-axe/matchers';
 import { axe } from 'vitest-axe';
+import 'vitest-axe/extend-expect';
 import { LucideAngularModule, Calculator, SearchX } from 'lucide-angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -22,6 +23,7 @@ describe('DynamicCalculatorComponent', () => {
             title: 'Test Calculator',
             description: 'A test calculator',
             category: 'finance',
+            icon: 'calculator',
             fields: [
                 { key: 'input1', type: 'number', label: 'Input 1', defaultValue: 10, required: true }
             ],

@@ -5,10 +5,10 @@ import { CardComponent } from '@shared/ui/card.component';
 import { CalculatorConfig } from '../../data/models';
 
 @Component({
-    selector: 'app-calculator-results',
-    imports: [CommonModule, LucideAngularModule, CardComponent],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    template: `
+  selector: 'app-calculator-results',
+  imports: [CommonModule, LucideAngularModule, CardComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
     <app-card [title]="config().results[0]?.label || 'Results'" subtitle="Active Analysis">
       <div class="flex flex-col items-center justify-center h-full py-6 text-center" aria-live="polite">
         @if (isValid()) {
@@ -43,7 +43,7 @@ import { CalculatorConfig } from '../../data/models';
                       <div 
                         class="h-full rounded-full bg-gradient-to-r transition-all duration-1000 ease-out"
                         [class]="getGradientClass(res.themeColor)"
-                        [style.width]="getProgressBarWidth($any(results()[$index]) * 100)"
+                        [style.width]="getProgressBarWidth(results()[$index])"
                       ></div>
                     </div>
                   }
@@ -67,54 +67,56 @@ import { CalculatorConfig } from '../../data/models';
   `,
 })
 export class CalculatorResultsComponent {
-    config = input.required<CalculatorConfig>();
-    results = input.required<unknown[]>();
-    isValid = input.required<boolean>();
+  config = input.required<CalculatorConfig>();
+  results = input.required<unknown[]>();
+  isValid = input.required<boolean>();
 
-    copiedField = signal<string | null>(null);
+  copiedField = signal<string | null>(null);
 
-    copyToClipboard(value: unknown, fieldId: string) {
-        const text = value?.toString() || '';
-        navigator.clipboard.writeText(text).then(() => {
-            this.copiedField.set(fieldId);
-            setTimeout(() => this.copiedField.set(null), 2000);
-        });
+  copyToClipboard(value: unknown, fieldId: string) {
+    const text = value?.toString() || '';
+    navigator.clipboard.writeText(text).then(() => {
+      this.copiedField.set(fieldId);
+      setTimeout(() => this.copiedField.set(null), 2000);
+    });
+  }
+
+  getProgressBarWidth(value: unknown): string {
+    const numValue = Number(value);
+    if (isNaN(numValue)) return '0%';
+    const clamped = Math.min(Math.max(numValue, 0), 100);
+    return `${clamped}%`;
+  }
+
+  getThemeClass(color?: string) {
+    switch (color) {
+      case 'emerald': return 'bg-emerald-500/10';
+      case 'amber': return 'bg-amber-500/10';
+      case 'rose': return 'bg-rose-500/10';
+      case 'sky': return 'bg-sky-500/10';
+      default: return 'bg-indigo-500/10';
     }
+  }
 
-    getProgressBarWidth(value: number): string {
-        const clamped = Math.min(Math.max(value, 0), 100);
-        return `${clamped}%`;
+  getGradientClass(color?: string) {
+    switch (color) {
+      case 'emerald': return 'from-emerald-600 to-teal-700 dark:from-emerald-400 dark:to-teal-500';
+      case 'amber': return 'from-amber-600 to-orange-700 dark:from-amber-400 dark:to-orange-500';
+      case 'rose': return 'from-rose-600 to-pink-700 dark:from-rose-400 dark:to-pink-500';
+      case 'sky': return 'from-sky-600 to-blue-700 dark:from-sky-400 dark:to-blue-500';
+      default: return 'from-indigo-600 to-blue-700 dark:from-indigo-400 dark:to-blue-500';
     }
+  }
 
-    getThemeClass(color?: string) {
-        switch (color) {
-            case 'emerald': return 'bg-emerald-500/10';
-            case 'amber': return 'bg-amber-500/10';
-            case 'rose': return 'bg-rose-500/10';
-            case 'sky': return 'bg-sky-500/10';
-            default: return 'bg-indigo-500/10';
-        }
+  formatResult(val: unknown, type: string): string {
+    if (val === undefined || val === null || (typeof val === 'number' && isNaN(val))) return '0';
+
+    if (type === 'currency') {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val as number);
     }
-
-    getGradientClass(color?: string) {
-        switch (color) {
-            case 'emerald': return 'from-emerald-600 to-teal-700 dark:from-emerald-400 dark:to-teal-500';
-            case 'amber': return 'from-amber-600 to-orange-700 dark:from-amber-400 dark:to-orange-500';
-            case 'rose': return 'from-rose-600 to-pink-700 dark:from-rose-400 dark:to-pink-500';
-            case 'sky': return 'from-sky-600 to-blue-700 dark:from-sky-400 dark:to-blue-500';
-            default: return 'from-indigo-600 to-blue-700 dark:from-indigo-400 dark:to-blue-500';
-        }
+    if (type === 'percent') {
+      return ((val as number) * 100).toFixed(2) + '%';
     }
-
-    formatResult(val: unknown, type: string): string {
-        if (val === undefined || val === null || (typeof val === 'number' && isNaN(val))) return '0';
-
-        if (type === 'currency') {
-            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val as number);
-        }
-        if (type === 'percent') {
-            return ((val as number) * 100).toFixed(2) + '%';
-        }
-        return Number(val).toLocaleString(undefined, { maximumFractionDigits: 4 });
-    }
+    return Number(val).toLocaleString(undefined, { maximumFractionDigits: 4 });
+  }
 }
