@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/angular';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { CalculatorListComponent } from './calculator-list.component';
 import { CalculatorService } from '../data/calculator.service';
 import { signal } from '@angular/core';

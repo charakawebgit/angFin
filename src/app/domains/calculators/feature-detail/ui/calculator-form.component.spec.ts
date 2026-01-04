@@ -4,7 +4,6 @@ import { CalculatorFormComponent } from './calculator-form.component';
 import { CalculatorConfig } from '../../data/models';
 import { provideRouter } from '@angular/router';
 import { LucideAngularModule, Calculator } from 'lucide-angular';
-import { signal } from '@angular/core';
 
 describe('CalculatorFormComponent', () => {
     let component: CalculatorFormComponent;

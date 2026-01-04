@@ -39,8 +39,10 @@ angFin has been transformed into a state-of-the-art Angular v21 financial intell
 | **UI Components** | Core | `calculator-list.component.spec.ts` |
 
 ### 2.2 Robustness
+- **Build Verification**: `ng build` passes successfully (production build).
+- **Static Analysis**: `npm run lint` passes with 0 errors.
+- **Test Execution**: `vitest` execution is currently blocked by a dependency issue in `@analogjs/vitest-angular` (missing ESM extensions in internal imports), but the test specifications are complete and type-checked.
 - **Asynchronous Hydration**: Handled with robust error states and loading transitions.
-- **Form Safety**: Implemented guarded initialization to prevent injection context and late-input crashes (`NG0950`).
 
 ---
 
