@@ -18,12 +18,12 @@ describe('Investment Utilities', () => {
       cashFlows: [300, 400, 500, 600],
       discountRate: 0.1
     });
-    expect(result).toBeCloseTo(414.07, 2);
+    expect(result).toBeCloseTo(388.77, 2);
   });
 
   it('should calculate IRR correctly', () => {
     const result = Inv.calculateIrr({ cashFlows: [-1000, 300, 400, 500, 600] });
-    expect(result * 100).toBeCloseTo(27.02, 1);
+    expect(result * 100).toBeCloseTo(24.89, 1);
   });
 
   it('should calculate perpetuity correctly', () => {

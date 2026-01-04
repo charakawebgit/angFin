@@ -5,6 +5,7 @@ import { CalculatorService } from '../data/calculator.service';
 import { MetaService } from '@core/services/meta.service';
 import { signal } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { LucideAngularModule, Search, TrendingUp, HandCoins, ArrowRight, SearchX } from 'lucide-angular';
 
 describe('CalculatorListComponent', () => {
@@ -17,6 +18,7 @@ describe('CalculatorListComponent', () => {
         await render(CalculatorListComponent, {
             providers: [
                 provideRouter([]),
+                provideNoopAnimations(),
                 {
                     provide: CalculatorService,
                     useValue: {
@@ -26,7 +28,9 @@ describe('CalculatorListComponent', () => {
                 {
                     provide: MetaService,
                     useValue: {
+                        // eslint-disable-next-line @typescript-eslint/no-empty-function
                         updateTitle: () => { },
+                        // eslint-disable-next-line @typescript-eslint/no-empty-function
                         updateMeta: () => { }
                     }
                 }
@@ -42,6 +46,7 @@ describe('CalculatorListComponent', () => {
         const { fixture } = await render(CalculatorListComponent, {
             providers: [
                 provideRouter([]),
+                provideNoopAnimations(),
                 {
                     provide: CalculatorService,
                     useValue: {
@@ -51,7 +56,9 @@ describe('CalculatorListComponent', () => {
                 {
                     provide: MetaService,
                     useValue: {
+                        // eslint-disable-next-line @typescript-eslint/no-empty-function
                         updateTitle: () => { },
+                        // eslint-disable-next-line @typescript-eslint/no-empty-function
                         updateMeta: () => { }
                     }
                 }

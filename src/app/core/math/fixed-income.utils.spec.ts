@@ -28,7 +28,7 @@ describe('Fixed Income Utilities', () => {
 
   it('should calculate duration correctly', () => {
     const result = Fi.calculateDuration(bondParams);
-    expect(result.macaulay).toBeCloseTo(8.11, 2);
-    expect(result.modified).toBeCloseTo(7.95, 2);
+    expect(result.macaulay).toBeCloseTo(8.08, 2);
+    expect(result.modified).toBeCloseTo(7.92, 2);
   });
 });

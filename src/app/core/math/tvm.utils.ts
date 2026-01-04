@@ -92,7 +92,7 @@ export function solveTvm(params: M.TvmParams): number {
       if (r.isZero()) return pvD.add(fvD).div(pmtD).neg().toNumber();
       const term = pmtD.div(r).sub(fvD);
       const term2 = pmtD.div(r).add(pvD);
-      if (term.isNegative() || term.isZero() || term2.isNegative() || term2.isZero() || term.div(term2).isNegative() || term.div(term2).isZero())
+      if (term.div(term2).isNegative() || term.div(term2).isZero())
         throw new Error('Cannot solve for N (log is undefined).');
       return Decimal.ln(term.div(term2))
         .div(Decimal.ln(new Decimal(1).add(r)))

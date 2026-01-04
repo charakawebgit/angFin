@@ -51,6 +51,19 @@ describe('TVM Utilities', () => {
             expect(result).toBeCloseTo(10.24, 2);
         });
 
+        it('should solve for Periods (N) - Investment Doubling', () => {
+            const result = solveTvm({
+                solveFor: 'N',
+                pv: -1000,
+                fv: 2000,
+                iy: 10,
+                pmt: 0,
+                cpy: 1
+            });
+            // Rule of 72 says 7.2 years. Exact: ln(2)/ln(1.1) = 7.2725...
+            expect(result).toBeCloseTo(7.27, 2);
+        });
+
         it('should solve for Interest Rate (IY)', () => {
             const result = solveTvm({
                 solveFor: 'IY',

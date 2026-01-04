@@ -13,7 +13,7 @@ describe('Equity Utilities', () => {
             };
             const result = calculateBlackScholes(params);
             expect(result.callPrice).toBeCloseTo(13.35, 2);
-            expect(result.putPrice).toBeCloseTo(4.06, 2);
+            expect(result.putPrice).toBeCloseTo(3.71, 2);
         });
     });
 
