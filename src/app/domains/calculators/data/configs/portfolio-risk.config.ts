@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateTwoAssetPortfolioStdDev } from '@core/math/investment.utils';
 
-export const PORTFOLIO_RISK_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'portfolio-risk',
     title: 'Portfolio Risk',
     subtitle: 'Two-asset portfolio variance',

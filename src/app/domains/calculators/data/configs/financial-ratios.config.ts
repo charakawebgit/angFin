@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateFinancialRatios } from '@core/math/amortization.utils';
 
-export const FINANCIAL_RATIOS_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'financial-ratios',
     title: 'Financial Ratios',
     subtitle: 'Liquidity and Valuations',

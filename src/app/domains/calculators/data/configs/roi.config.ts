@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateRoi } from '@core/math/investment.utils';
 
-export const ROI_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'roi',
     title: 'ROI',
     subtitle: 'Return on Investment',
@@ -14,9 +14,9 @@ export const ROI_CONFIG: CalculatorConfig = {
     ],
     results: [
         {
-            calculate: (d) => calculateRoi({ 
-                amountGained: d['amountGained'] as number, 
-                amountSpent: d['amountSpent'] as number 
+            calculate: (d) => calculateRoi({
+                amountGained: d['amountGained'] as number,
+                amountSpent: d['amountSpent'] as number
             }),
             label: 'Return on Investment',
             type: 'percent',

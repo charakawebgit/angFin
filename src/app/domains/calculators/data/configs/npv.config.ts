@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateNpv } from '@core/math/investment.utils';
 
-export const NPV_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'npv',
     title: 'Net Present Value',
     subtitle: 'Assess investment profitability',

@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateStandardDeviation, calculateSampleVariance } from '@core/math/stats.utils';
 
-export const VARIANCE_STDDEV_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'variance-stddev',
     title: 'Variance & Std Dev',
     subtitle: 'Measures of dispersion',
@@ -16,15 +16,15 @@ export const VARIANCE_STDDEV_CONFIG: CalculatorConfig = {
             label: 'Standard Deviation (Sample)',
             type: 'number',
             themeColor: 'sky',
-            calculate: (d) => calculateStandardDeviation({ 
-                values: (d['values'] as number[] || []).map(Number) 
+            calculate: (d) => calculateStandardDeviation({
+                values: (d['values'] as number[] || []).map(Number)
             })
         },
         {
             label: 'Variance (Sample)',
             type: 'number',
-            calculate: (d) => calculateSampleVariance({ 
-                values: (d['values'] as number[] || []).map(Number) 
+            calculate: (d) => calculateSampleVariance({
+                values: (d['values'] as number[] || []).map(Number)
             })
         }
     ],

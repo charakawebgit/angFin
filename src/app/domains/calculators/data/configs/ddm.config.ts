@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateDdm } from '@core/math/equity.utils';
 
-export const DDM_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'ddm',
     title: 'Dividend Discount Model',
     subtitle: 'Gordon Growth valuation',

@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateDuration } from '@core/math/fixed-income.utils';
 
-export const DURATION_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'duration',
     title: 'Bond Duration',
     subtitle: 'Interest rate sensitivity',

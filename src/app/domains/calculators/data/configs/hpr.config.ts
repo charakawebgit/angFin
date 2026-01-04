@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateHoldingPeriodReturn } from '@core/math/investment.utils';
 
-export const HPR_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'hpr',
     title: 'Holding Period Return',
     subtitle: 'Total return over a period',
@@ -17,9 +17,9 @@ export const HPR_CONFIG: CalculatorConfig = {
             label: 'Holding Period Return (HPR)',
             type: 'percent',
             themeColor: 'emerald',
-            calculate: (d) => calculateHoldingPeriodReturn({ 
-                beginningValue: d['beginningValue'] as number, 
-                endingValue: d['endingValue'] as number 
+            calculate: (d) => calculateHoldingPeriodReturn({
+                beginningValue: d['beginningValue'] as number,
+                endingValue: d['endingValue'] as number
             })
         }
     ],

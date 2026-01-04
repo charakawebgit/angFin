@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculatePerpetuity } from '@core/math/investment.utils';
 
-export const PERPETUITY_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'perpetuity',
     title: 'Perpetuity',
     subtitle: 'Infinite stream of payments',
@@ -17,9 +17,9 @@ export const PERPETUITY_CONFIG: CalculatorConfig = {
             label: 'Present Value of Perpetuity',
             type: 'currency',
             themeColor: 'indigo',
-            calculate: (d) => calculatePerpetuity({ 
-                pmt: d['pmt'] as number, 
-                rate: (d['rate'] as number) / 100 
+            calculate: (d) => calculatePerpetuity({
+                pmt: d['pmt'] as number,
+                rate: (d['rate'] as number) / 100
             })
         }
     ],

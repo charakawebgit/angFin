@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateYtm } from '@core/math/fixed-income.utils';
 
-export const YTM_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'ytm',
     title: 'Bond YTM',
     subtitle: 'Yield to Maturity',

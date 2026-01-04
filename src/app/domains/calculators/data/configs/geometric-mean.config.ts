@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateGeometricMean } from '@core/math/stats.utils';
 
-export const GEOMETRIC_MEAN_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'geometric-mean',
     title: 'Geometric Mean',
     subtitle: 'Time-weighted average return',

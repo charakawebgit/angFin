@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateCoefficientOfVariation } from '@core/math/stats.utils';
 
-export const CV_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'cv',
     title: 'Coefficient of Variation',
     subtitle: 'Relative risk measure',
@@ -16,8 +16,8 @@ export const CV_CONFIG: CalculatorConfig = {
             label: 'Coefficient of Variation',
             type: 'number',
             themeColor: 'indigo',
-            calculate: (d) => calculateCoefficientOfVariation({ 
-                values: (d['values'] as number[] || []).map(Number) 
+            calculate: (d) => calculateCoefficientOfVariation({
+                values: (d['values'] as number[] || []).map(Number)
             })
         }
     ],

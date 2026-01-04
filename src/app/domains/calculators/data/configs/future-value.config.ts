@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateFutureValue } from '@core/math/investment.utils';
 
-export const FUTURE_VALUE_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'future-value',
     title: 'Future Value',
     subtitle: 'Define your starting capital and growth expectations',
@@ -17,6 +17,7 @@ export const FUTURE_VALUE_CONFIG: CalculatorConfig = {
         {
             label: 'Total Estimated Value',
             type: 'currency',
+            themeColor: 'emerald',
             calculate: (d) => calculateFutureValue({
                 pv: d['pv'] as number,
                 rate: (d['rate'] as number) / 100,

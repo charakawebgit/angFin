@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateWacc } from '@core/math/equity.utils';
 
-export const WACC_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'wacc',
     title: 'WACC',
     subtitle: 'Weighted Average Cost of Capital',

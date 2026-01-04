@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateDupont } from '@core/math/equity.utils';
 
-export const DUPONT_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'dupont',
     title: 'DuPont Analysis',
     subtitle: 'Decomposition of ROE',

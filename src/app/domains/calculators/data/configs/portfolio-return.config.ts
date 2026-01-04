@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculatePortfolioReturn } from '@core/math/investment.utils';
 
-export const PORTFOLIO_RETURN_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'portfolio-return',
     title: 'Portfolio Return',
     subtitle: 'Weighted average return',

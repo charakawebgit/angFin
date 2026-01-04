@@ -8,7 +8,7 @@ import {
   Variable, Sigma, Ratio, GitCompareArrows, BarChartHorizontal, Mountain,
   Target, HandCoins, Scale, Zap, ScrollText, Pyramid, ClipboardList, Activity, ScatterChart,
   Table, BrainCircuit, Calculator, Gauge, Waves, Building, Plus, Trash2, ArrowLeft, ArrowUpRight, BarChart2,
-  Copy, Check, Lightbulb, Search, SearchX, LayoutDashboard, ChevronDown
+  Copy, Check, Lightbulb, Search, SearchX, LayoutDashboard, ChevronDown, ArrowRight
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
         Variable, Sigma, Ratio, GitCompareArrows, BarChartHorizontal, Mountain,
         Target, HandCoins, Scale, Zap, ScrollText, Pyramid, ClipboardList, Activity, ScatterChart,
         Table, BrainCircuit, Calculator, Gauge, Waves, Building, Plus, Trash2, ArrowLeft, ArrowUpRight, BarChart2,
-        Copy, Check, Lightbulb, Search, SearchX, LayoutDashboard, ChevronDown
+        Copy, Check, Lightbulb, Search, SearchX, LayoutDashboard, ChevronDown, ArrowRight
       })
     ),
   ],

@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateCapm } from '@core/math/equity.utils';
 
-export const CAPM_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'capm',
     title: 'CAPM',
     subtitle: 'Market Equilibrium valuation',

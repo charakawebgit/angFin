@@ -28,6 +28,7 @@ export class CalculatorService {
     }
 
     async loadConfig(id: string): Promise<void> {
+        console.log(`[CalculatorService] Loading config for: ${id}`);
         this.loading.set(true);
         this.currentConfig.set(null);
 
@@ -35,12 +36,21 @@ export class CalculatorService {
         if (item) {
             try {
                 const result = await item.load();
+                console.log(`[CalculatorService] Successfully loaded config for ${id}:`, result);
+
                 // Every registry item returns an object with a 'config' key
-                this.currentConfig.set(result['config']);
+                if (result && result['config']) {
+                    this.currentConfig.set(result['config']);
+                } else {
+                    console.error(`[CalculatorService] Loaded result for ${id} missing 'config' key:`, result);
+                    this.currentConfig.set(null);
+                }
             } catch (error) {
-                console.error(`Error loading calculator config for ${id}:`, error);
+                console.error(`[CalculatorService] Error loading calculator config for ${id}:`, error);
                 this.currentConfig.set(null);
             }
+        } else {
+            console.warn(`[CalculatorService] No registry item found for id: ${id}`);
         }
 
         this.loading.set(false);

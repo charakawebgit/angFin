@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateBondPrice } from '@core/math/fixed-income.utils';
 
-export const BOND_VALUATION_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'bond-valuation',
     title: 'Bond Valuation',
     subtitle: 'Intrinsic value of a bond',

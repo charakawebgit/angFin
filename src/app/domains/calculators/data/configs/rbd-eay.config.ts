@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateBankDiscountYield, calculateEffectiveAnnualYield } from '@core/math/investment.utils';
 
-export const RBD_EAY_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'rbd-eay',
     title: 'Yield Conversions',
     subtitle: 'Money market yields',

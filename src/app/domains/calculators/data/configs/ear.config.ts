@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateEffectiveAnnualReturn } from '@core/math/investment.utils';
 
-export const EAR_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'ear',
     title: 'Effective Annual Rate',
     subtitle: 'Impact of compounding',
@@ -17,9 +17,9 @@ export const EAR_CONFIG: CalculatorConfig = {
             label: 'Effective Annual Rate (EAR)',
             type: 'percent',
             themeColor: 'emerald',
-            calculate: (d) => calculateEffectiveAnnualReturn({ 
-                rate: (d['rate'] as number) / 100, 
-                periods: d['periods'] as number 
+            calculate: (d) => calculateEffectiveAnnualReturn({
+                rate: (d['rate'] as number) / 100,
+                periods: d['periods'] as number
             })
         }
     ],

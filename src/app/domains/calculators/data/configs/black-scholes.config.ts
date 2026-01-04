@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateBlackScholes } from '@core/math/equity.utils';
 
-export const BLACK_SCHOLES_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'black-scholes',
     title: 'Black-Scholes',
     subtitle: 'Options Pricing Model',

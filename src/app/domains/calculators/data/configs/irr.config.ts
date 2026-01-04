@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateIrr } from '@core/math/investment.utils';
 
-export const IRR_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'irr',
     title: 'Internal Rate of Return',
     subtitle: 'Find the break-even discount rate',
@@ -16,8 +16,8 @@ export const IRR_CONFIG: CalculatorConfig = {
             label: 'Internal Rate of Return (IRR)',
             type: 'percent',
             themeColor: 'emerald',
-            calculate: (d) => calculateIrr({ 
-                cashFlows: (d['cashFlows'] as number[] || []).map(Number) 
+            calculate: (d) => calculateIrr({
+                cashFlows: (d['cashFlows'] as number[] || []).map(Number)
             })
         }
     ],

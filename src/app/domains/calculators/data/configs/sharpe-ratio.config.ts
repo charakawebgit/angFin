@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateSharpeRatio } from '@core/math/investment.utils';
 
-export const SHARPE_RATIO_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'sharpe-ratio',
     title: 'Sharpe Ratio',
     subtitle: 'Risk-adjusted return',

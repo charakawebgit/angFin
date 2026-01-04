@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateSampleSkewness, calculateExcessKurtosis } from '@core/math/stats.utils';
 
-export const SKEW_KURT_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'skew-kurt',
     title: 'Skewness & Kurtosis',
     subtitle: 'Shape of distribution',
@@ -16,15 +16,15 @@ export const SKEW_KURT_CONFIG: CalculatorConfig = {
             label: 'Sample Skewness',
             type: 'number',
             themeColor: 'sky',
-            calculate: (d) => calculateSampleSkewness({ 
-                values: (d['values'] as number[] || []).map(Number) 
+            calculate: (d) => calculateSampleSkewness({
+                values: (d['values'] as number[] || []).map(Number)
             })
         },
         {
             label: 'Excess Kurtosis',
             type: 'number',
-            calculate: (d) => calculateExcessKurtosis({ 
-                values: (d['values'] as number[] || []).map(Number) 
+            calculate: (d) => calculateExcessKurtosis({
+                values: (d['values'] as number[] || []).map(Number)
             })
         }
     ],

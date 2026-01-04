@@ -1,7 +1,7 @@
 import { CalculatorConfig, TVMVar } from '../models';
 import { solveTvm } from '@core/math/tvm.utils';
 
-export const TVM_SOLVER_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'tvm-solver',
     title: 'Financial Solver',
     subtitle: 'Comprehensive TVM Calculator',

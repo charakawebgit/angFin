@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateAmortization } from '@core/math/amortization.utils';
 
-export const AMORTIZATION_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'amortization',
     title: 'Amortization',
     subtitle: 'Loan repayment schedule',

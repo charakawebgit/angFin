@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculatePresentValue } from '@core/math/investment.utils';
 
-export const PRESENT_VALUE_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'present-value',
     title: 'Present Value',
     subtitle: 'Specify future cash flow and discounting rate',

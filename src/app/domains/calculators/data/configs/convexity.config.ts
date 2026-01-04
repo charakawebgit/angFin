@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateConvexity } from '@core/math/fixed-income.utils';
 
-export const CONVEXITY_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'convexity',
     title: 'Bond Convexity',
     subtitle: 'Curvature of the price-yield curve',

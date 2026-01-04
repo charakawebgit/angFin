@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateCapRate } from '@core/math/amortization.utils';
 
-export const CAP_RATE_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'cap-rate',
     title: 'Cap Rate',
     subtitle: 'Real estate investment metric',
@@ -17,9 +17,9 @@ export const CAP_RATE_CONFIG: CalculatorConfig = {
             label: 'Capitalization Rate',
             type: 'percent',
             themeColor: 'sky',
-            calculate: (d) => calculateCapRate({ 
-                noi: d['noi'] as number, 
-                propertyValue: d['propertyValue'] as number 
+            calculate: (d) => calculateCapRate({
+                noi: d['noi'] as number,
+                propertyValue: d['propertyValue'] as number
             })
         }
     ],

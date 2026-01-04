@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../models';
 import { calculateMeanAbsoluteDeviation } from '@core/math/stats.utils';
 
-export const MAD_CONFIG: CalculatorConfig = {
+export const CONFIG: CalculatorConfig = {
     id: 'mad',
     title: 'Mean Absolute Deviation',
     subtitle: 'Average distance from mean',
@@ -16,8 +16,8 @@ export const MAD_CONFIG: CalculatorConfig = {
             label: 'MAD',
             type: 'number',
             themeColor: 'amber',
-            calculate: (d) => calculateMeanAbsoluteDeviation({ 
-                values: (d['values'] as number[] || []).map(Number) 
+            calculate: (d) => calculateMeanAbsoluteDeviation({
+                values: (d['values'] as number[] || []).map(Number)
             })
         }
     ],
