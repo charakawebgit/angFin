@@ -3,18 +3,18 @@ import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'app-card',
   template: `
-    <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-slate-200 dark:hover:border-slate-800">
+    <div class="glass-card shadow-sm overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-500/30 group">
       @if (title()) {
-        <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800/50 bg-slate-50/30 dark:bg-slate-950/30">
-          <h2 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+        <div class="px-7 py-6 border-b border-slate-100 dark:border-white/5 bg-slate-50/30 dark:bg-white/5">
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight font-display">
             {{ title() }}
           </h2>
           @if (subtitle()) {
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">{{ subtitle() }}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium italic opacity-80">{{ subtitle() }}</p>
           }
         </div>
       }
-      <div class="p-6">
+      <div class="p-7">
         <ng-content />
       </div>
     </div>
