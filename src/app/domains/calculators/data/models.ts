@@ -101,3 +101,7 @@ export interface CalculatorConfig extends CalculatorDef {
     references?: { title: string; url: string }[];
 }
 
+export interface CalculatorRegistryItem extends CalculatorDef {
+    load: () => Promise<Record<string, CalculatorConfig>>;
+}
+

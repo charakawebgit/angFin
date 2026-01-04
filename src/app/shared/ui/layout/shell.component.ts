@@ -67,7 +67,7 @@ export class ShellComponent {
         const id = urlParts[urlParts.length - 1];
 
         if (id) {
-          const cfg = this.calcService.getConfigById(id);
+          const cfg = this.calcService.getById(id);
           if (cfg) {
             this.metaService.updateTitle(cfg.title);
             this.metaService.updateMeta(cfg.description);
