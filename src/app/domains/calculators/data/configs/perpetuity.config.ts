@@ -1,27 +1,28 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculatePerpetuity } from '@core/math/investment.utils';
 
 export const PERPETUITY_CONFIG: CalculatorConfig = {
     id: 'perpetuity',
     title: 'Perpetuity',
-    subtitle: 'Define the infinite payment stream and rate',
-    description: 'Calculate the present value of an infinite stream of equal cash flows.',
-    icon: 'shield-check',
+    subtitle: 'Infinite stream of payments',
+    description: 'Calculate the present value of a constant stream of cash flows that continues forever.',
+    icon: 'infinity',
     category: 'TVM',
     fields: [
-        { key: 'pmt', label: 'Periodic Payment', type: 'number', defaultValue: 100, prefix: '$', required: true, min: 0 },
-        { key: 'rate', label: 'Discount Rate (%)', type: 'number', defaultValue: 5, suffix: '%', required: true, min: 0.0001 },
+        { key: 'pmt', label: 'Periodic Payment', type: 'number', defaultValue: 100, prefix: '$', required: true },
+        { key: 'rate', label: 'Discount Rate (%)', type: 'number', defaultValue: 5, suffix: '%', required: true },
     ],
     results: [
         {
-            calculate: (d) => financialService.calculatePerpetuity({ pmt: d['pmt'], rate: d['rate'] / 100 }),
-            label: 'Total Present Value',
+            label: 'Present Value of Perpetuity',
             type: 'currency',
-            themeColor: 'emerald'
+            themeColor: 'indigo',
+            calculate: (d) => calculatePerpetuity({ 
+                pmt: d['pmt'] as number, 
+                rate: (d['rate'] as number) / 100 
+            })
         }
     ],
-    insights: 'A **Perpetuity** is an infinite series of equal payments made at regular intervals.',
-    formula: 'PV = Payment / Rate'
+    insights: 'A perpetuity is an annuity that has no end, or a stream of cash payments that continues forever.',
+    formula: 'PV = PMT / r'
 };

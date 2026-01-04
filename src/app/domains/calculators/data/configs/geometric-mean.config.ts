@@ -1,7 +1,5 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateGeometricMean } from '@core/math/stats.utils';
 
 export const GEOMETRIC_MEAN_CONFIG: CalculatorConfig = {
     id: 'geometric-mean',
@@ -18,8 +16,8 @@ export const GEOMETRIC_MEAN_CONFIG: CalculatorConfig = {
             label: 'Geometric Mean Return',
             type: 'percent',
             themeColor: 'emerald',
-            calculate: (d) => financialService.calculateGeometricMean({
-                returns: d['returns'].map((v: any) => Number(v) / 100)
+            calculate: (d) => calculateGeometricMean({
+                returns: (d['returns'] as number[] || []).map((v) => Number(v) / 100)
             })
         }
     ],

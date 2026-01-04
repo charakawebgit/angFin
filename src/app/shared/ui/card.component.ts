@@ -1,8 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-card',
-  standalone: true,
   template: `
     <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-slate-200 dark:hover:border-slate-800">
       @if (title()) {
@@ -20,6 +19,7 @@ import { Component, input } from '@angular/core';
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardComponent {
   title = input<string>();

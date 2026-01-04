@@ -1,13 +1,11 @@
-import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { CalculatorConfig, TVMVar } from '../models';
+import { solveTvm } from '@core/math/tvm.utils';
 
 export const TVM_SOLVER_CONFIG: CalculatorConfig = {
     id: 'tvm-solver',
-    title: 'TVM Solver',
-    subtitle: 'Five-key financial solver',
-    description: 'Solve for any variable in the Time Value of Money equation: N, I/Y, PV, PMT, or FV.',
+    title: 'Financial Solver',
+    subtitle: 'Comprehensive TVM Calculator',
+    description: 'Solve for any variable in a time-value-of-money problem (PV, FV, PMT, N, or I/Y).',
     icon: 'calculator',
     category: 'TVM',
     fields: [
@@ -39,7 +37,7 @@ export const TVM_SOLVER_CONFIG: CalculatorConfig = {
             themeColor: 'indigo',
             calculate: (d) => {
                 const params = {
-                    solveFor: d['solveFor'] as any,
+                    solveFor: d['solveFor'] as TVMVar,
                     n: Number(d['n']),
                     iy: Number(d['iy']),
                     pv: Number(d['pv']),
@@ -47,7 +45,7 @@ export const TVM_SOLVER_CONFIG: CalculatorConfig = {
                     fv: Number(d['fv']),
                     cpy: Number(d['cpy'])
                 };
-                return financialService.solveTvm(params);
+                return solveTvm(params);
             }
         }
     ],

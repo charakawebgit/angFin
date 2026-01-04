@@ -1,7 +1,5 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateCapm } from '@core/math/equity.utils';
 
 export const CAPM_CONFIG: CalculatorConfig = {
     id: 'capm',
@@ -17,16 +15,16 @@ export const CAPM_CONFIG: CalculatorConfig = {
     ],
     results: [
         {
-            label: 'Required Return',
+            label: 'Expected Return',
             type: 'percent',
             themeColor: 'rose',
-            calculate: (d) => financialService.calculateCapm({
-                riskFreeRate: d['riskFreeRate'] / 100,
-                marketReturn: d['marketReturn'] / 100,
-                beta: d['beta']
+            calculate: (d) => calculateCapm({
+                riskFreeRate: (d['riskFreeRate'] as number) / 100,
+                marketReturn: (d['marketReturn'] as number) / 100,
+                beta: d['beta'] as number
             })
         }
     ],
-    insights: 'The **Capital Asset Pricing Model (CAPM)** describes the relationship between systematic risk and expected return for assets, particularly stocks.',
+    insights: 'The Capital Asset Pricing Model (CAPM) describes the relationship between systematic risk and expected return for assets, particularly stocks.',
     formula: 'E(Ri) = Rf + β * (Rm - Rf)'
 };

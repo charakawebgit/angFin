@@ -1,27 +1,28 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateEffectiveAnnualReturn } from '@core/math/investment.utils';
 
 export const EAR_CONFIG: CalculatorConfig = {
     id: 'ear',
-    title: 'Effective Annual Return',
-    subtitle: 'Actual yield after compounding',
-    description: 'Find the actual annual interest rate when compounding occurs more than once a year.',
-    icon: 'percent',
-    category: 'Returns',
+    title: 'Effective Annual Rate',
+    subtitle: 'Impact of compounding',
+    description: 'Calculate the actual interest rate earned or paid on an investment after accounting for compounding frequency.',
+    icon: 'refresh-cw',
+    category: 'TVM',
     fields: [
-        { key: 'rate', label: 'Nominal Annual Rate (%)', type: 'number', defaultValue: 5, suffix: '%', required: true, min: 0 },
+        { key: 'rate', label: 'Nominal Annual Rate (%)', type: 'number', defaultValue: 5, suffix: '%', required: true },
         { key: 'periods', label: 'Compounding Periods per Year', type: 'number', defaultValue: 12, required: true, min: 1 },
     ],
     results: [
         {
-            calculate: (d) => financialService.calculateEffectiveAnnualReturn({ rate: d['rate'] / 100, periods: d['periods'] }),
-            label: 'Effective Annual Return',
+            label: 'Effective Annual Rate (EAR)',
             type: 'percent',
-            themeColor: 'emerald'
+            themeColor: 'emerald',
+            calculate: (d) => calculateEffectiveAnnualReturn({ 
+                rate: (d['rate'] as number) / 100, 
+                periods: d['periods'] as number 
+            })
         }
     ],
-    insights: 'The **Effective Annual Return (EAR)** is the real return on a savings account or any interest-paying investment when compounding is considered.',
-    formula: 'EAR = (1 + Nominal Rate / m)^m - 1'
+    insights: 'The more frequent the compounding periods, the higher the effective annual rate. This is why daily compounding is better for savers than annual compounding.',
+    formula: 'EAR = (1 + r/n)^n - 1'
 };

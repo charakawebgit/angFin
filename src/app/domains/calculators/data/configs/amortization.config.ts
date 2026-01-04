@@ -1,7 +1,5 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateAmortization } from '@core/math/amortization.utils';
 
 export const AMORTIZATION_CONFIG: CalculatorConfig = {
     id: 'amortization',
@@ -20,19 +18,19 @@ export const AMORTIZATION_CONFIG: CalculatorConfig = {
             label: 'Monthly Payment',
             type: 'currency',
             themeColor: 'indigo',
-            calculate: (d) => financialService.calculateAmortization({
-                loanAmount: d['loanAmount'],
-                interestRate: d['interestRate'] / 100,
-                loanTerm: d['loanTerm']
+            calculate: (d) => calculateAmortization({
+                loanAmount: d['loanAmount'] as number,
+                interestRate: (d['interestRate'] as number) / 100,
+                loanTerm: d['loanTerm'] as number
             }).summary.monthlyPayment
         },
         {
             label: 'Total Interest',
             type: 'currency',
-            calculate: (d) => financialService.calculateAmortization({
-                loanAmount: d['loanAmount'],
-                interestRate: d['interestRate'] / 100,
-                loanTerm: d['loanTerm']
+            calculate: (d) => calculateAmortization({
+                loanAmount: d['loanAmount'] as number,
+                interestRate: (d['interestRate'] as number) / 100,
+                loanTerm: d['loanTerm'] as number
             }).summary.totalInterest
         }
     ],

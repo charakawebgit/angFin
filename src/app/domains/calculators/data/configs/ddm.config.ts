@@ -1,7 +1,5 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateDdm } from '@core/math/equity.utils';
 
 export const DDM_CONFIG: CalculatorConfig = {
     id: 'ddm',
@@ -20,10 +18,10 @@ export const DDM_CONFIG: CalculatorConfig = {
             label: 'Fair Stock Value',
             type: 'currency',
             themeColor: 'emerald',
-            calculate: (d) => financialService.calculateDdm({
-                dividend: d['dividend'],
-                returnRate: d['returnRate'] / 100,
-                growthRate: d['growthRate'] / 100
+            calculate: (d) => calculateDdm({
+                dividend: d['dividend'] as number,
+                returnRate: (d['returnRate'] as number) / 100,
+                growthRate: (d['growthRate'] as number) / 100
             })
         }
     ],

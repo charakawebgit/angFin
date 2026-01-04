@@ -1,8 +1,7 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-select',
-  standalone: true,
   template: `
     <div class="space-y-1.5 flex flex-col">
       @if (label()) {
@@ -29,6 +28,7 @@ import { Component, input, output } from '@angular/core';
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectComponent {
   id = input.required<string>();

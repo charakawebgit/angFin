@@ -1,4 +1,4 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './header.component';
 import { FooterComponent } from './footer.component';
@@ -8,7 +8,6 @@ import { MetaService } from '../../../core/services/meta.service';
 
 @Component({
   selector: 'app-shell',
-  standalone: true,
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
   template: `
     <app-header />
@@ -21,6 +20,7 @@ import { MetaService } from '../../../core/services/meta.service';
     
     <app-footer />
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShellComponent {
   private router = inject(Router);
@@ -30,8 +30,9 @@ export class ShellComponent {
   constructor() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      const url = event.urlAfterRedirects;
+    ).subscribe((event) => {
+      const navEnd = event as NavigationEnd;
+      const url = navEnd.urlAfterRedirects;
       const id = url.split('/')[1];
 
       if (id) {

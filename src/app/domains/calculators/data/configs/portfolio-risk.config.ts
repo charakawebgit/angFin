@@ -1,7 +1,5 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateTwoAssetPortfolioStdDev } from '@core/math/investment.utils';
 
 export const PORTFOLIO_RISK_CONFIG: CalculatorConfig = {
     id: 'portfolio-risk',
@@ -22,12 +20,12 @@ export const PORTFOLIO_RISK_CONFIG: CalculatorConfig = {
             label: 'Portfolio Risk (Std Dev)',
             type: 'percent',
             themeColor: 'rose',
-            calculate: (d) => financialService.calculateTwoAssetPortfolioStdDev({
-                w1: d['w1'] / 100,
-                s1: d['s1'] / 100,
-                w2: d['w2'] / 100,
-                s2: d['s2'] / 100,
-                corr: d['corr']
+            calculate: (d) => calculateTwoAssetPortfolioStdDev({
+                w1: (d['w1'] as number) / 100,
+                s1: (d['s1'] as number) / 100,
+                w2: (d['w2'] as number) / 100,
+                s2: (d['s2'] as number) / 100,
+                corr: d['corr'] as number
             })
         }
     ],

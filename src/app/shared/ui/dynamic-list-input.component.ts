@@ -1,96 +1,78 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dynamic-list-input',
-  standalone: true,
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, FormsModule],
   template: `
-    <div class="space-y-4">
+    <div class="space-y-3">
       <div class="flex items-center justify-between px-1">
-        <label [for]="id() + '-0'" class="text-sm font-semibold text-slate-700 dark:text-slate-300">
+        <label [for]="id()" class="text-sm font-semibold text-slate-700 dark:text-slate-300">
           {{ label() }}
         </label>
+        <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded-md">
+          {{ items()?.length || 0 }} Items
+        </span>
+      </div>
+
+      <div class="flex gap-2">
+        <input
+          #newItemInput
+          type="number"
+          [id]="id()"
+          class="flex-grow h-11 px-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-medium shadow-sm dark:text-slate-100 placeholder:text-slate-400"
+          placeholder="Add value..."
+          (keyup.enter)="addItem(newItemInput)"
+        />
         <button
           type="button"
-          (click)="addItem()"
-          class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 active:scale-95 transition-all bg-blue-50 dark:bg-blue-900/20 px-2.5 py-1.5 rounded-lg border border-blue-100 dark:border-blue-800/50"
+          (click)="addItem(newItemInput)"
+          class="h-11 w-11 flex items-center justify-center bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 group"
         >
-          <lucide-icon name="plus" class="w-3.5 h-3.5" />
-          Add Item
+          <lucide-icon name="plus" class="w-5 h-5 group-active:scale-90 transition-transform" />
         </button>
       </div>
 
-      <div class="space-y-3">
+      <div class="flex flex-wrap gap-2 min-h-[44px] p-2 bg-slate-50/50 dark:bg-slate-950/20 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800/50">
         @for (item of items(); track $index) {
-          <div class="flex gap-2 items-center group/row">
-            <div class="relative flex-1 group">
-              @if (prefix()) {
-                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-sm font-medium select-none transition-colors group-focus-within:text-blue-500">
-                  {{ prefix() }}
-                </span>
-              }
-              <input
-                [id]="id() + '-' + $index"
-                type="number"
-                [value]="item"
-                (input)="updateItem($index, $event)"
-                [placeholder]="placeholderPrefix() + ' ' + ($index + 1)"
-                [attr.aria-label]="placeholderPrefix() + ' ' + ($index + 1)"
-                class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-medium shadow-sm"
-                [class.pl-8]="prefix()"
-                [class.pr-8]="suffix()"
-              />
-              @if (suffix()) {
-                <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-sm font-medium select-none transition-colors group-focus-within:text-blue-500">
-                  {{ suffix() }}
-                </span>
-              }
-            </div>
-            
+          <div class="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-sm group hover:border-blue-500 transition-all animate-in zoom-in duration-200">
+            <span class="text-sm font-bold text-slate-700 dark:text-slate-200">{{ item }}</span>
             <button
-              type="button"
               (click)="removeItem($index)"
-              class="p-3 text-slate-400 dark:text-slate-600 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl transition-all active:scale-90 opacity-0 group-hover/row:opacity-100 focus:opacity-100"
-              [disabled]="items().length <= minItems()"
-              [title]="'Remove ' + placeholderPrefix() + ' ' + ($index + 1)"
+              class="text-slate-400 hover:text-red-500 transition-colors"
             >
-              <lucide-icon name="trash-2" class="w-4.5 h-4.5" />
+              <lucide-icon name="trash-2" class="w-3.5 h-3.5" />
             </button>
+          </div>
+        } @empty {
+          <div class="w-full flex items-center justify-center py-2">
+            <span class="text-[11px] font-medium text-slate-400 italic">No values added yet</span>
           </div>
         }
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DynamicListInputComponent {
   id = input.required<string>();
-  label = input<string>('Items');
-  items = input.required<(number | string)[]>();
-  prefix = input<string>('');
-  suffix = input<string>('');
-  placeholderPrefix = input<string>('Item');
-  minItems = input<number>(1);
+  label = input<string>('');
+  items = input.required<(string | number)[]>();
 
-  changed = output<(number | string)[]>();
+  changed = output<(string | number)[]>();
 
-  addItem() {
-    const current: (number | string)[] = [...this.items()];
-    current.push('');
-    this.changed.emit(current);
+  addItem(input: HTMLInputElement) {
+    const val = input.value.trim();
+    if (val) {
+      const current = this.items() || [];
+      this.changed.emit([...current, Number(val)]);
+      input.value = '';
+    }
   }
 
   removeItem(index: number) {
-    if (this.items().length <= this.minItems()) return;
-    const current: (number | string)[] = [...this.items()];
-    current.splice(index, 1);
-    this.changed.emit(current);
-  }
-
-  updateItem(index: number, event: Event) {
-    const inputEl = event.target as HTMLInputElement;
-    const current: (number | string)[] = [...this.items()];
-    current[index] = inputEl.value;
-    this.changed.emit(current);
+    const current = this.items() || [];
+    this.changed.emit(current.filter((_, i) => i !== index));
   }
 }

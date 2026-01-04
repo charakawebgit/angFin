@@ -1,19 +1,17 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateConvexity } from '@core/math/fixed-income.utils';
 
 export const CONVEXITY_CONFIG: CalculatorConfig = {
     id: 'convexity',
     title: 'Bond Convexity',
-    subtitle: 'Measure of the curve in bond prices',
-    description: 'Calculate bond convexity to improve the accuracy of price change estimates for larger interest rate shifts.',
-    icon: 'trending-down',
+    subtitle: 'Curvature of the price-yield curve',
+    description: 'Calculate bond convexity to improve the accuracy of price change estimates during large yield shifts.',
+    icon: 'trending-up',
     category: 'Fixed Income',
     fields: [
-        { key: 'faceValue', label: 'Face Value (Par)', type: 'number', defaultValue: 1000, prefix: '$', required: true },
+        { key: 'faceValue', label: 'Face Value', type: 'number', defaultValue: 1000, prefix: '$', required: true },
         { key: 'couponRate', label: 'Annual Coupon Rate (%)', type: 'number', defaultValue: 5, suffix: '%', required: true },
-        { key: 'marketRate', label: 'Market Rate (%)', type: 'number', defaultValue: 4, suffix: '%', required: true },
+        { key: 'marketRate', label: 'Required Market Rate (%)', type: 'number', defaultValue: 4, suffix: '%', required: true },
         { key: 'years', label: 'Years to Maturity', type: 'number', defaultValue: 10, required: true },
         { key: 'frequency', label: 'Payments per Year', type: 'number', defaultValue: 2, required: true },
     ],
@@ -22,15 +20,15 @@ export const CONVEXITY_CONFIG: CalculatorConfig = {
             label: 'Bond Convexity',
             type: 'number',
             themeColor: 'emerald',
-            calculate: (d) => financialService.calculateConvexity({
-                faceValue: d['faceValue'],
-                couponRate: d['couponRate'] / 100,
-                marketRate: d['marketRate'] / 100,
-                years: d['years'],
-                frequency: d['frequency']
+            calculate: (d) => calculateConvexity({
+                faceValue: d['faceValue'] as number,
+                couponRate: (d['couponRate'] as number) / 100,
+                marketRate: (d['marketRate'] as number) / 100,
+                years: d['years'] as number,
+                frequency: d['frequency'] as number
             })
         }
     ],
-    insights: 'Convexity is a measure of the sensitivity of the duration of a bond to changes in interest rates. Positive convexity means bond price increases faster than it decreases.',
-    formula: 'CX = [∑ (t*(t+1)*CFt / (1+y)^(t+2))] / [P * m²]'
+    insights: 'Convexity is a measure of the curvature in the relationship between bond prices and bond yields. Most bonds have positive convexity.',
+    formula: 'C = [∑ (t*(t+1)*CFt/(1+r)^t)] / [P * (1+r)^2 * m^2]'
 };

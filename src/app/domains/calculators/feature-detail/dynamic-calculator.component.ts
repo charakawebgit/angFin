@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, input, effect, untracked } from '@angular/core';
+import { Component, computed, inject, signal, input, effect, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { form, required, min, max, Field, FieldTree } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
@@ -6,10 +6,10 @@ import { InputComponent } from '@shared/ui/input.component';
 import { CardComponent } from '@shared/ui/card.component';
 import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 import { CalculatorService } from '../data/calculator.service';
+import { CalculatorData } from '../data/models';
 
 @Component({
   selector: 'app-dynamic-calculator',
-  standalone: true,
   imports: [
     CommonModule,
     LucideAngularModule,
@@ -18,6 +18,7 @@ import { CalculatorService } from '../data/calculator.service';
     DynamicListInputComponent,
     Field,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (config()) {
       <div class="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700">
@@ -29,7 +30,7 @@ import { CalculatorService } from '../data/calculator.service';
                   <app-input
                     [id]="field.key"
                     [label]="field.label"
-                    [field]="$any(getField(field.key))"
+                    [field]="getField(field.key)"
                     type="number"
                     [prefix]="field.prefix"
                     [suffix]="field.suffix"
@@ -39,7 +40,7 @@ import { CalculatorService } from '../data/calculator.service';
                   <app-dynamic-list-input
                     [id]="field.key"
                     [label]="field.label"
-                    [items]="data()[field.key]"
+                    [items]="$any(data()[field.key] || [])"
                     (changed)="updateList(field.key, $event)"
                   />
                 } @else if (field.type === 'select') {
@@ -121,7 +122,7 @@ export class DynamicCalculatorComponent {
   private calcService = inject(CalculatorService);
 
   config = computed(() => this.calcService.getConfigById(this.id()));
-  data = signal<Record<string, any>>({});
+  data = signal<CalculatorData>({});
 
   // Initialize data when config changes
   constructor() {
@@ -129,9 +130,9 @@ export class DynamicCalculatorComponent {
       const cfg = this.config();
       if (cfg) {
         untracked(() => {
-          const initialData: Record<string, unknown> = {};
+          const initialData: CalculatorData = {};
           cfg.fields.forEach(f => {
-            initialData[f.key] = f.defaultValue;
+            initialData[f.key] = f.defaultValue as CalculatorData[string];
           });
           this.data.set(initialData);
         });
@@ -141,9 +142,9 @@ export class DynamicCalculatorComponent {
 
   calcForm = computed(() => {
     const cfg = this.config();
-    if (!cfg) return form(signal({}), () => { });
+    if (!cfg) return form(signal({}), () => ({}));
 
-    return form(this.data, (schema: any) => {
+    return form(this.data, (schema: Record<string, any>) => { // eslint-disable-line @typescript-eslint/no-explicit-any
       cfg.fields.forEach(f => {
         if (f.required) required(schema[f.key]);
         if (f.min !== undefined) min(schema[f.key], f.min);
@@ -152,8 +153,8 @@ export class DynamicCalculatorComponent {
     });
   });
 
-  getField(key: string): FieldTree<any, any> {
-    return (this.calcForm() as unknown as Record<string, FieldTree<any, any>>)[key];
+  getField(key: string): FieldTree<string | number, string | number> {
+    return (this.calcForm() as unknown as Record<string, FieldTree<string | number, string | number>>)[key];
   }
 
   results = computed(() => {
@@ -175,7 +176,7 @@ export class DynamicCalculatorComponent {
     this.data.update(d => ({ ...d, [key]: values }));
   }
 
-  updateField(key: string, value: any) {
+  updateField(key: string, value: string | number) {
     this.data.update(d => ({ ...d, [key]: value }));
   }
 

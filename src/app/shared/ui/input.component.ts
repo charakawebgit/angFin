@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Field, FieldTree } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
@@ -11,7 +11,6 @@ interface FieldStateShape {
 
 @Component({
   selector: 'app-input',
-  standalone: true,
   imports: [FormsModule, Field, LucideAngularModule],
   template: `
     <div class="flex flex-col gap-1.5">
@@ -51,6 +50,7 @@ interface FieldStateShape {
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputComponent {
   id = input.required<string>();

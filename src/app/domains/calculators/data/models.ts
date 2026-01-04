@@ -83,11 +83,13 @@ export interface FieldConfig {
     max?: number;
 }
 
-export interface ResultConfig {
+export type CalculatorData = Record<string, number | number[] | string | (string | number)[] | undefined>;
+
+export interface ResultConfig<T = unknown> {
     label: string;
     type: 'currency' | 'percent' | 'number' | 'amortization' | 'black-scholes' | 'dupont';
     themeColor?: string;
-    calculate: (data: Record<string, any>) => any;
+    calculate: (data: CalculatorData) => T;
 }
 
 export interface CalculatorConfig extends CalculatorDef {

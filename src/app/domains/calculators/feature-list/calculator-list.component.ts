@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, OnInit } from '@angular/core';
+import { Component, computed, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { CardComponent } from '@shared/ui/card.component';
@@ -7,8 +7,8 @@ import { MetaService } from '@core/services/meta.service';
 
 @Component({
   selector: 'app-calculator-list',
-  standalone: true,
   imports: [LucideAngularModule, RouterLink, CardComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="max-w-7xl mx-auto px-6 py-16 animate-in fade-in duration-1000">
       <!-- Hero Section -->

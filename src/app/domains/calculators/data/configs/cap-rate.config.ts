@@ -1,30 +1,28 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateCapRate } from '@core/math/amortization.utils';
 
 export const CAP_RATE_CONFIG: CalculatorConfig = {
     id: 'cap-rate',
     title: 'Cap Rate',
-    subtitle: 'Real estate return metric',
-    description: 'Calculate the expected rate of return on a real estate investment property.',
-    icon: 'building',
+    subtitle: 'Real estate investment metric',
+    description: 'Calculate the capitalization rate of a property to estimate its potential return.',
+    icon: 'home',
     category: 'Real Estate',
     fields: [
         { key: 'noi', label: 'Net Operating Income (NOI)', type: 'number', defaultValue: 50000, prefix: '$', required: true },
-        { key: 'propertyValue', label: 'Property Value', type: 'number', defaultValue: 1000000, prefix: '$', required: true, min: 1 },
+        { key: 'propertyValue', label: 'Current Property Value', type: 'number', defaultValue: 750000, prefix: '$', required: true },
     ],
     results: [
         {
-            label: 'Estimated Cap Rate',
+            label: 'Capitalization Rate',
             type: 'percent',
             themeColor: 'sky',
-            calculate: (d) => financialService.calculateCapRate({
-                noi: d['noi'],
-                propertyValue: d['propertyValue']
+            calculate: (d) => calculateCapRate({ 
+                noi: d['noi'] as number, 
+                propertyValue: d['propertyValue'] as number 
             })
         }
     ],
-    insights: 'The **Capitalization Rate (Cap Rate)** is the ratio of Net Operating Income (NOI) to property asset value, used to compare different real estate investments.',
+    insights: 'The cap rate provides a quick way to compare different real estate investments, but does not account for financing or property appreciation.',
     formula: 'Cap Rate = NOI / Property Value'
 };

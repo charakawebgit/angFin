@@ -1,25 +1,26 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateIrr } from '@core/math/investment.utils';
 
 export const IRR_CONFIG: CalculatorConfig = {
     id: 'irr',
     title: 'Internal Rate of Return',
-    subtitle: 'Analyze investment profitability over time',
-    description: 'Calculate the rate of return at which the net present value of cash flows equals zero.',
-    icon: 'activity',
+    subtitle: 'Find the break-even discount rate',
+    description: 'Calculate the discount rate that makes the net present value of all cash flows equal to zero.',
+    icon: 'percent',
     category: 'Analysis',
     fields: [
-        { key: 'cashFlows', label: 'Periodic Cash Flows', type: 'list', defaultValue: [-10000, 3000, 4200, 5800], required: true },
+        { key: 'cashFlows', label: 'Cash Flows (Initial, T1, T2...)', type: 'list', defaultValue: [-1000, 300, 400, 500], required: true },
     ],
     results: [
         {
-            label: 'Annualized Return (IRR)',
+            label: 'Internal Rate of Return (IRR)',
             type: 'percent',
-            calculate: (d) => financialService.calculateIrr({ cashFlows: d['cashFlows'].map(Number) })
+            themeColor: 'emerald',
+            calculate: (d) => calculateIrr({ 
+                cashFlows: (d['cashFlows'] as number[] || []).map(Number) 
+            })
         }
     ],
-    insights: 'The **IRR** is a critical metric for capital budgeting. It represents the efficiency of an investment by finding the discount rate that makes NPV zero.',
+    insights: 'IRR is a key metric for capital budgeting. A project is generally considered acceptable if its IRR is higher than the company\'s cost of capital.',
     formula: '0 = ∑ [CFt / (1 + IRR)^t]'
 };

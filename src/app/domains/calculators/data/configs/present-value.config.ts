@@ -1,7 +1,5 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculatePresentValue } from '@core/math/investment.utils';
 
 export const PRESENT_VALUE_CONFIG: CalculatorConfig = {
     id: 'present-value',
@@ -19,10 +17,10 @@ export const PRESENT_VALUE_CONFIG: CalculatorConfig = {
         {
             label: 'Current Valuation',
             type: 'currency',
-            calculate: (d) => financialService.calculatePresentValue({
-                fv: d['fv'],
-                rate: d['rate'] / 100,
-                periods: d['periods']
+            calculate: (d) => calculatePresentValue({
+                fv: d['fv'] as number,
+                rate: (d['rate'] as number) / 100,
+                periods: d['periods'] as number
             })
         }
     ],

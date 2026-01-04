@@ -1,7 +1,5 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateBankDiscountYield, calculateEffectiveAnnualYield } from '@core/math/investment.utils';
 
 export const RBD_EAY_CONFIG: CalculatorConfig = {
     id: 'rbd-eay',
@@ -20,18 +18,18 @@ export const RBD_EAY_CONFIG: CalculatorConfig = {
             label: 'Bank Discount Yield (Rbd)',
             type: 'percent',
             themeColor: 'amber',
-            calculate: (d) => financialService.calculateBankDiscountYield({
-                faceValue: d['faceValue'],
-                purchasePrice: d['purchasePrice'],
-                days: d['days']
+            calculate: (d) => calculateBankDiscountYield({
+                faceValue: d['faceValue'] as number,
+                purchasePrice: d['purchasePrice'] as number,
+                days: d['days'] as number
             })
         },
         {
             label: 'Effective Annual Yield (Eay)',
             type: 'percent',
             calculate: (d) => {
-                const hpy = (d['faceValue'] - d['purchasePrice']) / d['purchasePrice'];
-                return financialService.calculateEffectiveAnnualYield({ hpy, days: d['days'] });
+                const hpy = ((d['faceValue'] as number) - (d['purchasePrice'] as number)) / (d['purchasePrice'] as number);
+                return calculateEffectiveAnnualYield({ hpy, days: d['days'] as number });
             }
         }
     ],

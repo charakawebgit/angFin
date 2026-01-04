@@ -1,13 +1,11 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculatePortfolioReturn } from '@core/math/investment.utils';
 
 export const PORTFOLIO_RETURN_CONFIG: CalculatorConfig = {
     id: 'portfolio-return',
     title: 'Portfolio Return',
-    subtitle: 'Weighted average return of assets',
-    description: 'Calculate the expected return of a portfolio based on the weights and individual returns of its assets.',
+    subtitle: 'Weighted average return',
+    description: 'Calculate the overall return of a portfolio based on the weights and returns of individual assets.',
     icon: 'briefcase',
     category: 'Portfolio',
     fields: [
@@ -16,15 +14,15 @@ export const PORTFOLIO_RETURN_CONFIG: CalculatorConfig = {
     ],
     results: [
         {
-            label: 'Portfolio Expected Return',
+            label: 'Total Portfolio Return',
             type: 'percent',
             themeColor: 'sky',
-            calculate: (d) => financialService.calculatePortfolioReturn({
-                weights: d['weights'].map((v: any) => Number(v) / 100),
-                returns: d['returns'].map((v: any) => Number(v) / 100)
+            calculate: (d) => calculatePortfolioReturn({
+                weights: (d['weights'] as number[] || []).map((v) => Number(v) / 100),
+                returns: (d['returns'] as number[] || []).map((v) => Number(v) / 100)
             })
         }
     ],
-    insights: 'The return of a portfolio is the weighted average of the returns of its individual components.',
+    insights: 'The return of a portfolio is the weighted average of the returns of its components. Rebalancing is necessary to maintain target weights.',
     formula: 'Rp = ∑ (wi * Ri)'
 };

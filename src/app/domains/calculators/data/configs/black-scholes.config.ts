@@ -1,7 +1,5 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateBlackScholes } from '@core/math/equity.utils';
 
 export const BLACK_SCHOLES_CONFIG: CalculatorConfig = {
     id: 'black-scholes',
@@ -22,24 +20,24 @@ export const BLACK_SCHOLES_CONFIG: CalculatorConfig = {
             label: 'Call Option Price',
             type: 'currency',
             themeColor: 'emerald',
-            calculate: (d) => financialService.calculateBlackScholes({
-                stockPrice: d['stockPrice'],
-                strikePrice: d['strikePrice'],
-                time: d['time'],
-                riskFreeRate: d['riskFreeRate'] / 100,
-                volatility: d['volatility'] / 100
+            calculate: (d) => calculateBlackScholes({
+                stockPrice: d['stockPrice'] as number,
+                strikePrice: d['strikePrice'] as number,
+                time: d['time'] as number,
+                riskFreeRate: (d['riskFreeRate'] as number) / 100,
+                volatility: (d['volatility'] as number) / 100
             }).callPrice
         },
         {
             label: 'Put Option Price',
             type: 'currency',
             themeColor: 'rose',
-            calculate: (d) => financialService.calculateBlackScholes({
-                stockPrice: d['stockPrice'],
-                strikePrice: d['strikePrice'],
-                time: d['time'],
-                riskFreeRate: d['riskFreeRate'] / 100,
-                volatility: d['volatility'] / 100
+            calculate: (d) => calculateBlackScholes({
+                stockPrice: d['stockPrice'] as number,
+                strikePrice: d['strikePrice'] as number,
+                time: d['time'] as number,
+                riskFreeRate: (d['riskFreeRate'] as number) / 100,
+                volatility: (d['volatility'] as number) / 100
             }).putPrice
         }
     ],

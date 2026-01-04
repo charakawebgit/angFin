@@ -1,7 +1,5 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateMeanAbsoluteDeviation } from '@core/math/stats.utils';
 
 export const MAD_CONFIG: CalculatorConfig = {
     id: 'mad',
@@ -18,7 +16,9 @@ export const MAD_CONFIG: CalculatorConfig = {
             label: 'MAD',
             type: 'number',
             themeColor: 'amber',
-            calculate: (d) => financialService.calculateMeanAbsoluteDeviation({ values: d['values'].map(Number) })
+            calculate: (d) => calculateMeanAbsoluteDeviation({ 
+                values: (d['values'] as number[] || []).map(Number) 
+            })
         }
     ],
     insights: 'MAD provides a measure of variability in a dataset that is less sensitive to outliers than standard deviation.',

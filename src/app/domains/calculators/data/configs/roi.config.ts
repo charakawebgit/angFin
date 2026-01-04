@@ -1,27 +1,28 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateRoi } from '@core/math/investment.utils';
 
 export const ROI_CONFIG: CalculatorConfig = {
     id: 'roi',
     title: 'ROI',
-    subtitle: 'Simple Return on Investment',
-    description: 'Calculate the percentage return on an investment relative to its cost.',
-    icon: 'trending-up',
-    category: 'Analysis',
+    subtitle: 'Return on Investment',
+    description: 'Calculate the percentage return on an investment based on the amount spent and the amount gained.',
+    icon: 'coins',
+    category: 'Returns',
     fields: [
-        { key: 'amountGained', label: 'Amount Gained (Gain)', type: 'number', defaultValue: 1200, prefix: '$', required: true },
-        { key: 'amountSpent', label: 'Amount Invested (Cost)', type: 'number', defaultValue: 1000, prefix: '$', required: true, min: 1 },
+        { key: 'amountSpent', label: 'Amount Spent', type: 'number', defaultValue: 1000, prefix: '$', required: true },
+        { key: 'amountGained', label: 'Amount Gained', type: 'number', defaultValue: 1200, prefix: '$', required: true },
     ],
     results: [
         {
-            calculate: (d) => financialService.calculateRoi({ amountGained: d['amountGained'], amountSpent: d['amountSpent'] }),
+            calculate: (d) => calculateRoi({ 
+                amountGained: d['amountGained'] as number, 
+                amountSpent: d['amountSpent'] as number 
+            }),
             label: 'Return on Investment',
             type: 'percent',
             themeColor: 'emerald'
         }
     ],
-    insights: 'Return on Investment (ROI) is a performance measure used to evaluate the efficiency of an investment or compare the efficiencies of several different investments.',
-    formula: 'ROI = (Net Profit / Cost of Investment) * 100'
+    insights: 'ROI is a popular profitability metric used to evaluate the efficiency of an investment or to compare the efficiencies of several different investments.',
+    formula: 'ROI = (Gains - Cost) / Cost'
 };

@@ -1,26 +1,26 @@
 import { CalculatorConfig } from '../models';
-import { FinancialService } from '@core/math/financial.service';
-
-const financialService = new FinancialService();
+import { calculateCoefficientOfVariation } from '@core/math/stats.utils';
 
 export const CV_CONFIG: CalculatorConfig = {
     id: 'cv',
-    title: 'Coeff. of Variation',
-    subtitle: 'Relative measure of dispersion',
-    description: 'Calculate the ratio of the standard deviation to the mean to compare variability across different scales.',
-    icon: 'divide',
+    title: 'Coefficient of Variation',
+    subtitle: 'Relative risk measure',
+    description: 'Calculate the ratio of the standard deviation to the mean to compare relative variability.',
+    icon: 'percent',
     category: 'Statistics',
     fields: [
-        { key: 'values', label: 'Data Points', type: 'list', defaultValue: [10, 20, 30], required: true },
+        { key: 'values', label: 'Data Points', type: 'list', defaultValue: [100, 150, 200], required: true },
     ],
     results: [
         {
             label: 'Coefficient of Variation',
             type: 'number',
             themeColor: 'indigo',
-            calculate: (d) => financialService.calculateCoefficientOfVariation({ values: d['values'].map(Number) })
+            calculate: (d) => calculateCoefficientOfVariation({ 
+                values: (d['values'] as number[] || []).map(Number) 
+            })
         }
     ],
     insights: 'CV is used to compare the degree of variation from one data series to another, even if their means are drastically different.',
-    formula: 'CV = (s / x̄) * 100'
+    formula: 'CV = σ / μ'
 };
