@@ -7,6 +7,8 @@ import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.compone
 import { CardComponent } from '@shared/ui/card.component';
 import { CalculatorConfig, CalculatorData, FieldConfig } from '@entities/calculator/model/types';
 
+type FormSignal = (() => any) & { valid?: () => boolean };
+
 @Component({
   selector: 'app-calculator-form',
   imports: [
@@ -63,6 +65,7 @@ import { CalculatorConfig, CalculatorData, FieldConfig } from '@entities/calcula
     }
   `,
 })
+
 export class CalculatorFormComponent {
   config = input.required<CalculatorConfig>();
   data = input.required<CalculatorData>();
@@ -73,7 +76,7 @@ export class CalculatorFormComponent {
   localData = signal<CalculatorData>({});
 
   // Use a writable signal initialized to null
-  calcForm = signal<unknown>(null);
+  calcForm = signal<FormSignal | null>(null);
 
   private injector = inject(Injector);
 
@@ -87,7 +90,9 @@ export class CalculatorFormComponent {
       untracked(() => {
         // We need an injection context for the form library
         const newForm = runInInjectionContext(this.injector, () => {
-          return form(this.localData, (schema: Record<string, unknown>) => {
+          // use any for the schema here because form's internal Schema types are complex
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return form(this.localData, (schema: any) => {
             cfg.fields.forEach((f: FieldConfig) => {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const field = schema[f.key] as any;
@@ -115,9 +120,7 @@ export class CalculatorFormComponent {
     effect(() => {
       const f = this.calcForm();
       if (f) {
-        // Cast to any to access the signal call signature and valid property
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        this.valid.emit((f as any)().valid());
+        this.valid.emit(f().valid());
       }
     });
   }
@@ -125,7 +128,8 @@ export class CalculatorFormComponent {
   getField(key: string): FieldTree<string | number, string | number> {
     const f = this.calcForm();
     if (!f) return {} as FieldTree<string | number, string | number>;
-    return (f as unknown as Record<string, FieldTree<string | number, string | number>>)[key];
+    const formObj = f();
+    return formObj[key];
   }
 
   updateData(key: string, value: CalculatorData[string]) {
