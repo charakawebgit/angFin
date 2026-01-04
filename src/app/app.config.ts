@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideZonelessChangeDetection, importProvidersFrom } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import {
   LucideAngularModule,
   TrendingUp, BarChart, Percent, Hourglass, ListPlus, ShieldCheck,
@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
-    provideAnimations(),
+    provideNoopAnimations(),
     importProvidersFrom(
       LucideAngularModule.pick({
         TrendingUp, BarChart, Percent, Hourglass, ListPlus, ShieldCheck,

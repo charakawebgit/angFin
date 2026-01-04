@@ -1,0 +1,69 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - banner [ref=e8]:
+    - link "angFin Professional Suite" [ref=e10] [cursor=pointer]:
+      - /url: /
+      - img [ref=e13]
+      - generic [ref=e16]:
+        - generic [ref=e17]: angFin
+        - generic [ref=e18]: Professional Suite
+  - main [ref=e19]:
+    - generic [ref=e22]:
+      - generic [ref=e26]:
+        - generic [ref=e27]: Professional Intelligence Suite
+        - heading "Precision Calculus for Finance" [level=1] [ref=e31]:
+          - text: Precision Calculus
+          - text: for Finance
+        - paragraph [ref=e32]: Over 30+ enterprise-grade tools for TVM, Fixed Income, Equity Valuations, and Advanced Statistics.
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - img [ref=e36]
+            - textbox "Search tools (e.g. NPV, IRR, Black Scholes...)" [active] [ref=e39]: Amortization
+          - generic [ref=e40]:
+            - button "All" [ref=e41]
+            - button "Basics" [ref=e42]
+            - button "Capital Budgeting" [ref=e43]
+            - button "Derivatives" [ref=e44]
+            - button "Equities" [ref=e45]
+            - button "Fixed Income" [ref=e46]
+            - button "Portfolio" [ref=e47]
+            - button "Rates" [ref=e48]
+            - button "Ratios" [ref=e49]
+            - button "Real Estate" [ref=e50]
+            - button "Risk" [ref=e51]
+            - button "Stats" [ref=e52]
+            - button "TVM" [ref=e53]
+            - button "Valuation" [ref=e54]
+      - link "Basics Amortization Loan payment schedule. Execute Tool" [ref=e56] [cursor=pointer]:
+        - /url: /calculator/amortization
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - img [ref=e64]
+            - generic [ref=e66]: Basics
+          - heading "Amortization" [level=3] [ref=e67]
+          - paragraph [ref=e68]: Loan payment schedule.
+          - generic [ref=e69]:
+            - text: Execute Tool
+            - img [ref=e71]
+  - contentinfo [ref=e74]:
+    - generic [ref=e76]:
+      - generic [ref=e77]:
+        - generic [ref=e78]:
+          - img [ref=e81]
+          - generic [ref=e84]: angFin Pro
+        - paragraph [ref=e85]: Enterprise-grade financial intelligence and precision calculus suite.
+      - generic [ref=e86]:
+        - link "About" [ref=e87] [cursor=pointer]:
+          - /url: /about
+        - link "Privacy" [ref=e88] [cursor=pointer]:
+          - /url: /privacy
+        - link "Legal" [ref=e89] [cursor=pointer]:
+          - /url: /disclaimer
+      - generic [ref=e90]:
+        - paragraph [ref=e91]: © 2026 GASTRO-ENDO EXCHANGE
+        - generic [ref=e92]:
+          - generic [ref=e93]: Live v21.0
+          - generic [ref=e94]: Zoneless
+```

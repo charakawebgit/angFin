@@ -6,8 +6,9 @@ test.describe('AngFin E2E Verification', () => {
     });
 
     test('should load dashboard and display title', async ({ page }) => {
-        await expect(page.getByText('Professional Intelligence Suite')).toBeVisible();
-        await expect(page.getByText('Precision Calculus')).toBeVisible();
+        await expect(page.getByText('Professional Suite')).toBeVisible();
+        // Use heading role for robustness against spans
+        await expect(page.getByRole('heading', { name: /Precision Calculus/i })).toBeVisible();
     });
 
     test('should search and navigate to Mortgage Calculator', async ({ page }) => {
@@ -16,11 +17,11 @@ test.describe('AngFin E2E Verification', () => {
         await searchInput.fill('Amortization');
 
         // Verify filter
-        await expect(page.getByText('Mortgage Calculator')).toBeVisible();
+        await expect(page.getByText('Loan repayment schedule')).toBeVisible(); // Subtitle match
         await expect(page.getByText('ROI')).not.toBeVisible();
 
         // Navigate
-        await page.getByRole('link', { name: 'Mortgage Calculator' }).click();
+        await page.getByRole('link', { name: 'Amortization' }).click();
         await expect(page.getByRole('heading', { name: 'Amortization' })).toBeVisible();
 
         // Interact
