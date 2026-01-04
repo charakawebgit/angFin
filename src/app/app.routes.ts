@@ -8,7 +8,7 @@ export const routes: Routes = [
             {
                 path: '',
                 loadComponent: () =>
-                    import('./domains/calculators/feature-list/calculator-list.component').then(
+                    import('./pages/home/ui/calculator-list.component').then(
                         (m) => m.CalculatorListComponent
                     ),
                 data: { animation: 'list' }
@@ -16,7 +16,7 @@ export const routes: Routes = [
             {
                 path: 'calculator/:id',
                 loadComponent: () =>
-                    import('./domains/calculators/feature-detail/dynamic-calculator.component').then(
+                    import('./pages/calculator/ui/calculator-page.component').then(
                         (m) => m.DynamicCalculatorComponent
                     ),
                 data: { animation: 'detail' }
@@ -24,19 +24,19 @@ export const routes: Routes = [
             {
                 path: 'about',
                 loadComponent: () =>
-                    import('./domains/static/about.component').then((m) => m.AboutComponent),
+                    import('./pages/static/ui/about.component').then((m) => m.AboutComponent),
                 data: { animation: 'about' }
             },
             {
                 path: 'privacy',
                 loadComponent: () =>
-                    import('./domains/static/privacy.component').then((m) => m.PrivacyComponent),
+                    import('./pages/static/ui/privacy.component').then((m) => m.PrivacyComponent),
                 data: { animation: 'privacy' }
             },
             {
                 path: 'disclaimer',
                 loadComponent: () =>
-                    import('./domains/static/disclaimer.component').then(
+                    import('./pages/static/ui/disclaimer.component').then(
                         (m) => m.DisclaimerComponent
                     ),
                 data: { animation: 'disclaimer' }
