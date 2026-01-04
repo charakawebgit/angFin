@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, input, ChangeDetectionStrategy, linkedSignal, effect } from '@angular/core';
+import { Component, computed, inject, signal, input, ChangeDetectionStrategy, linkedSignal, effect, Injector, runInInjectionContext } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { form, required, min, max, Field, FieldTree } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
@@ -159,6 +159,7 @@ export class DynamicCalculatorComponent {
   id = input.required<string>();
 
   private calcService = inject(CalculatorService);
+  private injector = inject(Injector);
 
   config = this.calcService.activeConfig;
   isLoading = this.calcService.isLoading;
@@ -198,13 +199,17 @@ export class DynamicCalculatorComponent {
 
   calcForm = computed(() => {
     const cfg = this.config();
-    if (!cfg) return form(signal({}), () => ({}));
+    const dataSignal = this.data;
 
-    return form(this.data, (schema: Record<string, any>) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-      cfg.fields.forEach(f => {
-        if (f.required) required(schema[f.key]);
-        if (f.min !== undefined) min(schema[f.key], f.min);
-        if (f.max !== undefined) max(schema[f.key], f.max);
+    return runInInjectionContext(this.injector, () => {
+      if (!cfg) return form(signal({}), () => ({}));
+
+      return form(dataSignal, (schema: Record<string, any>) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+        cfg.fields.forEach(f => {
+          if (f.required) required(schema[f.key]);
+          if (f.min !== undefined) min(schema[f.key], f.min);
+          if (f.max !== undefined) max(schema[f.key], f.max);
+        });
       });
     });
   });

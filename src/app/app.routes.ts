@@ -11,23 +11,27 @@ export const routes: Routes = [
                     import('./domains/calculators/feature-list/calculator-list.component').then(
                         (m) => m.CalculatorListComponent
                     ),
+                data: { animation: 'list' }
             },
             {
-                path: ':id',
+                path: 'calculator/:id',
                 loadComponent: () =>
                     import('./domains/calculators/feature-detail/dynamic-calculator.component').then(
                         (m) => m.DynamicCalculatorComponent
                     ),
+                data: { animation: 'detail' }
             },
             {
                 path: 'about',
                 loadComponent: () =>
                     import('./domains/static/about.component').then((m) => m.AboutComponent),
+                data: { animation: 'about' }
             },
             {
                 path: 'privacy',
                 loadComponent: () =>
                     import('./domains/static/privacy.component').then((m) => m.PrivacyComponent),
+                data: { animation: 'privacy' }
             },
             {
                 path: 'disclaimer',
@@ -35,6 +39,7 @@ export const routes: Routes = [
                     import('./domains/static/disclaimer.component').then(
                         (m) => m.DisclaimerComponent
                     ),
+                data: { animation: 'disclaimer' }
             },
         ],
     },
