@@ -1,4 +1,5 @@
 console.log('--- TEST SETUP RUNNING ---');
+import 'zone.js/testing';
 import '@angular/compiler';
 import {
   BrowserDynamicTestingModule,

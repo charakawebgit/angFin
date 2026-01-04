@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CalculatorService } from './calculator.service';
-import { CalculatorConfig, CalculatorRegistryItem } from './models';
+
 
 const mocks = vi.hoisted(() => {
-    const mockConfig: CalculatorConfig = {
+    const mockConfig = {
         id: 'future-value',
         title: 'Future Value',
         description: 'Test Description',
@@ -14,7 +14,7 @@ const mocks = vi.hoisted(() => {
         results: []
     };
 
-    const mockRegistry: CalculatorRegistryItem[] = [
+    const mockRegistry = [
         {
             id: 'future-value',
             title: 'Future Value',
