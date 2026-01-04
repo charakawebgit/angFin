@@ -1,4 +1,4 @@
-import { Component, input, output, ChangeDetectionStrategy, effect, signal, untracked, inject, Injector, runInInjectionContext, computed } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy, effect, signal, untracked, inject, Injector, runInInjectionContext } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { form, required, min, max, Field, FieldTree } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
@@ -72,24 +72,33 @@ export class CalculatorFormComponent {
   // Use local writable signal for the form, initialized from the data input
   localData = signal<CalculatorData>({});
 
-  // Use a computed signal for the form to derive it directly from config
-  calcForm = computed(() => {
-    const cfg = this.config();
-    // Use runInInjectionContext to safely create the form within the computed context
-    return runInInjectionContext(this.injector, () => {
-      return form(this.localData, (schema: Record<string, any>) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-        cfg.fields.forEach(f => {
-          if (f.required) required(schema[f.key]);
-          if (f.min !== undefined) min(schema[f.key], f.min);
-          if (f.max !== undefined) max(schema[f.key], f.max);
-        });
-      });
-    });
-  });
+  // Use a writable signal initialized to null
+  calcForm = signal<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
 
   private injector = inject(Injector);
 
   constructor() {
+    // Initialize form when config changes
+    effect(() => {
+      const cfg = this.config();
+
+      // Use untracked to escape the reactive context of the effect, 
+      // allowing the internal effects of 'form()' to be created safely.
+      untracked(() => {
+        // We need an injection context for the form library
+        const newForm = runInInjectionContext(this.injector, () => {
+          return form(this.localData, (schema: Record<string, any>) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+            cfg.fields.forEach(f => {
+              if (f.required) required(schema[f.key]);
+              if (f.min !== undefined) min(schema[f.key], f.min);
+              if (f.max !== undefined) max(schema[f.key], f.max);
+            });
+          });
+        });
+        this.calcForm.set(newForm);
+      });
+    });
+
     // Sync external data changes into local data
     effect(() => {
       const d = this.data();
