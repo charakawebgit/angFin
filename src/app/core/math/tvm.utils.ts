@@ -9,6 +9,11 @@ function solveTvmRate(periods: number, pv: Decimal, pmt: Decimal, fv: Decimal): 
   let guess = new Decimal(0.05);
   const precision = new Decimal('1e-10');
 
+  // Determine search direction based on PV or PMT sign
+  // For investments (PV < 0), value decreases as rate increases.
+  // For loans (PV > 0), value increases as rate increases.
+  const isIncreasing = pv.gt(0) || (pv.eq(0) && pmt.gt(0));
+
   for (let i = 0; i < 100; i++) {
     const r = guess;
     const nD = new Decimal(periods);
@@ -24,14 +29,14 @@ function solveTvmRate(periods: number, pv: Decimal, pmt: Decimal, fv: Decimal): 
 
     if (val.abs().lt(precision)) return guess;
 
-    if (val.isPositive()) {
-      // This logic depends on the typical TVM equation sign conventions.
-      // Usually PV and PMT have same sign, FV opposite.
-      // If we assume standard conventions:
-      high = guess;
+    if (isIncreasing) {
+      if (val.isPositive()) high = guess;
+      else low = guess;
     } else {
-      low = guess;
+      if (val.isPositive()) low = guess;
+      else high = guess;
     }
+
     guess = low.add(high).div(2);
   }
   return guess;

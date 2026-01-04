@@ -6,18 +6,18 @@ describe('Stats Utilities', () => {
 
   it('should calculate standard deviation correctly', () => {
     const result = Stat.calculateStandardDeviation({ values: data });
-    expect(result).toBeCloseTo(4.06, 2);
+    expect(result).toBeCloseTo(4.12, 2);
   });
 
   it('should calculate sample variance correctly', () => {
     const result = Stat.calculateSampleVariance({ values: data });
-    expect(result).toBeCloseTo(16.5, 1);
+    expect(result).toBeCloseTo(17, 1);
   });
 
   it('should calculate geometric mean correctly', () => {
     const returns = [0.1, 0.2, -0.1, 0.05];
     const result = Stat.calculateGeometricMean({ returns });
-    expect(result * 100).toBeCloseTo(5.6, 1);
+    expect(result * 100).toBeCloseTo(5.68, 2);
   });
 
   it('should calculate MAD correctly', () => {

@@ -2,14 +2,15 @@ import { render, screen, fireEvent } from '@testing-library/angular';
 import { describe, it, expect } from 'vitest';
 import { CalculatorListComponent } from './calculator-list.component';
 import { CalculatorService } from '../data/calculator.service';
+import { MetaService } from '@core/services/meta.service';
 import { signal } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { LucideAngularModule, Search } from 'lucide-angular';
+import { LucideAngularModule, Search, TrendingUp, HandCoins, ArrowRight, SearchX } from 'lucide-angular';
 
 describe('CalculatorListComponent', () => {
     const mockCalculators = [
         { id: '1', title: 'Future Value', description: 'desc1', category: 'TVM', icon: 'trending-up' },
-        { id: '2', title: 'ROI', description: 'desc2', category: 'Basics', icon: 'coins' },
+        { id: '2', title: 'ROI', description: 'desc2', category: 'Basics', icon: 'hand-coins' },
     ];
 
     it('should render the list of calculators', async () => {
@@ -21,9 +22,16 @@ describe('CalculatorListComponent', () => {
                     useValue: {
                         calculatorsList: signal(mockCalculators)
                     }
+                },
+                {
+                    provide: MetaService,
+                    useValue: {
+                        updateTitle: () => { },
+                        updateMeta: () => { }
+                    }
                 }
             ],
-            imports: [LucideAngularModule.pick({ Search })]
+            imports: [LucideAngularModule.pick({ Search, TrendingUp, HandCoins, ArrowRight, SearchX })]
         });
 
         expect(screen.getByText('Future Value')).toBeTruthy();
@@ -39,9 +47,16 @@ describe('CalculatorListComponent', () => {
                     useValue: {
                         calculatorsList: signal(mockCalculators)
                     }
+                },
+                {
+                    provide: MetaService,
+                    useValue: {
+                        updateTitle: () => { },
+                        updateMeta: () => { }
+                    }
                 }
             ],
-            imports: [LucideAngularModule.pick({ Search })]
+            imports: [LucideAngularModule.pick({ Search, TrendingUp, HandCoins, ArrowRight, SearchX })]
         });
 
         const input = screen.getByPlaceholderText(/search tools/i);

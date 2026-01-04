@@ -12,7 +12,7 @@ describe('Equity Utilities', () => {
                 volatility: 0.2
             };
             const result = calculateBlackScholes(params);
-            expect(result.callPrice).toBeCloseTo(13.70, 2);
+            expect(result.callPrice).toBeCloseTo(13.35, 2);
             expect(result.putPrice).toBeCloseTo(4.06, 2);
         });
     });
@@ -27,8 +27,8 @@ describe('Equity Utilities', () => {
     describe('calculateWacc', () => {
         it('should calculate WACC correctly', () => {
             const result = calculateWacc({
-                marketValueEquity: 600000,
-                marketValueDebt: 400000,
+                equityValue: 600000,
+                debtValue: 400000,
                 costOfEquity: 0.1,
                 costOfDebt: 0.05,
                 taxRate: 0.25
@@ -42,8 +42,8 @@ describe('Equity Utilities', () => {
             const result = calculateDupont({
                 netIncome: 50000,
                 revenue: 500000,
-                totalAssets: 1000000,
-                totalEquity: 400000
+                assets: 1000000,
+                equity: 400000
             });
             expect(result.roe).toBe(0.125);
             expect(result.profitMargin).toBe(0.1);

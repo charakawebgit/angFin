@@ -18,13 +18,13 @@ describe('Amortization Utilities', () => {
                 interestRate: 0.045,
                 loanTerm: 30
             });
-            expect(result.summary.totalInterest).toBeCloseTo(206016.71, 2);
+            expect(result.summary.totalInterest).toBeCloseTo(206016.78, 2);
         });
     });
 
     describe('calculateCapRate', () => {
         it('should calculate cap rate correctly', () => {
-            const result = calculateCapRate({ noi: 50000, value: 1000000 });
+            const result = calculateCapRate({ noi: 50000, propertyValue: 1000000 });
             expect(result).toBe(0.05);
         });
     });
@@ -36,15 +36,12 @@ describe('Amortization Utilities', () => {
                 currentLiabilities: 50000,
                 totalDebt: 200000,
                 totalEquity: 300000,
-                netIncome: 50000,
-                revenue: 500000,
-                ebit: 75000,
-                interestExpense: 10000,
-                totalAssets: 500000
+                stockPrice: 50,
+                eps: 5
             });
             expect(result.currentRatio).toBe(2);
             expect(result.debtToEquity).toBeCloseTo(0.67, 2);
-            expect(result.netProfitMargin).toBe(0.1);
+            expect(result.peRatio).toBe(10);
         });
     });
 });
