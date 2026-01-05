@@ -1,6 +1,10 @@
 {
   "name": "ang-fin",
   "version": "0.0.0",
+  "engines": {
+    "node": ">=20 <21",
+    "npm": ">=10 <12"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

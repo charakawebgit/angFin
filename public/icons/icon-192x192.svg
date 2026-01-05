@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 512 512" role="img" aria-label="angFin icon">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#g)" />
+  <path d="M150 332l70-180h72l70 180h-64l-12-36h-60l-12 36h-64zm109-134l-18 54h36l-18-54z" fill="#e5edff" />
+  <path d="M340 332c0-38 30-66 70-66c10 0 20 2 30 6v48c-8-6-18-10-30-10c-16 0-26 10-26 22v40h-44v-40z" fill="#e5edff" />
+</svg>

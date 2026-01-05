@@ -1,43 +1,42 @@
-# AngFin
+# AngFin — Finance Calculator Suite
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0-next.3.
+Modern Angular 21 application delivering 40+ finance calculators (TVM, corporate finance, valuation, fixed income, real estate, ratios). Built with zoneless change detection, Tailwind 4, and a light/dark design system.
 
-## Development server
-
-To start a local development server, run:
+## Quick Start
 
 ```bash
-ng serve
+npm install
+npm start
+# app runs at http://localhost:4200
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Key scripts:
+- `npm run build` – production build
+- `npm run lint` / `npm run lint:fix` – linting
+- `npm run format` – format source files
 
-## Code scaffolding
+## Architecture
+- **entities/** domain models and calculation utilities
+- **features/** calculator workspace and flows
+- **pages/** top-level routes (home, calculator, static)
+- **shared/** reusable UI components and theme services
+- **public/** PWA assets and manifest
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Theming
+- CSS variables in `src/styles.css` define surfaces, text, accent colors, and light/dark overrides.
+- Components consume tokens via `var(--surface-*)`, `var(--text-*)`, `var(--accent-*)` to keep contrast consistent across modes.
 
-```bash
-ng generate component component-name
-```
+## Development Notes
+- Change detection is `OnPush` and uses signals; prefer immutable updates.
+- Forms use `ReactiveFormsModule`; calculator configs drive dynamic fields and validation.
+- Keep calculations pure and covered by specs (see audit recommendations for testing roadmap).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Deployment Checklist
+- Build: `npm run build`
+- Service worker/PWA: ensure `public/manifest.webmanifest` icons exist
+- Environment: Node 20+ (LTS), npm 10+
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Contributing
+- Run lint and format before PRs.
+- Keep new components theme-token aware; avoid hardcoded slate/white utility colors.
+- Add references/educational links in calculator configs when available.
