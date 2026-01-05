@@ -1,10 +1,11 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { CalculatorFormComponent } from './calculator-form.component';
-import { Component, Input } from '@angular/core';
+import { Component, Input, provideZonelessChangeDetection } from '@angular/core';
 import { CalculatorConfig } from '@entities/calculator/model/types';
 import { LucideAngularModule, Calculator } from 'lucide-angular';
 import { InputComponent } from '@shared/ui/input.component';
+import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 
 describe('CalculatorFormComponent', () => {
   let fixture: ComponentFixture<CalculatorFormComponent>;
@@ -40,46 +41,81 @@ describe('CalculatorFormComponent', () => {
       @Input() placeholder: string | undefined;
       @Input() prefix: string | undefined;
       @Input() suffix: string | undefined;
+      @Input() control: unknown;
+    }
+
+    @Component({
+      selector: 'app-dynamic-list-input',
+      template: ''
+    })
+    class StubDynamicListInputComponent {
+      @Input() id: string | undefined;
+      @Input() label: string | undefined;
+      @Input() items: unknown;
     }
 
     await TestBed.configureTestingModule({
       imports: [CalculatorFormComponent, LucideAngularModule.pick({ Calculator })],
-      providers: [] // Remove zoneless for now to test if Zone.js handles effects better in test env
+      providers: [provideZonelessChangeDetection()]
     })
       .overrideComponent(CalculatorFormComponent, {
-        remove: { imports: [InputComponent] },
-        add: { imports: [StubInputComponent] }
+        remove: { imports: [InputComponent, DynamicListInputComponent] },
+        add: { imports: [StubInputComponent, StubDynamicListInputComponent] }
       })
       .compileComponents();
 
     fixture = TestBed.createComponent(CalculatorFormComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges(); // Initial CD
+    fixture.detectChanges();
   });
 
-  it('renders and displays the Principal label', fakeAsync(() => {
-    // Assign the `input()` backed functions directly to avoid setInput issues in this test env
+  it('renders and displays the Principal label', async () => {
     fixture.componentRef.setInput('config', mockConfig);
     fixture.componentRef.setInput('data', { principal: 1000, rate: 5, type: 'a' });
     fixture.detectChanges();
 
-    // Advance time to allow effect to run (scheduled as microtask/timer)
-    tick(100);
-    fixture.detectChanges();
+    // Poll for validation
+    await new Promise<void>((resolve, reject) => {
+      const start = Date.now();
+      const interval = setInterval(() => {
+        fixture.detectChanges();
+        const root = fixture.nativeElement as HTMLElement;
+        const label = root.querySelector('label[for="principal"]');
+
+        if (label) {
+          clearInterval(interval);
+          resolve();
+        } else if (Date.now() - start > 2000) {
+          clearInterval(interval);
+          reject(new Error('Timed out waiting for form label to render'));
+        }
+      }, 50);
+    });
 
     const root = fixture.nativeElement as HTMLElement;
     const label = root.querySelector('label[for="principal"]');
     expect(label?.textContent?.trim()).toMatch(/Principal/i);
-  }));
+  });
 
-  it('initializes calcForm and localData signals', fakeAsync(() => {
+  it('initializes calcForm and localData signals', async () => {
     fixture.componentRef.setInput('config', mockConfig);
     fixture.componentRef.setInput('data', { principal: 1000, rate: 5, type: 'a' });
     fixture.detectChanges();
 
-    tick(100);
-    fixture.detectChanges();
+    await new Promise<void>((resolve, reject) => {
+      const start = Date.now();
+      const interval = setInterval(() => {
+        fixture.detectChanges(); // Trigger change detection on each tick
+        if ((component as any).formGroup()) {
+          clearInterval(interval);
+          resolve();
+        } else if (Date.now() - start > 2000) {
+          clearInterval(interval);
+          reject(new Error('Timed out waiting for formGroup signal'));
+        }
+      }, 50);
+    });
 
     expect((component as any).formGroup()).toBeTruthy();
-  }));
+  });
 });
