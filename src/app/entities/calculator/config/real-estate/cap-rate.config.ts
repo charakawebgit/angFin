@@ -1,5 +1,5 @@
 import { CalculatorConfig } from '../../model/types';
-import { calculateCapRate } from '@entities/finance/lib/amortization.utils';
+import { calculateCapRate } from '@entities/finance/lib/real-estate.utils';
 
 const CONFIG: CalculatorConfig = {
     id: 'cap-rate',

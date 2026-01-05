@@ -1,5 +1,5 @@
 import { CalculatorConfig } from '../../model/types';
-import { calculateAmortization } from '@entities/finance/lib/amortization.utils';
+import { calculateAmortization } from '@entities/finance/lib/real-estate.utils';
 
 const CONFIG: CalculatorConfig = {
     id: 'amortization',

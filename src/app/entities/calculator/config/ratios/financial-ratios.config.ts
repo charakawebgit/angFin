@@ -1,5 +1,5 @@
 import { CalculatorConfig } from '../../model/types';
-import { calculateFinancialRatios } from '@entities/finance/lib/amortization.utils';
+import { calculateFinancialRatios } from '@entities/finance/lib/ratios.utils';
 
 const CONFIG: CalculatorConfig = {
     id: 'financial-ratios',
