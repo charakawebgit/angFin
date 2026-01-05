@@ -7,7 +7,10 @@ import { LucideAngularModule } from 'lucide-angular';
   template: `
     <div class="space-y-1.5 flex flex-col">
       @if (label()) {
-        <label [for]="id()" class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">
+        <label
+          [for]="id()"
+          class="text-xs font-semibold uppercase tracking-[0.18em] ml-1 text-[color:var(--text-muted)]"
+        >
           {{ label() }}
         </label>
       }
@@ -16,13 +19,21 @@ import { LucideAngularModule } from 'lucide-angular';
           [id]="id()"
           [value]="value()"
           (change)="onValueChange($event)"
-          class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 appearance-none focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm pr-10 font-medium shadow-sm"
+          class="w-full rounded-xl px-4 py-3 appearance-none focus:outline-none transition-all text-sm pr-10 font-medium shadow-sm"
+          [class]="[
+            'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)]',
+            'border border-[color:var(--panel-outline)]',
+            'focus:ring-4 focus:ring-[color:var(--accent-1)]/15 focus:border-[color:var(--accent-1)]'
+          ].join(' ')"
         >
           @for (option of options(); track option.value) {
             <option [value]="option.value">{{ option.label }}</option>
           }
         </select>
-        <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 dark:text-slate-500 group-focus-within:text-blue-500 transition-colors">
+        <div
+          class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none transition-colors"
+          [class]="'text-[color:var(--text-muted)] group-focus-within:text-[color:var(--accent-1)]'"
+        >
           <lucide-icon name="chevron-down" class="w-4 h-4" />
         </div>
       </div>

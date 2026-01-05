@@ -16,21 +16,21 @@ import { filter, map, startWith } from 'rxjs/operators';
           <a routerLink="/" class="group flex items-center gap-3">
             <div class="relative">
               <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-400/50 via-indigo-500/50 to-fuchsia-400/50 blur-md opacity-75 group-hover:opacity-100 transition"></div>
-              <div class="relative w-12 h-12 rounded-2xl bg-slate-900/70 flex items-center justify-center border border-white/10 shadow-lg">
-                <lucide-icon name="atom" class="text-white w-6 h-6" />
+              <div class="relative w-12 h-12 rounded-2xl flex items-center justify-center border border-[color:var(--panel-outline)] shadow-lg bg-[color:var(--surface-contrast)] text-[color:var(--text-primary)]">
+                <lucide-icon name="atom" class="w-6 h-6" />
               </div>
             </div>
             <div class="flex flex-col leading-tight">
-              <span class="text-lg font-black uppercase tracking-[0.12em]">angFin</span>
-              <span class="text-[11px] font-semibold text-slate-400">Next-gen finance lab</span>
+              <span class="text-lg font-black uppercase tracking-[0.12em] text-[color:var(--text-primary)]">angFin</span>
+              <span class="text-[11px] font-semibold text-[color:var(--text-muted)]">Next-gen finance lab</span>
             </div>
           </a>
 
           @if (!isRoot() && config()) {
-            <div class="hidden md:flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5">
-              <span class="text-[11px] font-semibold text-slate-300 uppercase tracking-[0.18em]">{{ config()?.category }}</span>
-              <lucide-icon name="chevron-right" class="w-3.5 h-3.5 text-slate-500" />
-              <span class="text-sm font-bold text-white">{{ config()?.title }}</span>
+            <div class="hidden md:flex items-center gap-3 px-4 py-2 rounded-full border border-[color:var(--panel-outline)] bg-[color:var(--surface-soft)] text-[color:var(--text-primary)]">
+              <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--text-muted)]">{{ config()?.category }}</span>
+              <lucide-icon name="chevron-right" class="w-3.5 h-3.5 text-[color:var(--text-muted)]" />
+              <span class="text-sm font-bold">{{ config()?.title }}</span>
             </div>
           }
         </div>
@@ -45,7 +45,7 @@ import { filter, map, startWith } from 'rxjs/operators';
 
           <button
             (click)="themeService.toggleTheme()"
-            class="w-12 h-12 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-slate-200 hover:text-white hover:border-white/30 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
+            class="w-12 h-12 flex items-center justify-center rounded-2xl border border-[color:var(--panel-outline)] bg-[color:var(--surface-soft)] text-[color:var(--text-primary)] hover:border-[color:var(--accent-1)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-1)]"
             [title]="themeService.theme() === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
           >
             <lucide-icon [name]="themeService.theme() === 'dark' ? 'sun' : 'moon'" class="w-5 h-5" />

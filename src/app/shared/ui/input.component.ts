@@ -9,13 +9,19 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="flex flex-col gap-1.5">
       @if (label()) {
-        <label [for]="id()" class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">
+        <label
+          [for]="id()"
+          class="text-xs font-semibold uppercase tracking-[0.18em] ml-1 text-[color:var(--text-muted)]"
+        >
           {{ label() }}
         </label>
       }
       <div class="relative group">
         @if (prefix()) {
-          <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-blue-500 transition-colors pointer-events-none font-medium">
+          <span
+            class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none font-medium transition-colors"
+            [class]="'text-[color:var(--text-muted)] group-focus-within:text-[color:var(--accent-1)]'"
+          >
             {{ prefix() }}
           </span>
         }
@@ -29,7 +35,10 @@ import { CommonModule } from '@angular/common';
           [class]="inputClasses()"
         />
         @if (suffix()) {
-          <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-blue-500 transition-colors pointer-events-none font-medium">
+          <span
+            class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none font-medium transition-colors"
+            [class]="'text-[color:var(--text-muted)] group-focus-within:text-[color:var(--accent-1)]'"
+          >
             {{ suffix() }}
           </span>
         }
@@ -69,8 +78,9 @@ export class InputComponent {
   protected inputClasses() {
     return [
       'w-full px-4 py-3 rounded-2xl outline-none transition-all text-sm font-medium shadow-sm',
-      'bg-slate-900/60 text-slate-100 placeholder:text-slate-500 border border-white/10',
-      'focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/60',
+      'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)] placeholder:[color:var(--text-muted)]',
+      'border border-[color:var(--panel-outline)]',
+      'focus:ring-2 focus:ring-[color:var(--accent-1)] focus:border-[color:var(--accent-1)]',
       this.prefix() ? 'pl-9' : 'pl-4',
       this.suffix() ? 'pr-9' : 'pr-4',
       this.hasError
