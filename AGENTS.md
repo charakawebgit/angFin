@@ -482,7 +482,6 @@ constructor() {
 - Services: `*.service.ts`
 - Types/Interfaces: `types.ts` or `*.model.ts`
 - Utils: `*.utils.ts`
-- Tests: `*.spec.ts`
 - Config: `*.config.ts`
 
 ## Summary
