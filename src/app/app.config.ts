@@ -11,12 +11,16 @@ import {
   Copy, Check, Lightbulb, Search, SearchX, LayoutDashboard, ChevronDown, ArrowRight
 } from 'lucide-angular';
 
+import { TitleStrategy } from '@angular/router';
+import { AppTitleStrategy } from '@shared/lib/title-strategy';
+
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
+    { provide: TitleStrategy, useClass: AppTitleStrategy },
     provideAnimationsAsync('noop'),
     importProvidersFrom(
       LucideAngularModule.pick({

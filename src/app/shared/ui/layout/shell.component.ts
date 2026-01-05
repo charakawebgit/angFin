@@ -1,10 +1,6 @@
-import { Component, inject, ChangeDetectionStrategy, effect } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { trigger, transition, style, animate, query } from '@angular/animations';
-import { filter } from 'rxjs';
-import { CalculatorService } from '@entities/calculator/model/calculator.service';
-import { MetaService } from '@shared/lib/meta.service';
 import { HeaderComponent } from './header.component';
 import { FooterComponent } from './footer.component';
 
@@ -51,34 +47,6 @@ import { FooterComponent } from './footer.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShellComponent {
-  private router = inject(Router);
-  private calcService = inject(CalculatorService);
-  private metaService = inject(MetaService);
-
-  private navEvents = toSignal(
-    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
-  );
-
-  constructor() {
-    effect(() => {
-      const event = this.navEvents();
-      if (event) {
-        const urlParts = event.urlAfterRedirects.split('/');
-        const id = urlParts[urlParts.length - 1];
-
-        if (id) {
-          const cfg = this.calcService.getById(id);
-          if (cfg) {
-            this.metaService.updateTitle(cfg.title);
-            this.metaService.updateMeta(cfg.description);
-            return;
-          }
-        }
-        this.metaService.resetTitle();
-      }
-    });
-  }
-
   prepareRoute(outlet: RouterOutlet) {
     return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
   }
