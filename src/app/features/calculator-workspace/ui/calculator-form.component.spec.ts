@@ -3,9 +3,6 @@ import { describe, it, expect } from 'vitest';
 import { CalculatorFormComponent } from './calculator-form.component';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { CalculatorConfig } from '@entities/calculator/model/types';
-import { LucideAngularModule, Calculator } from 'lucide-angular';
-import { InputComponent } from '@shared/ui/input.component';
-import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 
 describe('CalculatorFormComponent', () => {
   const mockConfig: CalculatorConfig = {
@@ -47,7 +44,7 @@ describe('CalculatorFormComponent', () => {
 
     // Wait for form to be initialized via effect
     await waitFor(() => {
-      expect((fixture.componentInstance as any).formGroup()).toBeTruthy();
+      expect((fixture.componentInstance as CalculatorFormComponent).formGroup()).toBeTruthy();
     }, { timeout: 5000 });
   });
 });

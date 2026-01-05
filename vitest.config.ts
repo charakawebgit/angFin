@@ -1,9 +1,11 @@
 import { defineConfig } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import angular from '@analogjs/vite-plugin-angular';
 
 export default defineConfig({
   plugins: [
-    tsconfigPaths()
+    tsconfigPaths(),
+    angular()
   ],
   test: {
     environment: 'happy-dom',
@@ -13,6 +15,11 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      exclude: [
+        'src/main.ts',
+        'src/test-setup.ts',
+        '**/*.config.ts'
+      ]
     },
   }
 });
