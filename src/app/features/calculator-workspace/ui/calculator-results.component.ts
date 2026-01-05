@@ -18,35 +18,40 @@ import { CalculatorConfig, ResultValue } from '@entities/calculator/model/types'
                 <div class="absolute -inset-4 blur-3xl rounded-full opacity-10 group-hover:opacity-20 transition-opacity" [class]="getThemeClass(res.themeColor)"></div>
                 
                 <div class="relative w-full">
-                  <div class="flex items-center justify-center gap-4 mb-2">
-                     <span class="text-5xl md:text-6xl font-black bg-clip-text text-transparent bg-gradient-to-br tracking-tighter font-display" [class]="getGradientClass(res.themeColor)">
-                      {{ formatResult(results()[$index], res.type) }}
-                    </span>
-                    
-                    <button 
-                      (click)="copyToClipboard(results()[$index], res.label)"
-                      class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all opacity-0 group-hover:opacity-100"
-                      [title]="'Copy ' + res.label"
-                    >
-                      @if (copiedField() === res.label) {
-                        <lucide-icon name="check" class="w-4 h-4 text-emerald-500" />
-                      } @else {
-                        <lucide-icon name="copy" class="w-4 h-4" />
-                      }
-                    </button>
-                  </div>
-                  
-                  <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{{ res.label }}</p>
-
-                  @if (res.type === 'percent') {
-                    <div class="mt-6 w-full max-w-[200px] mx-auto h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
-                      <div 
-                        class="h-full rounded-full bg-gradient-to-r transition-all duration-1000 ease-out"
-                        [class]="getGradientClass(res.themeColor)"
-                        [style.width]="getProgressBarWidth(results()[$index])"
-                      ></div>
+                    <div class="flex items-center justify-center gap-4 mb-2">
+                       <span class="text-5xl md:text-6xl font-black bg-clip-text text-transparent bg-gradient-to-br tracking-tighter font-display" [class]="getGradientClass(res.themeColor)">
+                        @switch (res.type) {
+                          @case ('currency') { {{ castToNumber(results()[$index]) | currency:'USD':'symbol':'1.0-2' }} }
+                          @case ('percent') { {{ castToNumber(results()[$index]) | percent:'1.2-2' }} }
+                          @default { {{ castToNumber(results()[$index]) | number:'1.0-4' }} }
+                        }
+                      </span>
+                      
+                      <button 
+                        (click)="copyToClipboard(results()[$index], res.label)"
+                        class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 outline-none focus:ring-2 focus:ring-blue-500/20"
+                        [title]="'Copy ' + res.label"
+                        [aria-label]="'Copy ' + res.label"
+                      >
+                        @if (copiedField() === res.label) {
+                          <lucide-icon name="check" class="w-4 h-4 text-emerald-500" />
+                        } @else {
+                          <lucide-icon name="copy" class="w-4 h-4" />
+                        }
+                      </button>
                     </div>
-                  }
+                    
+                    <p id="label-{{$index}}" class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{{ res.label }}</p>
+  
+                    @if (res.type === 'percent') {
+                      <div class="mt-6 w-full max-w-[200px] mx-auto h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner" role="progressbar" [attr.aria-valuenow]="results()[$index]" aria-valuemin="0" aria-valuemax="100" [attr.aria-labelledby]="'label-' + $index">
+                        <div 
+                          class="h-full rounded-full bg-gradient-to-r transition-all duration-1000 ease-out"
+                          [class]="getGradientClass(res.themeColor)"
+                          [style.width]="getProgressBarWidth(results()[$index])"
+                        ></div>
+                      </div>
+                    }
                 </div>
               </div>
             }
@@ -108,17 +113,9 @@ export class CalculatorResultsComponent {
     }
   }
 
-  formatResult(val: ResultValue, type: string): string {
-    if (val === undefined || val === null) return '0';
-    const numVal = Number(val as number);
-    if (isNaN(numVal)) return '0';
-
-    if (type === 'currency') {
-      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(numVal);
-    }
-    if (type === 'percent') {
-      return (numVal * 100).toFixed(2) + '%';
-    }
-    return numVal.toLocaleString(undefined, { maximumFractionDigits: 4 });
+  castToNumber(val: ResultValue): number {
+    if (typeof val === 'number') return val;
+    if (typeof val === 'string') return parseFloat(val) || 0;
+    return 0;
   }
 }

@@ -73,12 +73,14 @@ export class InputComponent {
 
   protected inputClasses() {
     const fieldState = this.state;
-    let classes = 'w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-medium shadow-sm dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600';
-    if (this.prefix()) classes += ' pl-9';
-    if (this.suffix()) classes += ' pr-9';
-    if (fieldState.invalid() && fieldState.touched()) {
-      classes += ' border-red-500 focus:ring-red-500/10 focus:border-red-500';
-    }
-    return classes;
+    return [
+      'w-full px-4 py-3 bg-white dark:bg-slate-900 border rounded-xl outline-none transition-all text-sm font-medium shadow-sm dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600',
+      'focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500',
+      this.prefix() ? 'pl-9' : 'pl-4',
+      this.suffix() ? 'pr-9' : 'pr-4',
+      fieldState.invalid() && fieldState.touched()
+        ? 'border-red-500 focus:ring-red-500/10 focus:border-red-500'
+        : 'border-slate-200 dark:border-slate-800'
+    ];
   }
 }

@@ -1,4 +1,4 @@
-import { Component, input, output, ChangeDetectionStrategy, effect, signal, untracked, inject, Injector, runInInjectionContext } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy, effect, inject, Injector, runInInjectionContext, linkedSignal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { form, Field, FieldTree } from '@angular/forms/signals';
 import { LucideAngularModule } from 'lucide-angular';
@@ -76,50 +76,30 @@ export class CalculatorFormComponent {
   valid = output<boolean>();
   dataChanged = output<{ key: string; value: CalculatorData[string] }>();
 
-  // Use local writable signal for the form, initialized from the data input
-  localData = signal<CalculatorData>({});
+  // Sync external data changes into local data using linkedSignal
+  localData = linkedSignal<CalculatorData>(() => this.data() || {});
 
-  // Use a writable signal initialized to null
-  // use `any` here because the `form()` return type is complex and inferred differently
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  calcForm = signal<any | null>(null);
+  // The form is derived from config and localData. 
+  // We use a computed signal that handles the injection context.
+  calcForm = computed(() => {
+    const cfg = this.config();
+    if (!cfg) return null;
+
+    // We need an injection context for the form library
+    return runInInjectionContext(this.injector, () => {
+      // Build the schema using a centralized helper
+      return form(this.localData, buildFormSchema(cfg.fields));
+    });
+  });
 
   private injector = inject(Injector);
 
   constructor() {
-    // Initialize form when config changes
-    effect(() => {
-      const cfg = this.config();
-      if (!cfg) return;
-
-      // Use untracked to escape the reactive context of the effect,
-      // allowing the internal effects of 'form()' to be created safely.
-      untracked(() => {
-        // We need an injection context for the form library
-        const newForm = runInInjectionContext(this.injector, () => {
-          // Build the schema using a centralized helper (keeps the dynamic
-          // schema logic in one place).
-          return form(this.localData, buildFormSchema(cfg.fields));
-        });
-        this.calcForm.set(newForm);
-      });
-    });
-
-    // Sync external data changes into local data
-    effect(() => {
-      const d = this.data();
-      if (d == null) return;
-      untracked(() => {
-        if (JSON.stringify(d) !== JSON.stringify(this.localData())) {
-          this.localData.set(d);
-        }
-      });
-    });
-
-    // Emit validity changes
+    // Emit validity changes using an effect
     effect(() => {
       const f = this.calcForm();
       if (f) {
+        // Access validity from the form signal
         this.valid.emit(Boolean(f().valid?.()));
       }
     });
@@ -128,7 +108,8 @@ export class CalculatorFormComponent {
   getField(key: string): FieldTree<string | number, string | number> {
     const f = this.calcForm();
     if (!f) return {} as FieldTree<string | number, string | number>;
-    const formObj = f();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formObj = f() as any;
     return formObj[key] as FieldTree<string | number, string | number>;
   }
 

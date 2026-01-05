@@ -35,12 +35,12 @@ export class CalculatorService {
         const item = this.calculators().find((c) => c.id === id);
         if (item) {
             try {
-                const result = await item.load();
+                const result = await item.load() as { config: CalculatorConfig };
                 console.log(`[CalculatorService] Successfully loaded config for ${id}:`, result);
 
                 // Every registry item returns an object with a 'config' key
-                if (result && result['config']) {
-                    this.currentConfig.set(result['config']);
+                if (result && result.config) {
+                    this.currentConfig.set(result.config);
                 } else {
                     console.error(`[CalculatorService] Loaded result for ${id} missing 'config' key:`, result);
                     this.currentConfig.set(null);
