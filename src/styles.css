@@ -7,15 +7,15 @@
 
 @layer base {
   :root {
-    --bg-mesh: radial-gradient(at 0% 0%, hsla(210,100%,98%,1) 0, transparent 50%), 
-               radial-gradient(at 50% 0%, hsla(220,100%,97%,1) 0, transparent 50%), 
-               radial-gradient(at 100% 0%, hsla(215,100%,98%,1) 0, transparent 50%);
+    --bg-mesh: radial-gradient(at 0% 0%, hsla(210, 100%, 98%, 1) 0, transparent 50%),
+      radial-gradient(at 50% 0%, hsla(220, 100%, 97%, 1) 0, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(215, 100%, 98%, 1) 0, transparent 50%);
   }
 
   .dark {
-    --bg-mesh: radial-gradient(at 0% 0%, hsla(220,40%,10%,1) 0, transparent 50%), 
-               radial-gradient(at 50% 0%, hsla(225,40%,8%,1) 0, transparent 50%), 
-               radial-gradient(at 100% 0%, hsla(230,40%,10%,1) 0, transparent 50%);
+    --bg-mesh: radial-gradient(at 0% 0%, hsla(220, 40%, 10%, 1) 0, transparent 50%),
+      radial-gradient(at 50% 0%, hsla(225, 40%, 8%, 1) 0, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(230, 40%, 10%, 1) 0, transparent 50%);
   }
 
   body {
@@ -25,7 +25,11 @@
     transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
   }
 
-  h1, h2, h3, h4, .font-display {
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
     @apply font-display tracking-tight text-balance;
   }
 
@@ -48,7 +52,7 @@
   .glass {
     @apply bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-2xl;
   }
-  
+
   .glass-card {
     @apply bg-white/40 dark:bg-slate-900/20 backdrop-blur-lg border border-white/40 dark:border-white/5 shadow-xl transition-all duration-300;
   }
@@ -60,21 +64,85 @@
   .shimmer-button::after {
     content: '';
     @apply absolute inset-0 -translate-x-full;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     animation: shimmer 3s infinite;
   }
 }
 
 @keyframes shimmer {
-  100% { transform: translateX(100%); }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+/* Native CSS Animations for v21+ */
+.animate-card-entry {
+  animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.stagger-1 {
+  animation-delay: 50ms;
+}
+
+.stagger-2 {
+  animation-delay: 100ms;
+}
+
+.stagger-3 {
+  animation-delay: 150ms;
+}
+
+.stagger-4 {
+  animation-delay: 200ms;
+}
+
+.stagger-5 {
+  animation-delay: 250ms;
+}
+
+.stagger-6 {
+  animation-delay: 300ms;
+}
+
+.stagger-7 {
+  animation-delay: 350ms;
+}
+
+.stagger-8 {
+  animation-delay: 400ms;
+}
+
+.stagger-9 {
+  animation-delay: 450ms;
 }
