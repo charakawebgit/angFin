@@ -20,7 +20,7 @@ import { CalculatorInfoComponent } from '@features/calculator-workspace/ui/calcu
   template: `
     @if (config()) {
       <div class="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
            <app-calculator-form 
              [config]="config()!" 
              [data]="data()" 
@@ -28,11 +28,23 @@ import { CalculatorInfoComponent } from '@features/calculator-workspace/ui/calcu
              (dataChanged)="updateData($event.key, $event.value)" 
            />
 
-           <app-calculator-results 
-             [config]="config()!" 
-             [results]="results()" 
-             [isValid]="isValid()" 
-           />
+           <div class="md:sticky md:top-24 self-start">
+             <app-calculator-results 
+               [config]="config()!" 
+               [results]="results()" 
+               [isValid]="isValid()" 
+             />
+           </div>
+        </div>
+
+        <!-- Mobile Sticky Result Bar -->
+        <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 shadow-2xl h-16 safe-area-bottom">
+             <app-calculator-results 
+               [config]="config()!" 
+               [results]="results()" 
+               [isValid]="isValid()"
+               viewMode="compact"
+             />
         </div>
 
         <app-calculator-info [config]="config()!" />
