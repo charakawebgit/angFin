@@ -1,7 +1,10 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, inject, ChangeDetectionStrategy, computed } from '@angular/core';
+import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { CalculatorService } from '@entities/calculator/model/calculator.service';
+import { ThemeService } from '@shared/lib/theme.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -40,6 +43,15 @@ import { CalculatorService } from '@entities/calculator/model/calculator.service
               Dashboard
             </a>
           }
+
+          <!-- Theme Toggle -->
+          <button 
+            (click)="themeService.toggleTheme()"
+            class="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-500/20 shadow-sm"
+            [title]="themeService.theme() === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+          >
+            <lucide-icon [name]="themeService.theme() === 'dark' ? 'sun' : 'moon'" class="w-5 h-5" />
+          </button>
         </div>
       </div>
     </header>
@@ -49,10 +61,21 @@ import { CalculatorService } from '@entities/calculator/model/calculator.service
 export class HeaderComponent {
   private router = inject(Router);
   private calcService = inject(CalculatorService);
+  themeService = inject(ThemeService);
 
   config = this.calcService.activeConfig;
 
-  isRoot(): boolean {
-    return this.router.url === '/' || this.router.url === '';
-  }
+  // Signal-based URL tracking for robust UI state
+  private url = toSignal<string>(
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      map(e => (e as NavigationEnd).urlAfterRedirects),
+      startWith(this.router.url)
+    )
+  );
+
+  isRoot = computed(() => {
+    const currentUrl = this.url();
+    return currentUrl === '/' || currentUrl === '' || currentUrl?.startsWith('/?');
+  });
 }

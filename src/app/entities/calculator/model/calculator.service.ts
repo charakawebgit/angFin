@@ -45,15 +45,18 @@ export class CalculatorService {
         const item = this.calculators().find((c) => c.id === id);
         if (item) {
             try {
-                const result = await item.load() as { config: CalculatorConfig };
+                // Simplified module loading
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const module = await item.load() as any;
+                const config = module['CONFIG'] || module['default'];
 
-                if (result && result.config) {
-                    this.configCache.set(id, result.config); // Cache it
-                    this.currentConfig.set(result.config);
+                if (config) {
+                    this.configCache.set(id, config); // Cache it
+                    this.currentConfig.set(config);
                     this.loading.set(false);
-                    return result.config;
+                    return config;
                 } else {
-                    console.error(`[CalculatorService] Loaded result for ${id} missing 'config' key:`, result);
+                    console.error(`[CalculatorService] Loaded module for ${id} missing 'CONFIG' or 'default' export:`, module);
                 }
             } catch (error) {
                 console.error(`[CalculatorService] Error loading calculator config for ${id}:`, error);

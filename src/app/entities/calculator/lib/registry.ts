@@ -7,7 +7,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Calculate the future value of an investment.',
         icon: 'trending-up',
         category: 'TVM',
-        load: () => import('../config/future-value.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/future-value.config')
     },
     {
         id: 'present-value',
@@ -15,7 +15,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Calculate the current worth of a future sum.',
         icon: 'hourglass',
         category: 'TVM',
-        load: () => import('../config/present-value.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/present-value.config')
     },
     {
         id: 'perpetuity',
@@ -23,7 +23,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Value of an endless stream of cash flows.',
         icon: 'percent',
         category: 'Valuation',
-        load: () => import('../config/perpetuity.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/perpetuity.config')
     },
     {
         id: 'ear',
@@ -31,7 +31,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'The true interest rate of an investment.',
         icon: 'bar-chart',
         category: 'Rates',
-        load: () => import('../config/ear.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/ear.config')
     },
     {
         id: 'roi',
@@ -39,7 +39,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Measure the efficiency of an investment.',
         icon: 'trending-up',
         category: 'Basics',
-        load: () => import('../config/roi.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/roi.config')
     },
     {
         id: 'irr',
@@ -47,7 +47,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Internal Rate of Return for cash flows.',
         icon: 'move-horizontal',
         category: 'Capital Budgeting',
-        load: () => import('../config/irr.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/irr.config')
     },
     {
         id: 'npv',
@@ -55,7 +55,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Net Present Value of cash flows.',
         icon: 'bar-chart-4',
         category: 'Capital Budgeting',
-        load: () => import('../config/npv.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/npv.config')
     },
     {
         id: 'capm',
@@ -63,7 +63,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Capital Asset Pricing Model.',
         icon: 'shield-check',
         category: 'Equities',
-        load: () => import('../config/capm.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/capm.config')
     },
     {
         id: 'cap-rate',
@@ -71,7 +71,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Real estate capitalization rate.',
         icon: 'building',
         category: 'Real Estate',
-        load: () => import('../config/cap-rate.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/cap-rate.config')
     },
     {
         id: 'bond-valuation',
@@ -79,7 +79,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Calculate fair value of a bond.',
         icon: 'banknote',
         category: 'Fixed Income',
-        load: () => import('../config/bond-valuation.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/bond-valuation.config')
     },
     {
         id: 'ytm',
@@ -87,7 +87,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Total return anticipated on a bond.',
         icon: 'calendar-check',
         category: 'Fixed Income',
-        load: () => import('../config/ytm.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/ytm.config')
     },
     {
         id: 'duration',
@@ -95,7 +95,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Macaulay and Modified duration.',
         icon: 'baseline',
         category: 'Fixed Income',
-        load: () => import('../config/duration.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/duration.config')
     },
     {
         id: 'amortization',
@@ -103,7 +103,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Loan payment schedule.',
         icon: 'table',
         category: 'Basics',
-        load: () => import('../config/amortization.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/amortization.config')
     },
     {
         id: 'wacc',
@@ -111,7 +111,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Weighted Average Cost of Capital.',
         icon: 'variable',
         category: 'Valuation',
-        load: () => import('../config/wacc.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/wacc.config')
     },
     {
         id: 'ddm',
@@ -119,7 +119,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Stock valuation based on dividends.',
         icon: 'ratio',
         category: 'Equities',
-        load: () => import('../config/ddm.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/ddm.config')
     },
     {
         id: 'dupont',
@@ -127,7 +127,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Breaking down ROE.',
         icon: 'pyramid',
         category: 'Ratios',
-        load: () => import('../config/dupont.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/dupont.config')
     },
     {
         id: 'black-scholes',
@@ -135,7 +135,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Option pricing model.',
         icon: 'sigma',
         category: 'Derivatives',
-        load: () => import('../config/black-scholes.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/black-scholes.config')
     },
     {
         id: 'financial-ratios',
@@ -143,7 +143,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Key performance indicators.',
         icon: 'activity',
         category: 'Ratios',
-        load: () => import('../config/financial-ratios.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/financial-ratios.config')
     },
     {
         id: 'sharpe-ratio',
@@ -151,7 +151,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Risk-adjusted return.',
         icon: 'scatter-chart',
         category: 'Risk',
-        load: () => import('../config/sharpe-ratio.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/sharpe-ratio.config')
     },
     {
         id: 'geometric-mean',
@@ -159,7 +159,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Average rate of return.',
         icon: 'mountain',
         category: 'Stats',
-        load: () => import('../config/geometric-mean.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/geometric-mean.config')
     },
     {
         id: 'variance-stddev',
@@ -167,7 +167,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Measure data dispersion.',
         icon: 'git-compare-arrows',
         category: 'Stats',
-        load: () => import('../config/variance-stddev.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/variance-stddev.config')
     },
     {
         id: 'portfolio-return',
@@ -175,7 +175,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Weighted average return.',
         icon: 'target',
         category: 'Portfolio',
-        load: () => import('../config/portfolio-return.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/portfolio-return.config')
     },
     {
         id: 'portfolio-risk',
@@ -183,7 +183,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Risk of a two-asset portfolio.',
         icon: 'shield-check',
         category: 'Risk',
-        load: () => import('../config/portfolio-risk.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/portfolio-risk.config')
     },
     {
         id: 'mad',
@@ -191,7 +191,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Mean Absolute Deviation.',
         icon: 'bar-chart-horizontal',
         category: 'Stats',
-        load: () => import('../config/mad.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/mad.config')
     },
     {
         id: 'cv',
@@ -199,7 +199,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Relative variability.',
         icon: 'percent',
         category: 'Stats',
-        load: () => import('../config/cv.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/cv.config')
     },
     {
         id: 'skew-kurt',
@@ -207,7 +207,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Distribution shape analysis.',
         icon: 'pyramid',
         category: 'Stats',
-        load: () => import('../config/skew-kurt.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/skew-kurt.config')
     },
     {
         id: 'hpr',
@@ -215,7 +215,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Total return over a period.',
         icon: 'hand-coins',
         category: 'Rates',
-        load: () => import('../config/hpr.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/hpr.config')
     },
     {
         id: 'rbd-eay',
@@ -223,7 +223,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Discount and Annual Yields.',
         icon: 'zap',
         category: 'Rates',
-        load: () => import('../config/rbd-eay.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/rbd-eay.config')
     },
     {
         id: 'convexity',
@@ -231,7 +231,7 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Price sensitivity adjustment.',
         icon: 'baseline',
         category: 'Fixed Income',
-        load: () => import('../config/convexity.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/convexity.config')
     },
     {
         id: 'tvm-solver',
@@ -239,6 +239,6 @@ export const CALCULATORS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Universal financial calculator.',
         icon: 'calculator',
         category: 'Basics',
-        load: () => import('../config/tvm-solver.config').then(m => ({ config: m.CONFIG }))
+        load: () => import('../config/tvm-solver.config')
     }
 ];

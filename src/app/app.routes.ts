@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CalculatorResolver } from './entities/calculator/lib/calculator.resolver';
 
 export const routes: Routes = [
     {
@@ -19,7 +20,7 @@ export const routes: Routes = [
                     import('./pages/calculator/ui/calculator-page.component').then(
                         (m) => m.DynamicCalculatorComponent
                     ),
-                resolve: { config: () => import('./entities/calculator/lib/calculator.resolver').then(m => m.CalculatorResolver) },
+                resolve: { config: CalculatorResolver },
                 data: { animation: 'detail' }
             },
             {

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header.component';
 import { FooterComponent } from './footer.component';
+import { ThemeService } from '@shared/lib/theme.service';
 
 @Component({
   selector: 'app-shell',
@@ -24,4 +25,7 @@ import { FooterComponent } from './footer.component';
     </div>
   `,
 })
-export class ShellComponent { }
+export class ShellComponent {
+  // Inject to initialize and run the theme effect
+  private themeService = inject(ThemeService);
+}
