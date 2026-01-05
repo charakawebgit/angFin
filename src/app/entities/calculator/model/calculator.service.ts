@@ -69,10 +69,5 @@ export class CalculatorService {
         } finally {
             this.loading.set(false);
         }
-
-        // Only clear if load failed
-        this.currentConfig.set(null);
-        this.loading.set(false);
-        return null;
     }
 }
