@@ -23,18 +23,21 @@ export const routes: Routes = [
             },
             {
                 path: 'about',
+                title: 'About',
                 loadComponent: () =>
                     import('./pages/static/ui/about.component').then((m) => m.AboutComponent),
                 data: { animation: 'about' }
             },
             {
                 path: 'privacy',
+                title: 'Privacy Policy',
                 loadComponent: () =>
                     import('./pages/static/ui/privacy.component').then((m) => m.PrivacyComponent),
                 data: { animation: 'privacy' }
             },
             {
                 path: 'disclaimer',
+                title: 'Disclaimer',
                 loadComponent: () =>
                     import('./pages/static/ui/disclaimer.component').then(
                         (m) => m.DisclaimerComponent

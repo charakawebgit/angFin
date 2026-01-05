@@ -4,12 +4,13 @@ import { LucideAngularModule } from 'lucide-angular';
 import { FormsModule } from '@angular/forms';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { CardComponent } from '@shared/ui/card.component';
+import { SkeletonComponent } from '@shared/ui/skeleton.component';
 import { CalculatorService } from '@entities/calculator/model/calculator.service';
 import { MetaService } from '@shared/lib/meta.service';
 
 @Component({
   selector: 'app-calculator-list',
-  imports: [LucideAngularModule, RouterLink, CardComponent, FormsModule],
+  imports: [LucideAngularModule, RouterLink, CardComponent, FormsModule, SkeletonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-16 pb-20 overflow-hidden">
@@ -71,7 +72,19 @@ import { MetaService } from '@shared/lib/meta.service';
 
       <!-- Calculations Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" [@listAnimation]="filteredCalculators().length">
-        @for (calc of filteredCalculators(); track calc.id) {
+        @if (isLoading()) {
+          @for (i of [1,2,3,4,5,6]; track $index) {
+            <div class="glass-card p-8 rounded-[2rem] space-y-4">
+              <app-skeleton height="48px" width="48px" borderRadius="1rem" />
+              <app-skeleton height="24px" width="60%" />
+              <app-skeleton height="16px" width="90%" />
+              <div class="pt-4 flex gap-2">
+                <app-skeleton height="32px" width="80px" borderRadius="2rem" />
+              </div>
+            </div>
+          }
+        } @else {
+          @for (calc of filteredCalculators(); track calc.id) {
           <a [routerLink]="['/calculator', calc.id]" class="group block h-full">
             <app-card class="h-full transform transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_rgba(37,99,235,0.1)]">
               <div class="p-4 flex flex-col h-full">
@@ -108,7 +121,8 @@ import { MetaService } from '@shared/lib/meta.service';
             <p class="text-slate-500 dark:text-slate-400">Try adjusting your search or category filters.</p>
           </div>
         }
-      </div>
+      }
+    </div>
     </div>
   `,
   animations: [
@@ -131,6 +145,7 @@ export class CalculatorListComponent implements OnInit {
   calculators = this.calcService.calculatorsList;
   selectedCategory = signal<string>('All');
   searchQuery = signal<string>('');
+  isLoading = signal<boolean>(true);
 
   categories = computed(() => {
     const cats = new Set(this.calculators().map((c) => c.category));
@@ -160,5 +175,8 @@ export class CalculatorListComponent implements OnInit {
   ngOnInit() {
     this.metaService.updateTitle('Dashboard');
     this.metaService.updateMeta('Professional financial intelligence toolkit for calculations in TVM, Stats, Fixed Income, and Equity.');
+
+    // Simulate premium loading feel
+    setTimeout(() => this.isLoading.set(false), 800);
   }
 }

@@ -11,7 +11,7 @@ export class AppTitleStrategy extends TitleStrategy {
     private calcService = inject(CalculatorService);
 
     override updateTitle(routerState: RouterStateSnapshot) {
-        const url = routerState.url.split('?')[0]; // Strip query params
+        const url = routerState.url.split('?')[0];
         const parts = url.split('/');
         const id = parts[parts.length - 1];
 
@@ -24,7 +24,12 @@ export class AppTitleStrategy extends TitleStrategy {
             }
         }
 
-        // Default values for other pages or if calculator not found
+        const title = this.buildTitle(routerState);
+        if (title) {
+            this.metaService.updateTitle(title);
+            return;
+        }
+
         this.metaService.resetTitle();
     }
 }

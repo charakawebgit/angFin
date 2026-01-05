@@ -1,6 +1,7 @@
-import { ApplicationConfig, provideZonelessChangeDetection, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, provideZonelessChangeDetection, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideServiceWorker } from '@angular/service-worker';
 import {
   LucideAngularModule,
   TrendingUp, BarChart, Percent, Hourglass, ListPlus, ShieldCheck,
@@ -22,6 +23,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     { provide: TitleStrategy, useClass: AppTitleStrategy },
     provideAnimationsAsync('noop'),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
     importProvidersFrom(
       LucideAngularModule.pick({
         TrendingUp, BarChart, Percent, Hourglass, ListPlus, ShieldCheck,
