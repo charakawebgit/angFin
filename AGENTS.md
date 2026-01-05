@@ -81,26 +81,27 @@ private count = 0;
 get doubled() { return this.count * 2; }
 ```
 
-### 4. Signal Forms (MANDATORY)
+### 4. Reactive Forms (MANDATORY)
 
-This app uses **Signal Forms** from `@angular/forms/signals`:
+**ALWAYS** use Reactive Forms from `@angular/forms` for form handling. Signal Forms are avoided due to stability issues.
 
 ```typescript
-import { form, required, min, max } from '@angular/forms/signals';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 
-// Create a form with validation
-const myForm = form(dataSignal, (schema) => {
-  required(schema.fieldName);
-  min(schema.amount, 0);
-  max(schema.amount, 1000000);
+// Create a typed form
+private fb = inject(FormBuilder);
+
+form = this.fb.group({
+  name: ['', [Validators.required]],
+  amount: [0, [Validators.required, Validators.min(0)]]
 });
 ```
 
 **Rules:**
-- NEVER use `FormGroup`, `FormControl`, or `FormBuilder`
-- Use `form()` function to create forms
-- Apply validators using `required()`, `min()`, `max()` functions
-- Access form state through signal calls: `myForm().valid()`
+- Use `FormBuilder` or `new FormGroup()`
+- Use typed forms (Angular 14+)
+- Bind using `[formGroup]` and `formControlName`
+- Use `changeDetection: OnPush` and standard reactive patterns (`valueChanges`)
 
 ## Component Guidelines
 
@@ -320,47 +321,51 @@ export const routes: Routes = [
 - Use `withComponentInputBinding()` to bind route params to inputs
 - Define route data for animations or metadata
 
-## Forms (Signal Forms)
+## Forms (Reactive Forms)
 
 ### Form Creation
 
 ```typescript
-import { form, required, min, max, Field } from '@angular/forms/signals';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+@Component({
+  imports: [ReactiveFormsModule],
+  // ...
+})
 export class MyFormComponent {
-  formData = signal<FormData>({ amount: 0, rate: 0 });
+  private fb = inject(FormBuilder);
   
-  myForm = form(this.formData, (schema) => {
-    required(schema.amount);
-    min(schema.amount, 0);
-    max(schema.amount, 1000000);
-    required(schema.rate);
+  myForm = this.fb.group({
+    amount: [0, [Validators.required, Validators.min(0)]],
+    rate: [0, [Validators.required]]
   });
   
   // Access form state
-  isValid = computed(() => this.myForm().valid());
+  // Use valueChanges for reactivity if needed, or check validity directly
 }
 ```
 
 ### Form Field Template
 
 ```typescript
-<input
-  [id]="'amount'"
-  type="number"
-  [field]="myForm.amount"
-  placeholder="Enter amount"
-/>
+<form [formGroup]="myForm">
+  <input
+    [id]="'amount'"
+    type="number"
+    formControlName="amount"
+    placeholder="Enter amount"
+  />
+</form>
 ```
 
 ### Form Rules
 
-- **MANDATORY**: Use Signal Forms, not Reactive or Template-driven forms
-- Use `form()` function to create forms
-- Apply validators as functions: `required()`, `min()`, `max()`
-- Import and use the `Field` directive for form controls
-- Use `effect()` to react to form changes
-- Use `untracked()` when creating forms inside effects
+- **MANDATORY**: Use Reactive Forms (`FormGroup`, `FormControl`)
+- Prefer `FormBuilder` for clearer syntax
+- Use `Validators` from `@angular/forms`
+- Pass `FormControl` to child inputs if creating reusable components
+- Clean up subscriptions if using `.valueChanges` (or use `takeUntilDestroyed`)
 
 ## Accessibility (MANDATORY)
 
@@ -439,22 +444,12 @@ export interface CalculatorConfig {
 
 ### Effect with Injection Context
 
-When creating signal forms inside effects, use `runInInjectionContext`:
+When creating effects that depend on injection context (rare with Reactive Forms, but possible):
 
 ```typescript
-private injector = inject(Injector);
-
 constructor() {
-  effect(() => {
-    const config = this.config();
-    untracked(() => {
-      const newForm = runInInjectionContext(this.injector, () => {
-        return form(this.data, (schema) => {
-          // validation
-        });
-      });
-      this.calcForm.set(newForm);
-    });
+  effect((onCleanup) => {
+    //Effect logic
   });
 }
 ```
@@ -464,7 +459,7 @@ constructor() {
 ❌ Use `standalone: true` (it's default in v21)
 ❌ Use `@Input()` or `@Output()` decorators
 ❌ Use `@HostBinding()` or `@HostListener()` decorators
-❌ Use `FormGroup`, `FormControl`, or `FormBuilder`
+❌ Use Template-driven forms (`ngModel` without `standalone`) - Prefer Reactive Forms
 ❌ Use `*ngIf`, `*ngFor`, `*ngSwitch`
 ❌ Use `ngClass` or `ngStyle`
 ❌ Use `any` type
@@ -496,7 +491,7 @@ This is a **zoneless**, **signal-based**, **standalone** Angular v21 application
 
 1. Signal-based reactivity
 2. FSD architecture layers
-3. Signal Forms (not Reactive Forms)
+3. Reactive Forms
 4. Native control flow
 5. Zoneless patterns
 6. Accessibility
