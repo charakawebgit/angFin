@@ -22,7 +22,7 @@ import { CalculatorService } from '@entities/calculator/model/calculator.service
 
           <!-- Breadcrumbs -->
           @if (!isRoot() && config()) {
-            <div class="hidden md:flex items-center gap-3 animate-in fade-in slide-in-from-left-4 duration-700">
+            <div class="hidden md:flex items-center gap-3 animate-breadcrumb duration-700">
               <div class="h-8 w-px bg-slate-200 dark:bg-white/10 mx-2"></div>
               <div class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
                 <span>{{ config()?.category }}</span>

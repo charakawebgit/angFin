@@ -73,7 +73,7 @@ import { MetaService } from '@shared/lib/meta.service';
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @if (isLoading()) {
           @for (i of [1,2,3,4,5,6]; track $index) {
-            <div class="glass-card p-8 rounded-[2rem] space-y-4 animate-card-entry" [class]="'stagger-' + ($index + 1)">
+            <div [class]="'glass-card p-8 rounded-[2rem] space-y-4 animate-card-entry stagger-' + ($index + 1)">
               <app-skeleton height="48px" width="48px" borderRadius="1rem" />
               <app-skeleton height="24px" width="60%" />
               <app-skeleton height="16px" width="90%" />
@@ -85,8 +85,7 @@ import { MetaService } from '@shared/lib/meta.service';
         } @else {
           @for (calc of filteredCalculators(); track calc.id) {
           <a [routerLink]="['/calculator', calc.id]" 
-             class="group block h-full animate-card-entry" 
-             [class]="'stagger-' + (($index % 9) + 1)">
+             [class]="'group block h-full animate-card-entry stagger-' + (($index % 9) + 1)">
             <app-card class="h-full transform transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_rgba(37,99,235,0.1)]">
               <div class="p-4 flex flex-col h-full">
                 <div class="flex items-start justify-between mb-8">
