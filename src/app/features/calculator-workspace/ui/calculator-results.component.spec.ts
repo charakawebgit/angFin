@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { CalculatorResultsComponent } from './calculator-results.component';
 import { CalculatorConfig, ResultValue } from '@entities/calculator/model/types';
@@ -24,7 +25,8 @@ describe('CalculatorResultsComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [CalculatorResultsComponent, LucideAngularModule.pick({ Copy, Check, Calculator })]
+            imports: [CalculatorResultsComponent, LucideAngularModule.pick({ Copy, Check, Calculator })],
+            providers: [provideZonelessChangeDetection()]
         }).compileComponents();
 
         fixture = TestBed.createComponent(CalculatorResultsComponent);
