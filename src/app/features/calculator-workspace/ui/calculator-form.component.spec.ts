@@ -53,8 +53,8 @@ describe('CalculatorFormComponent', () => {
 
   it('renders and displays the Principal label', async () => {
     // Assign the `input()` backed functions directly to avoid setInput issues in this test env
-    (component as any).config = (() => mockConfig) as any;
-    (component as any).data = (() => ({ principal: 1000, rate: 5, type: 'a' })) as any;
+    fixture.componentRef.setInput('config', mockConfig);
+    fixture.componentRef.setInput('data', { principal: 1000, rate: 5, type: 'a' });
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -64,8 +64,8 @@ describe('CalculatorFormComponent', () => {
   });
 
   it('initializes calcForm and localData signals', async () => {
-    (component as any).config = (() => mockConfig) as any;
-    (component as any).data = (() => ({ principal: 1000, rate: 5, type: 'a' })) as any;
+    fixture.componentRef.setInput('config', mockConfig);
+    fixture.componentRef.setInput('data', { principal: 1000, rate: 5, type: 'a' });
     fixture.detectChanges();
     await fixture.whenStable();
 

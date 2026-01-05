@@ -109,6 +109,6 @@ export interface CalculatorConfig extends CalculatorDef {
 }
 
 export interface CalculatorRegistryItem extends CalculatorDef {
-    load: () => Promise<any>;
+    load: () => Promise<unknown>;
 }
 
