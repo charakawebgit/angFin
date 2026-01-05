@@ -7,4 +7,4 @@ import Decimal from 'decimal.js';
 Decimal.set({ precision: 50 });
 
 bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+  .catch((err: unknown) => console.error(err));

@@ -81,14 +81,14 @@ export class DynamicCalculatorComponent {
     return cfg.results.map(res => {
       try {
         return res.calculate(d);
-      } catch (e) {
+      } catch (e: unknown) {
         console.error('Calculation Error:', e);
         return 0;
       }
     });
   });
 
-  updateData(key: string, value: import('@entities/calculator/model/types').CalculatorData[string]) {
+  updateData(key: string, value: CalculatorData[string]) {
     this.data.update(d => ({ ...d, [key]: value }));
   }
 

@@ -62,7 +62,7 @@ export class CalculatorService {
             this.currentConfig.set(null);
             return null;
 
-        } catch (error) {
+        } catch (error: unknown) {
             console.error(`[CalculatorService] Failed to load ${id}:`, error);
             this.currentConfig.set(null);
             return null;
