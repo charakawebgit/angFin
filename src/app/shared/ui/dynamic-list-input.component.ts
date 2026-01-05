@@ -27,7 +27,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
           #newItemInput
           type="number"
           [id]="id()"
-          class="flex-grow h-11 px-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-medium shadow-sm dark:text-slate-100 placeholder:text-slate-400"
+          class="flex-grow h-11 px-4 rounded-2xl bg-slate-900/60 border border-white/10 text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/60 transition-all text-sm font-medium shadow-sm"
           placeholder="Add value..."
           (keyup.enter)="addItem(newItemInput)"
           (blur)="markTouched()"
@@ -36,7 +36,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         <button
           type="button"
           (click)="addItem(newItemInput)"
-          class="h-11 w-11 flex items-center justify-center bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
+          class="h-11 w-11 flex items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-indigo-500 to-fuchsia-500 text-white hover:scale-105 transition-all shadow-lg shadow-cyan-500/30 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60"
           [attr.aria-label]="'Add item to ' + label()"
           [disabled]="disabled()"
         >
@@ -44,13 +44,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         </button>
       </div>
 
-      <div class="flex flex-wrap gap-2 min-h-[44px] p-2 bg-slate-50/50 dark:bg-slate-950/20 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800/50" aria-live="polite">
+      <div class="flex flex-wrap gap-2 min-h-[44px] p-2 rounded-2xl border border-dashed border-white/10 bg-white/5" aria-live="polite">
         @for (item of items(); track $index) {
-          <div class="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-sm group hover:border-blue-500 transition-all animate-in zoom-in duration-200">
-            <span class="text-sm font-bold text-slate-700 dark:text-slate-200">{{ item }}</span>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/60 border border-white/10 shadow-sm group hover:border-cyan-400/50 transition-all animate-in zoom-in duration-200">
+            <span class="text-sm font-bold text-slate-100">{{ item }}</span>
             <button
               (click)="removeItem($index)"
-              class="text-slate-400 hover:text-red-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50"
+              class="text-slate-400 hover:text-red-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50"
               [attr.aria-label]="'Remove ' + item + ' from list'"
               [disabled]="disabled()"
             >

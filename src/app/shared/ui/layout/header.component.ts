@@ -10,44 +10,42 @@ import { filter, map, startWith } from 'rxjs/operators';
   selector: 'app-header',
   imports: [RouterLink, LucideAngularModule],
   template: `
-    <header class="glass sticky top-0 z-50 border-b border-slate-200/50 dark:border-white/5 transition-all duration-500">
-      <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
-        <div class="flex items-center gap-8">
-          <a routerLink="/" class="group flex items-center gap-4 active:scale-95 transition-all outline-none">
-            <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-600/20 group-hover:rotate-6 group-hover:scale-110 transition-all duration-500">
-             <lucide-icon name="trending-up" class="text-white w-6 h-6" />
+    <header class="sticky top-0 z-50 backdrop-blur-xl">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6 surface-panel">
+        <div class="flex items-center gap-6">
+          <a routerLink="/" class="group flex items-center gap-3">
+            <div class="relative">
+              <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-400/50 via-indigo-500/50 to-fuchsia-400/50 blur-md opacity-75 group-hover:opacity-100 transition"></div>
+              <div class="relative w-12 h-12 rounded-2xl bg-slate-900/70 flex items-center justify-center border border-white/10 shadow-lg">
+                <lucide-icon name="atom" class="text-white w-6 h-6" />
+              </div>
             </div>
-            <div class="flex flex-col -space-y-1.5">
-              <span class="text-2xl font-black tracking-tighter dark:text-white uppercase transition-colors group-hover:text-blue-600 font-display">angFin</span>
-              <span class="text-[10px] font-black text-blue-600 dark:text-blue-500 uppercase tracking-[0.25em]">Professional Suite</span>
+            <div class="flex flex-col leading-tight">
+              <span class="text-lg font-black uppercase tracking-[0.12em]">angFin</span>
+              <span class="text-[11px] font-semibold text-slate-400">Next-gen finance lab</span>
             </div>
           </a>
 
-          <!-- Breadcrumbs -->
           @if (!isRoot() && config()) {
-            <div class="hidden md:flex items-center gap-3 animate-breadcrumb duration-700">
-              <div class="h-8 w-px bg-slate-200 dark:bg-white/10 mx-2"></div>
-              <div class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
-                <span>{{ config()?.category }}</span>
-                <lucide-icon name="chevron-right" class="w-3 h-3 opacity-50" />
-                <span class="text-slate-900 dark:text-white">{{ config()?.title }}</span>
-              </div>
+            <div class="hidden md:flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5">
+              <span class="text-[11px] font-semibold text-slate-300 uppercase tracking-[0.18em]">{{ config()?.category }}</span>
+              <lucide-icon name="chevron-right" class="w-3.5 h-3.5 text-slate-500" />
+              <span class="text-sm font-bold text-white">{{ config()?.title }}</span>
             </div>
           }
         </div>
 
-        <div class="flex items-center gap-8">
+        <div class="flex items-center gap-3">
           @if (!isRoot()) {
-            <a routerLink="/" class="shimmer-button group flex items-center gap-2.5 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-blue-600 transition-all bg-white/50 dark:bg-slate-900/50 px-5 py-3 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm hover:shadow-xl hover:shadow-blue-500/10">
-              <lucide-icon name="layout-dashboard" class="w-4 h-4 group-hover:rotate-12 transition-transform" />
-              Dashboard
+            <a routerLink="/" class="cta-ghost">
+              <lucide-icon name="layout-dashboard" class="w-4 h-4" />
+              <span class="relative z-10 text-xs tracking-[0.2em] uppercase">Back to suite</span>
             </a>
           }
 
-          <!-- Theme Toggle -->
-          <button 
+          <button
             (click)="themeService.toggleTheme()"
-            class="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-500/20 shadow-sm"
+            class="w-12 h-12 flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-slate-200 hover:text-white hover:border-white/30 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
             [title]="themeService.theme() === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
           >
             <lucide-icon [name]="themeService.theme() === 'dark' ? 'sun' : 'moon'" class="w-5 h-5" />

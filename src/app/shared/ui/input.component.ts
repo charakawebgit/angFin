@@ -68,13 +68,14 @@ export class InputComponent {
 
   protected inputClasses() {
     return [
-      'w-full px-4 py-3 bg-white dark:bg-slate-900 border rounded-xl outline-none transition-all text-sm font-medium shadow-sm dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600',
-      'focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500',
+      'w-full px-4 py-3 rounded-2xl outline-none transition-all text-sm font-medium shadow-sm',
+      'bg-slate-900/60 text-slate-100 placeholder:text-slate-500 border border-white/10',
+      'focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/60',
       this.prefix() ? 'pl-9' : 'pl-4',
       this.suffix() ? 'pr-9' : 'pr-4',
       this.hasError
-        ? 'border-red-500 focus:ring-red-500/10 focus:border-red-500'
-        : 'border-slate-200 dark:border-slate-800'
+        ? 'border-red-400/80 focus:ring-red-400/40'
+        : ''
     ];
   }
 }

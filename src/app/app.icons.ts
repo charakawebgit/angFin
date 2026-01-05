@@ -6,7 +6,8 @@ import {
     Variable, Sigma, Ratio, GitCompareArrows, BarChartHorizontal, Mountain,
     Target, HandCoins, Scale, Zap, ScrollText, Pyramid, ClipboardList, Activity, ScatterChart,
     Table, BrainCircuit, Calculator, Gauge, Waves, Building, Plus, Trash2, ArrowLeft, ArrowUpRight, BarChart2,
-    Copy, Check, Lightbulb, Search, SearchX, LayoutDashboard, ChevronDown, ChevronRight, Infinity as InfinityIcon, ArrowRight, Sun, Moon
+    Copy, Check, Lightbulb, Search, SearchX, LayoutDashboard, ChevronDown, ChevronRight, Infinity as InfinityIcon, ArrowRight, Sun, Moon,
+    Atom, Sparkle, MoreHorizontal
 } from 'lucide-angular';
 
 export const provideIcons = () => importProvidersFrom(
@@ -16,6 +17,7 @@ export const provideIcons = () => importProvidersFrom(
         Variable, Sigma, Ratio, GitCompareArrows, BarChartHorizontal, Mountain,
         Target, HandCoins, Scale, Zap, ScrollText, Pyramid, ClipboardList, Activity, ScatterChart,
         Table, BrainCircuit, Calculator, Gauge, Waves, Building, Plus, Trash2, ArrowLeft, ArrowUpRight, BarChart2,
-        Copy, Check, Lightbulb, Search, SearchX, LayoutDashboard, ChevronDown, ChevronRight, Infinity: InfinityIcon, ArrowRight, Sun, Moon
+        Copy, Check, Lightbulb, Search, SearchX, LayoutDashboard, ChevronDown, ChevronRight, Infinity: InfinityIcon, ArrowRight, Sun, Moon,
+        Atom, Sparkle, MoreHorizontal
     })
 );
