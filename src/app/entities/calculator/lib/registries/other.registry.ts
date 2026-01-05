@@ -7,7 +7,7 @@ export const OTHER_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Measure the efficiency of an investment.',
         icon: 'trending-up',
         category: 'Basics',
-        load: () => import('../../config/roi.config')
+        load: () => import('../../config/ratios/roi.config')
     },
     {
         id: 'amortization',
@@ -15,7 +15,7 @@ export const OTHER_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Loan payment schedule.',
         icon: 'table',
         category: 'Basics',
-        load: () => import('../../config/amortization.config')
+        load: () => import('../../config/real-estate/amortization.config')
     },
     {
         id: 'tvm-solver',
@@ -23,7 +23,7 @@ export const OTHER_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Universal financial calculator.',
         icon: 'calculator',
         category: 'Basics',
-        load: () => import('../../config/tvm-solver.config')
+        load: () => import('../../config/tvm/tvm-solver.config')
     },
     {
         id: 'cap-rate',
@@ -31,7 +31,7 @@ export const OTHER_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Real estate capitalization rate.',
         icon: 'building',
         category: 'Real Estate',
-        load: () => import('../../config/cap-rate.config')
+        load: () => import('../../config/real-estate/cap-rate.config')
     },
     {
         id: 'sharpe-ratio',
@@ -39,7 +39,7 @@ export const OTHER_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Risk-adjusted return.',
         icon: 'scatter-chart',
         category: 'Risk',
-        load: () => import('../../config/sharpe-ratio.config')
+        load: () => import('../../config/ratios/sharpe-ratio.config')
     },
     {
         id: 'portfolio-risk',
@@ -47,7 +47,7 @@ export const OTHER_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Risk of a two-asset portfolio.',
         icon: 'shield-check',
         category: 'Risk',
-        load: () => import('../../config/portfolio-risk.config')
+        load: () => import('../../config/ratios/portfolio-risk.config')
     },
     {
         id: 'portfolio-return',
@@ -55,7 +55,7 @@ export const OTHER_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Weighted average return.',
         icon: 'target',
         category: 'Portfolio',
-        load: () => import('../../config/portfolio-return.config')
+        load: () => import('../../config/ratios/portfolio-return.config')
     },
     {
         id: 'black-scholes',
@@ -63,6 +63,6 @@ export const OTHER_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Option pricing model.',
         icon: 'sigma',
         category: 'Derivatives',
-        load: () => import('../../config/black-scholes.config')
+        load: () => import('../../config/valuation/black-scholes.config')
     }
 ];

@@ -7,7 +7,7 @@ export const RATES_REGISTRY: CalculatorRegistryItem[] = [
         description: 'The true interest rate of an investment.',
         icon: 'bar-chart',
         category: 'Rates',
-        load: () => import('../../config/ear.config')
+        load: () => import('../../config/fixed-income/ear.config')
     },
     {
         id: 'hpr',
@@ -15,7 +15,7 @@ export const RATES_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Total return over a period.',
         icon: 'hand-coins',
         category: 'Rates',
-        load: () => import('../../config/hpr.config')
+        load: () => import('../../config/valuation/hpr.config')
     },
     {
         id: 'rbd-eay',
@@ -23,6 +23,6 @@ export const RATES_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Discount and Annual Yields.',
         icon: 'zap',
         category: 'Rates',
-        load: () => import('../../config/rbd-eay.config')
+        load: () => import('../../config/fixed-income/rbd-eay.config')
     }
 ];

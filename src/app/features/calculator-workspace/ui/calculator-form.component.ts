@@ -9,7 +9,7 @@ import { InputComponent } from '@shared/ui/input.component';
 import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 import { CardComponent } from '@shared/ui/card.component';
 import { CalculatorConfig, CalculatorData } from '@entities/calculator/model/types';
-import { asList } from '@shared/lib/math/casting.utils';
+import { asList } from '@entities/finance/lib/casting.utils';
 
 @Component({
   selector: 'app-calculator-form',

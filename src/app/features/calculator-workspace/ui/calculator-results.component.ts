@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 import { CardComponent } from '@shared/ui/card.component';
 import { CalculatorConfig, ResultValue } from '@entities/calculator/model/types';
-import { castToNumber } from '@shared/lib/math/casting.utils';
+import { castToNumber } from '@entities/finance/lib/casting.utils';
 
 @Component({
   selector: 'app-calculator-results',

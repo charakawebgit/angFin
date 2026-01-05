@@ -7,7 +7,7 @@ export const INVESTMENTS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Capital Asset Pricing Model.',
         icon: 'shield-check',
         category: 'Equities',
-        load: () => import('../../config/capm.config')
+        load: () => import('../../config/valuation/capm.config')
     },
     {
         id: 'ddm',
@@ -15,7 +15,7 @@ export const INVESTMENTS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Stock valuation based on dividends.',
         icon: 'ratio',
         category: 'Equities',
-        load: () => import('../../config/ddm.config')
+        load: () => import('../../config/valuation/ddm.config')
     },
     {
         id: 'bond-valuation',
@@ -23,7 +23,7 @@ export const INVESTMENTS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Calculate fair value of a bond.',
         icon: 'banknote',
         category: 'Fixed Income',
-        load: () => import('../../config/bond-valuation.config')
+        load: () => import('../../config/valuation/bond-valuation.config')
     },
     {
         id: 'ytm',
@@ -31,7 +31,7 @@ export const INVESTMENTS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Total return anticipated on a bond.',
         icon: 'calendar-check',
         category: 'Fixed Income',
-        load: () => import('../../config/ytm.config')
+        load: () => import('../../config/fixed-income/ytm.config')
     },
     {
         id: 'duration',
@@ -39,7 +39,7 @@ export const INVESTMENTS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Macaulay and Modified duration.',
         icon: 'baseline',
         category: 'Fixed Income',
-        load: () => import('../../config/duration.config')
+        load: () => import('../../config/fixed-income/duration.config')
     },
     {
         id: 'convexity',
@@ -47,6 +47,6 @@ export const INVESTMENTS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Price sensitivity adjustment.',
         icon: 'baseline',
         category: 'Fixed Income',
-        load: () => import('../../config/convexity.config')
+        load: () => import('../../config/fixed-income/convexity.config')
     }
 ];

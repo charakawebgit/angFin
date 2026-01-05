@@ -7,7 +7,7 @@ export const CORPORATE_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Internal Rate of Return for cash flows.',
         icon: 'move-horizontal',
         category: 'Capital Budgeting',
-        load: () => import('../../config/irr.config')
+        load: () => import('../../config/corp-finance/irr.config')
     },
     {
         id: 'npv',
@@ -15,7 +15,7 @@ export const CORPORATE_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Net Present Value of cash flows.',
         icon: 'bar-chart-4',
         category: 'Capital Budgeting',
-        load: () => import('../../config/npv.config')
+        load: () => import('../../config/corp-finance/npv.config')
     },
     {
         id: 'wacc',
@@ -23,7 +23,7 @@ export const CORPORATE_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Weighted Average Cost of Capital.',
         icon: 'variable',
         category: 'Valuation',
-        load: () => import('../../config/wacc.config')
+        load: () => import('../../config/corp-finance/wacc.config')
     },
     {
         id: 'dupont',
@@ -31,7 +31,7 @@ export const CORPORATE_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Breaking down ROE.',
         icon: 'pyramid',
         category: 'Ratios',
-        load: () => import('../../config/dupont.config')
+        load: () => import('../../config/ratios/dupont.config')
     },
     {
         id: 'financial-ratios',
@@ -39,6 +39,6 @@ export const CORPORATE_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Key performance indicators.',
         icon: 'activity',
         category: 'Ratios',
-        load: () => import('../../config/financial-ratios.config')
+        load: () => import('../../config/ratios/financial-ratios.config')
     }
 ];

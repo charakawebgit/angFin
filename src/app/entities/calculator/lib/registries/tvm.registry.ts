@@ -7,7 +7,7 @@ export const TVM_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Calculate the future value of an investment.',
         icon: 'trending-up',
         category: 'TVM',
-        load: () => import('../../config/future-value.config')
+        load: () => import('../../config/tvm/future-value.config')
     },
     {
         id: 'present-value',
@@ -15,14 +15,14 @@ export const TVM_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Calculate the current worth of a future sum.',
         icon: 'hourglass',
         category: 'TVM',
-        load: () => import('../../config/present-value.config')
+        load: () => import('../../config/tvm/present-value.config')
     },
     {
         id: 'perpetuity',
         title: 'Perpetuity',
         description: 'Value of an endless stream of cash flows.',
         icon: 'percent',
-        category: 'Valuation',
-        load: () => import('../../config/perpetuity.config')
+        category: 'TVM',
+        load: () => import('../../config/tvm/perpetuity.config')
     }
 ];

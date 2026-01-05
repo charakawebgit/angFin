@@ -9,7 +9,7 @@ export const routes: Routes = [
             {
                 path: '',
                 loadComponent: () =>
-                    import('./pages/home/ui/calculator-list.component').then(
+                    import('./pages/home-page.component').then(
                         (m) => m.CalculatorListComponent
                     ),
                 data: { animation: 'list' }
@@ -17,7 +17,7 @@ export const routes: Routes = [
             {
                 path: 'calculator/:id',
                 loadComponent: () =>
-                    import('./pages/calculator/ui/calculator-page.component').then(
+                    import('./pages/calculator-page.component').then(
                         (m) => m.DynamicCalculatorComponent
                     ),
                 resolve: { _unused: CalculatorResolver },
@@ -27,21 +27,21 @@ export const routes: Routes = [
                 path: 'about',
                 title: 'About',
                 loadComponent: () =>
-                    import('./pages/static/ui/about.component').then((m) => m.AboutComponent),
+                    import('./pages/static/about.component').then((m) => m.AboutComponent),
                 data: { animation: 'about' }
             },
             {
                 path: 'privacy',
                 title: 'Privacy Policy',
                 loadComponent: () =>
-                    import('./pages/static/ui/privacy.component').then((m) => m.PrivacyComponent),
+                    import('./pages/static/privacy.component').then((m) => m.PrivacyComponent),
                 data: { animation: 'privacy' }
             },
             {
                 path: 'disclaimer',
                 title: 'Disclaimer',
                 loadComponent: () =>
-                    import('./pages/static/ui/disclaimer.component').then(
+                    import('./pages/static/disclaimer.component').then(
                         (m) => m.DisclaimerComponent
                     ),
                 data: { animation: 'disclaimer' }

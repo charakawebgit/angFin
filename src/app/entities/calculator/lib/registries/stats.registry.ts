@@ -7,7 +7,7 @@ export const STATS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Average rate of return.',
         icon: 'mountain',
         category: 'Stats',
-        load: () => import('../../config/geometric-mean.config')
+        load: () => import('../../config/ratios/geometric-mean.config')
     },
     {
         id: 'variance-stddev',
@@ -15,7 +15,7 @@ export const STATS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Measure data dispersion.',
         icon: 'git-compare-arrows',
         category: 'Stats',
-        load: () => import('../../config/variance-stddev.config')
+        load: () => import('../../config/ratios/variance-stddev.config')
     },
     {
         id: 'mad',
@@ -23,7 +23,7 @@ export const STATS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Mean Absolute Deviation.',
         icon: 'bar-chart-horizontal',
         category: 'Stats',
-        load: () => import('../../config/mad.config')
+        load: () => import('../../config/ratios/mad.config')
     },
     {
         id: 'cv',
@@ -31,7 +31,7 @@ export const STATS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Relative variability.',
         icon: 'percent',
         category: 'Stats',
-        load: () => import('../../config/cv.config')
+        load: () => import('../../config/ratios/cv.config')
     },
     {
         id: 'skew-kurt',
@@ -39,6 +39,6 @@ export const STATS_REGISTRY: CalculatorRegistryItem[] = [
         description: 'Distribution shape analysis.',
         icon: 'pyramid',
         category: 'Stats',
-        load: () => import('../../config/skew-kurt.config')
+        load: () => import('../../config/ratios/skew-kurt.config')
     }
 ];
