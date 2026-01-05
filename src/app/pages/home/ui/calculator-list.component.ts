@@ -160,9 +160,6 @@ export class CalculatorListComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.metaService.updateTitle('Dashboard');
-    this.metaService.updateMeta('Professional financial intelligence toolkit for calculations in TVM, Stats, Fixed Income, and Equity.');
-
     // Simulate premium loading feel
     setTimeout(() => this.isLoading.set(false), 800);
   }

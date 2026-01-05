@@ -19,6 +19,7 @@ export const routes: Routes = [
                     import('./pages/calculator/ui/calculator-page.component').then(
                         (m) => m.DynamicCalculatorComponent
                     ),
+                resolve: { config: () => import('./entities/calculator/lib/calculator.resolver').then(m => m.CalculatorResolver) },
                 data: { animation: 'detail' }
             },
             {

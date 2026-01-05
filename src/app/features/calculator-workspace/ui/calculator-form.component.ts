@@ -88,7 +88,7 @@ export class CalculatorFormComponent {
     // We need an injection context for the form library
     return runInInjectionContext(this.injector, () => {
       // Build the schema using a centralized helper
-      return form(this.localData, buildFormSchema(cfg.fields));
+      return form(this.localData, buildFormSchema<CalculatorData>(cfg.fields));
     });
   });
 

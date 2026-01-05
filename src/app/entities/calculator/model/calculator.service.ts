@@ -6,7 +6,8 @@ import { CALCULATORS_REGISTRY } from '@entities/calculator/lib/registry';
     providedIn: 'root',
 })
 export class CalculatorService {
-    private calculators = signal<CalculatorRegistryItem[]>(CALCULATORS_REGISTRY);
+    private calculators = signal<CalculatorRegistryItem[]>(CALCULATORS_REGISTRY); // Signal for potential future dynamic registry updates
+    private configCache = new Map<string, CalculatorConfig>();
 
     private currentConfig = signal<CalculatorConfig | null>(null);
     private loading = signal(false);
@@ -27,7 +28,16 @@ export class CalculatorService {
         return this.calculators().find((c) => c.id === id);
     }
 
-    async loadConfig(id: string): Promise<void> {
+    async loadConfig(id: string): Promise<CalculatorConfig | null> {
+        // 1. Check Cache
+        if (this.configCache.has(id)) {
+            const config = this.configCache.get(id)!;
+            this.currentConfig.set(config);
+            this.loading.set(false);
+            return config;
+        }
+
+        // 2. Load from Registry
         console.log(`[CalculatorService] Loading config for: ${id}`);
         this.loading.set(true);
         this.currentConfig.set(null);
@@ -36,23 +46,24 @@ export class CalculatorService {
         if (item) {
             try {
                 const result = await item.load() as { config: CalculatorConfig };
-                console.log(`[CalculatorService] Successfully loaded config for ${id}:`, result);
 
-                // Every registry item returns an object with a 'config' key
                 if (result && result.config) {
+                    this.configCache.set(id, result.config); // Cache it
                     this.currentConfig.set(result.config);
+                    this.loading.set(false);
+                    return result.config;
                 } else {
                     console.error(`[CalculatorService] Loaded result for ${id} missing 'config' key:`, result);
-                    this.currentConfig.set(null);
                 }
             } catch (error) {
                 console.error(`[CalculatorService] Error loading calculator config for ${id}:`, error);
-                this.currentConfig.set(null);
             }
         } else {
             console.warn(`[CalculatorService] No registry item found for id: ${id}`);
         }
 
+        this.currentConfig.set(null);
         this.loading.set(false);
+        return null;
     }
 }

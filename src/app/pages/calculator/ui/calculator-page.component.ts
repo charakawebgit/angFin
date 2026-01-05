@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, input, ChangeDetectionStrategy, linkedSignal, effect } from '@angular/core';
+import { Component, computed, inject, signal, input, ChangeDetectionStrategy, linkedSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 import { CalculatorService } from '@entities/calculator/model/calculator.service';
@@ -18,15 +18,7 @@ import { CalculatorInfoComponent } from '@features/calculator-workspace/ui/calcu
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (isLoading()) {
-      <div class="max-w-4xl mx-auto flex flex-col items-center justify-center py-20 animate-in fade-in zoom-in duration-700">
-        <div class="relative">
-          <div class="w-24 h-24 border-4 border-indigo-500/20 border-t-indigo-600 rounded-full animate-spin"></div>
-          <lucide-icon name="calculator" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-indigo-500 animate-pulse" />
-        </div>
-        <p class="mt-8 text-slate-400 dark:text-slate-500 font-black uppercase tracking-widest animate-pulse">Initializing Engine...</p>
-      </div>
-    } @else if (config()) {
+    @if (config()) {
       <div class="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
            <app-calculator-form 
@@ -60,20 +52,15 @@ import { CalculatorInfoComponent } from '@features/calculator-workspace/ui/calcu
   `,
 })
 export class DynamicCalculatorComponent {
-  id = input.required<string>();
+  id = input.required<string>(); // Keep for potential usage, but primary data comes from resolver
+  // Route input binding for resolved data
+  config = input.required<import('@entities/calculator/model/types').CalculatorConfig>();
 
   private calcService = inject(CalculatorService);
-
-  config = this.calcService.activeConfig;
-  isLoading = this.calcService.isLoading;
   isValid = signal(false);
 
-  constructor() {
-    effect(() => {
-      const toolId = this.id();
-      this.calcService.loadConfig(toolId);
-    });
-  }
+  // Use resolved config directly - no need to load via service effect logic anymore
+  // for the initial render.
 
   data = linkedSignal<CalculatorData>(() => {
     const cfg = this.config();
@@ -91,6 +78,8 @@ export class DynamicCalculatorComponent {
     if (!cfg || !this.isValid()) return [];
 
     const d = this.data();
+    // Optimization: The computation is fast, but if it becomes heavy, 
+    // we can wrap this in a `toSignal` with debounce.
     return cfg.results.map(res => {
       try {
         return res.calculate(d);
