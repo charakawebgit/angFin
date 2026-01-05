@@ -20,7 +20,7 @@ export const routes: Routes = [
                     import('./pages/calculator-page.component').then(
                         (m) => m.DynamicCalculatorComponent
                     ),
-                resolve: { _unused: CalculatorResolver },
+                resolve: { configLoaded: CalculatorResolver },
                 data: { animation: 'detail' }
             },
             {

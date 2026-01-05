@@ -15,6 +15,7 @@ import { castToNumber } from '@entities/finance/lib/casting.utils';
         @if (isValid()) {
           <div class="space-y-10 w-full animate-in zoom-in duration-500">
             @for (res of config().results; track res.label) {
+              @let val = castToNumber(results()[$index]);
               <div class="group relative flex flex-col items-center px-4">
                 <div class="absolute -inset-4 blur-3xl rounded-full opacity-10 group-hover:opacity-20 transition-opacity" [class]="getThemeClass(res.themeColor)"></div>
                 
@@ -22,9 +23,9 @@ import { castToNumber } from '@entities/finance/lib/casting.utils';
                     <div class="flex items-center justify-center gap-4 mb-2">
                        <span class="text-5xl md:text-6xl font-black bg-clip-text text-transparent bg-gradient-to-br tracking-tighter font-display" [class]="getGradientClass(res.themeColor)">
                         @switch (res.type) {
-                          @case ('currency') { {{ castToNumber(results()[$index]) | currency:'USD':'symbol':'1.0-2' }} }
-                          @case ('percent') { {{ castToNumber(results()[$index]) | percent:'1.2-2' }} }
-                          @default { {{ castToNumber(results()[$index]) | number:'1.0-4' }} }
+                          @case ('currency') { {{ val | currency:'USD':'symbol':'1.0-2' }} }
+                          @case ('percent') { {{ val | percent:'1.2-2' }} }
+                          @default { {{ val | number:'1.0-4' }} }
                         }
                       </span>
                       

@@ -78,9 +78,9 @@ export class CalculatorFormComponent implements OnDestroy {
   private sub = new Subscription();
 
   constructor() {
-    effect(() => {
+    effect((onCleanup) => {
       const cfg = this.config();
-      console.log('DEBUG: Effect ran. Config:', cfg ? cfg.id : 'null');
+      // console.log('DEBUG: Effect ran. Config:', cfg ? cfg.id : 'null'); // Removed debug log
       if (!cfg) {
         untracked(() => this.formGroup.set(null));
         return;
@@ -94,12 +94,18 @@ export class CalculatorFormComponent implements OnDestroy {
 
       const fg = this.fb.group(group);
 
-      this.sub.add(fg.valueChanges.pipe(debounceTime(50)).subscribe(vals => {
+      const sub = fg.valueChanges.pipe(debounceTime(50)).subscribe(vals => {
         Object.keys(vals).forEach(key => {
           this.updateData(key, vals[key] as CalculatorData[string]);
         });
         this.valid.emit(fg.valid);
-      }));
+      });
+
+      this.sub.add(sub);
+
+      onCleanup(() => {
+        sub.unsubscribe();
+      });
 
       untracked(() => {
         this.formGroup.set(fg);

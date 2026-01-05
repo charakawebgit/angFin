@@ -38,12 +38,12 @@ export class CalculatorService {
         }
 
         // 2. Load from Registry
-        console.log(`[CalculatorService] Loading config for: ${id}`);
         this.loading.set(true);
 
-        const item = this.calculators().find((c) => c.id === id);
-        if (item) {
-            try {
+        try {
+            const item = this.calculators().find((c) => c.id === id);
+
+            if (item) {
                 // Strictly typed module loading expecting default export (angcF style)
                 const module = await item.load() as { default: CalculatorConfig };
                 const config = module.default;
@@ -51,18 +51,23 @@ export class CalculatorService {
                 if (config) {
                     this.configCache.set(id, config);
                     this.currentConfig.set(config);
-                    this.loading.set(false);
                     return config;
                 } else {
                     console.error(`[CalculatorService] Module for ${id} missing default export:`, module);
                     throw new Error(`Module for ${id} missing default export`);
                 }
-            } catch (error) {
-                console.error(`[CalculatorService] Failed to load ${id}:`, error);
-                this.currentConfig.set(null);
-                this.loading.set(false);
-                return null;
             }
+
+            // Only clear if load failed (item not found)
+            this.currentConfig.set(null);
+            return null;
+
+        } catch (error) {
+            console.error(`[CalculatorService] Failed to load ${id}:`, error);
+            this.currentConfig.set(null);
+            return null;
+        } finally {
+            this.loading.set(false);
         }
 
         // Only clear if load failed
