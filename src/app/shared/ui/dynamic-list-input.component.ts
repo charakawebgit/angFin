@@ -74,8 +74,8 @@ export class DynamicListInputComponent implements ControlValueAccessor {
   protected items = signal<(string | number)[]>([]);
   protected disabled = signal(false);
 
-  private onChange: (value: (string | number)[]) => void = () => {};
-  private onTouched: () => void = () => {};
+  private onChange: (value: (string | number)[]) => void = () => undefined;
+  private onTouched: () => void = () => undefined;
 
   writeValue(value: (string | number)[] | null): void {
     this.items.set(Array.isArray(value) ? value : []);
