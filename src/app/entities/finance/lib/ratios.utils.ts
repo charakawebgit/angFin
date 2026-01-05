@@ -27,10 +27,8 @@ export function calculateFinancialRatios(params: FinancialRatiosParams): Financi
         if (!cl.isZero()) {
             result.currentRatio = ca.div(cl).toNumber();
 
-            if (params.inventory !== undefined) {
-                const inv = new Decimal(params.inventory);
-                result.quickRatio = ca.minus(inv).div(cl).toNumber();
-            }
+            const inv = new Decimal(params.inventory ?? 0);
+            result.quickRatio = ca.minus(inv).div(cl).toNumber();
         }
     }
 

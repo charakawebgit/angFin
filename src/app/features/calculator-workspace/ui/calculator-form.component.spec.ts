@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { CalculatorFormComponent } from './calculator-form.component';
 import { Component, Input } from '@angular/core';
 import { CalculatorConfig } from '@entities/calculator/model/types';
 import { LucideAngularModule, Calculator } from 'lucide-angular';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { InputComponent } from '@shared/ui/input.component';
 
 describe('CalculatorFormComponent', () => {
   let fixture: ComponentFixture<CalculatorFormComponent>;
@@ -43,54 +43,43 @@ describe('CalculatorFormComponent', () => {
     }
 
     await TestBed.configureTestingModule({
-      imports: [StubInputComponent, CalculatorFormComponent, LucideAngularModule.pick({ Calculator })],
-      providers: [provideZonelessChangeDetection()]
-    }).compileComponents();
+      imports: [CalculatorFormComponent, LucideAngularModule.pick({ Calculator })],
+      providers: [] // Remove zoneless for now to test if Zone.js handles effects better in test env
+    })
+      .overrideComponent(CalculatorFormComponent, {
+        remove: { imports: [InputComponent] },
+        add: { imports: [StubInputComponent] }
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(CalculatorFormComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges(); // Initial CD
   });
 
-  it('renders and displays the Principal label', async () => {
+  it('renders and displays the Principal label', fakeAsync(() => {
     // Assign the `input()` backed functions directly to avoid setInput issues in this test env
     fixture.componentRef.setInput('config', mockConfig);
     fixture.componentRef.setInput('data', { principal: 1000, rate: 5, type: 'a' });
     fixture.detectChanges();
-    await fixture.whenStable();
 
-    // Wait for form group initialization (async effect)
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Advance time to allow effect to run (scheduled as microtask/timer)
+    tick(100);
     fixture.detectChanges();
 
     const root = fixture.nativeElement as HTMLElement;
     const label = root.querySelector('label[for="principal"]');
     expect(label?.textContent?.trim()).toMatch(/Principal/i);
-  });
+  }));
 
-  it('initializes calcForm and localData signals', async () => {
+  it('initializes calcForm and localData signals', fakeAsync(() => {
     fixture.componentRef.setInput('config', mockConfig);
     fixture.componentRef.setInput('data', { principal: 1000, rate: 5, type: 'a' });
     fixture.detectChanges();
-    await fixture.whenStable();
 
-    // Wait until the calcForm signal is set (polling - effects are async)
-    await new Promise<void>((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error('calcForm not initialized')), 1000);
-      const id = setInterval(() => {
-        try {
-          if ((component as any).formGroup()) {
-            clearInterval(id);
-            clearTimeout(timeout);
-            resolve();
-          }
-        } catch (err) {
-          clearInterval(id);
-          clearTimeout(timeout);
-          reject(err);
-        }
-      }, 10);
-    });
+    tick(100);
+    fixture.detectChanges();
 
     expect((component as any).formGroup()).toBeTruthy();
-  });
+  }));
 });
