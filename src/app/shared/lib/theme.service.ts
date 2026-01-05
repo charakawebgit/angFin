@@ -9,7 +9,7 @@ export type Theme = 'light' | 'dark';
 export class ThemeService {
     private platformId = inject(PLATFORM_ID);
     private themeKey = 'angfin-theme-preference';
-    private themeState = signal<Theme>('light');
+    private themeState = signal<Theme>('dark');
 
     // Expose readonly theme signal for UI consumption
     theme = this.themeState.asReadonly();
@@ -23,20 +23,23 @@ export class ThemeService {
 
         this.themeState.set(saved || (prefersDark ? 'dark' : 'light'));
 
-        // Sync theme to document body whenever it changes
+        // Sync theme class and preference
         effect(() => {
             const current = this.themeState();
-            if (current === 'dark') {
-                document.documentElement.classList.add('dark');
+            const root = document.documentElement;
+
+            if (current === 'light') {
+                root.classList.add('light');
             } else {
-                document.documentElement.classList.remove('dark');
+                root.classList.remove('light');
             }
+
             localStorage.setItem(this.themeKey, current);
         });
     }
 
     toggleTheme() {
-        this.themeState.update(t => t === 'light' ? 'dark' : 'light');
+        this.themeState.update(t => (t === 'light' ? 'dark' : 'light'));
     }
 
     isDark() {
