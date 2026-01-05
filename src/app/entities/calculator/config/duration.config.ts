@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateDuration } from '@shared/lib/math/fixed-income.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'duration',
     title: 'Bond Duration',
     subtitle: 'Interest rate sensitivity',
@@ -43,3 +43,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'Duration measures the sensitivity of a bond\'s price to interest rate movements. A higher duration means higher price volatility.',
     formula: 'Modified D = Macaulay D / (1 + r/m)'
 };
+
+export default CONFIG;

@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculatePresentValue } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'present-value',
     title: 'Present Value',
     subtitle: 'Specify future cash flow and discounting rate',
@@ -27,3 +27,5 @@ export const CONFIG: CalculatorConfig = {
     insights: '**Present Value (PV)** represents the current value of a future sum of money or stream of cash flows given a specified rate of return.',
     formula: 'PV = FV / (1 + r)^n'
 };
+
+export default CONFIG;

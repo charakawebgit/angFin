@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateMeanAbsoluteDeviation } from '@shared/lib/math/stats.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'mad',
     title: 'Mean Absolute Deviation',
     subtitle: 'Average distance from mean',
@@ -24,3 +24,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'MAD provides a measure of variability in a dataset that is less sensitive to outliers than standard deviation.',
     formula: 'MAD = [∑|xi - x̄|] / n'
 };
+
+export default CONFIG;

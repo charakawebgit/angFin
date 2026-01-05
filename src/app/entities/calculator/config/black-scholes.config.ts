@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateBlackScholes } from '@shared/lib/math/equity.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'black-scholes',
     title: 'Black-Scholes',
     subtitle: 'Options Pricing Model',
@@ -44,3 +44,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'The Black-Scholes model uses stock price, strike price, time to expiration, risk-free rate, and volatility to provide a fair price for options.',
     formula: 'C = S0N(d1) - Xe^{-rT}N(d2)'
 };
+
+export default CONFIG;

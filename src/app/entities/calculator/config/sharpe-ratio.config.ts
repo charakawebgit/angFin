@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateSharpeRatio } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'sharpe-ratio',
     title: 'Sharpe Ratio',
     subtitle: 'Risk-adjusted return',
@@ -28,3 +28,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'The Sharpe ratio helps investors understand the return of an investment compared to its risk.',
     formula: 'S = (Rp - Rf) / σp'
 };
+
+export default CONFIG;

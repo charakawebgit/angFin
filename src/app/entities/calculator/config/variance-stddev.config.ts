@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateStandardDeviation, calculateSampleVariance } from '@shared/lib/math/stats.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'variance-stddev',
     title: 'Variance & Std Dev',
     subtitle: 'Measures of dispersion',
@@ -31,3 +31,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'Standard deviation is the square root of variance. It is used to quantify the amount of variation or dispersion of a set of data values.',
     formula: 's² = ∑(xi - x̄)² / (n - 1)'
 };
+
+export default CONFIG;

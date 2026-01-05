@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateAmortization } from '@shared/lib/math/amortization.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'amortization',
     title: 'Amortization',
     subtitle: 'Loan repayment schedule',
@@ -37,3 +37,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'Amortization is the process of spreading out a loan into a series of fixed payments. Early payments consist mostly of interest.',
     formula: 'Payment = P * [r(1+r)^n] / [(1+r)^n - 1]'
 };
+
+export default CONFIG;

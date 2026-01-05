@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateRoi } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'roi',
     title: 'ROI',
     subtitle: 'Return on Investment',
@@ -26,3 +26,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'ROI is a popular profitability metric used to evaluate the efficiency of an investment or to compare the efficiencies of several different investments.',
     formula: 'ROI = (Gains - Cost) / Cost'
 };
+
+export default CONFIG;

@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateConvexity } from '@shared/lib/math/fixed-income.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'convexity',
     title: 'Bond Convexity',
     subtitle: 'Curvature of the price-yield curve',
@@ -32,3 +32,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'Convexity is a measure of the curvature in the relationship between bond prices and bond yields. Most bonds have positive convexity.',
     formula: 'C = [∑ (t*(t+1)*CFt/(1+r)^t)] / [P * (1+r)^2 * m^2]'
 };
+
+export default CONFIG;

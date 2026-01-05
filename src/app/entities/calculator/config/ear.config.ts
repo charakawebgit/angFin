@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateEffectiveAnnualReturn } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'ear',
     title: 'Effective Annual Rate',
     subtitle: 'Impact of compounding',
@@ -26,3 +26,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'The more frequent the compounding periods, the higher the effective annual rate. This is why daily compounding is better for savers than annual compounding.',
     formula: 'EAR = (1 + r/n)^n - 1'
 };
+
+export default CONFIG;

@@ -52,15 +52,13 @@ import { CalculatorInfoComponent } from '@features/calculator-workspace/ui/calcu
   `,
 })
 export class DynamicCalculatorComponent {
-  id = input.required<string>(); // Keep for potential usage, but primary data comes from resolver
-  // Route input binding for resolved data
-  config = input.required<import('@entities/calculator/model/types').CalculatorConfig>();
+  id = input.required<string>();
 
   private calcService = inject(CalculatorService);
   isValid = signal(false);
 
-  // Use resolved config directly - no need to load via service effect logic anymore
-  // for the initial render.
+  // Single Source of Truth: Consume directly from the service
+  config = this.calcService.activeConfig;
 
   data = linkedSignal<CalculatorData>(() => {
     const cfg = this.config();

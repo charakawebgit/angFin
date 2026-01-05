@@ -40,31 +40,28 @@ export class CalculatorService {
         // 2. Load from Registry
         console.log(`[CalculatorService] Loading config for: ${id}`);
         this.loading.set(true);
-        this.currentConfig.set(null);
 
         const item = this.calculators().find((c) => c.id === id);
         if (item) {
             try {
-                // Simplified module loading
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const module = await item.load() as any;
-                const config = module['CONFIG'] || module['default'];
+                // Strictly typed module loading expecting default export (angcF style)
+                const module = await item.load() as { default: CalculatorConfig };
+                const config = module.default;
 
                 if (config) {
-                    this.configCache.set(id, config); // Cache it
+                    this.configCache.set(id, config);
                     this.currentConfig.set(config);
                     this.loading.set(false);
                     return config;
                 } else {
-                    console.error(`[CalculatorService] Loaded module for ${id} missing 'CONFIG' or 'default' export:`, module);
+                    console.error(`[CalculatorService] Module for ${id} missing default export:`, module);
                 }
             } catch (error) {
-                console.error(`[CalculatorService] Error loading calculator config for ${id}:`, error);
+                console.error(`[CalculatorService] Failed to load ${id}:`, error);
             }
-        } else {
-            console.warn(`[CalculatorService] No registry item found for id: ${id}`);
         }
 
+        // Only clear if load failed
         this.currentConfig.set(null);
         this.loading.set(false);
         return null;

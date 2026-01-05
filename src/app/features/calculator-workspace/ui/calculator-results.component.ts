@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 import { CardComponent } from '@shared/ui/card.component';
 import { CalculatorConfig, ResultValue } from '@entities/calculator/model/types';
+import { castToNumber } from '@shared/lib/math/casting.utils';
 
 @Component({
   selector: 'app-calculator-results',
@@ -113,9 +114,5 @@ export class CalculatorResultsComponent {
     }
   }
 
-  castToNumber(val: ResultValue): number {
-    if (typeof val === 'number') return val;
-    if (typeof val === 'string') return parseFloat(val) || 0;
-    return 0;
-  }
+  protected castToNumber = castToNumber;
 }

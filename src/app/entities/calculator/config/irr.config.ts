@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateIrr } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'irr',
     title: 'Internal Rate of Return',
     subtitle: 'Find the break-even discount rate',
@@ -24,3 +24,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'IRR is a key metric for capital budgeting. A project is generally considered acceptable if its IRR is higher than the company\'s cost of capital.',
     formula: '0 = ∑ [CFt / (1 + IRR)^t]'
 };
+
+export default CONFIG;

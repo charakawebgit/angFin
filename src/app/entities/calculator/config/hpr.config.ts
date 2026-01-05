@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateHoldingPeriodReturn } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'hpr',
     title: 'Holding Period Return',
     subtitle: 'Total return over a period',
@@ -26,3 +26,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'HPR is the simplest measure of investment performance, representing the total percentage growth/decline over a specific holding period.',
     formula: 'HPR = (Ending Value - Beginning Value) / Beginning Value'
 };
+
+export default CONFIG;

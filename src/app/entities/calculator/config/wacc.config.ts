@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateWacc } from '@shared/lib/math/equity.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'wacc',
     title: 'WACC',
     subtitle: 'Weighted Average Cost of Capital',
@@ -32,3 +32,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'WACC is the minimum return that a company must earn on an existing asset base to satisfy its creditors, owners, and other providers of capital.',
     formula: 'WACC = (E/V * Re) + (D/V * Rd * (1 - Tc))'
 };
+
+export default CONFIG;

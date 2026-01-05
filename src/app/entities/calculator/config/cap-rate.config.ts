@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateCapRate } from '@shared/lib/math/amortization.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'cap-rate',
     title: 'Cap Rate',
     subtitle: 'Real estate investment metric',
@@ -26,3 +26,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'The cap rate provides a quick way to compare different real estate investments, but does not account for financing or property appreciation.',
     formula: 'Cap Rate = NOI / Property Value'
 };
+
+export default CONFIG;

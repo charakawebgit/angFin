@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateNpv } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'npv',
     title: 'Net Present Value',
     subtitle: 'Assess investment profitability',
@@ -28,3 +28,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'A positive NPV indicates that the projected earnings (in present dollars) exceed the anticipated costs (also in present dollars).',
     formula: 'NPV = ∑ [CFt / (1 + r)^t] - C0'
 };
+
+export default CONFIG;

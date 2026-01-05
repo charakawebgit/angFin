@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateYtm } from '@shared/lib/math/fixed-income.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'ytm',
     title: 'Bond YTM',
     subtitle: 'Yield to Maturity',
@@ -32,3 +32,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'YTM is a comprehensive measure of return that includes interest income plus/minus any capital gain/loss at maturity.',
     formula: 'Approximation: C + (F-P)/n / (F+P)/2'
 };
+
+export default CONFIG;

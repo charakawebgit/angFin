@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateCapm } from '@shared/lib/math/equity.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'capm',
     title: 'CAPM',
     subtitle: 'Market Equilibrium valuation',
@@ -28,3 +28,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'The Capital Asset Pricing Model (CAPM) describes the relationship between systematic risk and expected return for assets, particularly stocks.',
     formula: 'E(Ri) = Rf + β * (Rm - Rf)'
 };
+
+export default CONFIG;

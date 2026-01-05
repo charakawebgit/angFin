@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculatePerpetuity } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'perpetuity',
     title: 'Perpetuity',
     subtitle: 'Infinite stream of payments',
@@ -26,3 +26,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'A perpetuity is an annuity that has no end, or a stream of cash payments that continues forever.',
     formula: 'PV = PMT / r'
 };
+
+export default CONFIG;

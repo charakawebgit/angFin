@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateDdm } from '@shared/lib/math/equity.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'ddm',
     title: 'Dividend Discount Model',
     subtitle: 'Gordon Growth valuation',
@@ -28,3 +28,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'The DDM assumes that the value of a stock is the sum of all its future dividend payments, discounted back to their present value.',
     formula: 'P0 = D1 / (k - g)'
 };
+
+export default CONFIG;

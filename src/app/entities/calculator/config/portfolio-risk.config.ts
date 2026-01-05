@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateTwoAssetPortfolioStdDev } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'portfolio-risk',
     title: 'Portfolio Risk',
     subtitle: 'Two-asset portfolio variance',
@@ -32,3 +32,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'Diversification reduces total portfolio risk by combining assets that are not perfectly positively correlated.',
     formula: 'σp = √[w1²σ1² + w2²σ2² + 2w1w2σ1σ2ρ12]'
 };
+
+export default CONFIG;

@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateGeometricMean } from '@shared/lib/math/stats.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'geometric-mean',
     title: 'Geometric Mean',
     subtitle: 'Time-weighted average return',
@@ -24,3 +24,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'Geometric mean is superior to arithmetic mean for investment returns because it accounts for compounding effects.',
     formula: 'G = [∏(1 + ri)]^{1/n} - 1'
 };
+
+export default CONFIG;

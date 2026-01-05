@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateCoefficientOfVariation } from '@shared/lib/math/stats.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'cv',
     title: 'Coefficient of Variation',
     subtitle: 'Relative risk measure',
@@ -24,3 +24,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'CV is used to compare the degree of variation from one data series to another, even if their means are drastically different.',
     formula: 'CV = σ / μ'
 };
+
+export default CONFIG;

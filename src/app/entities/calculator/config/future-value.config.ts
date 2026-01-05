@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateFutureValue } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'future-value',
     title: 'Future Value',
     subtitle: 'Define your starting capital and growth expectations',
@@ -28,3 +28,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'The **Time Value of Money (TVM)** principle states that money available now is worth more than the same amount in the future due to its potential earning capacity.',
     formula: 'FV = PV * (1 + r)^n'
 };
+
+export default CONFIG;

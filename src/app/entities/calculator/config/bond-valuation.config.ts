@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateBondPrice } from '@shared/lib/math/fixed-income.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'bond-valuation',
     title: 'Bond Valuation',
     subtitle: 'Intrinsic value of a bond',
@@ -32,3 +32,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'When the market interest rate is lower than the coupon rate, the bond sells at a premium. When it is higher, the bond sells at a discount.',
     formula: 'V0 = ∑ [C / (1 + r)^t] + [F / (1 + r)^n]'
 };
+
+export default CONFIG;

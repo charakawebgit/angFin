@@ -14,12 +14,5 @@ export const CalculatorResolver: ResolveFn<CalculatorConfig | null> = async (rou
     }
 
     const config = await calcService.loadConfig(id);
-
-    if (!config) {
-        // Optional: could redirect to 404 page here or let the component show the error state
-        // For now, we let the component handle the null config state (showing "Calculator Not Found")
-        return null;
-    }
-
-    return config;
+    return config || null;
 };

@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateDupont } from '@shared/lib/math/equity.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'dupont',
     title: 'DuPont Analysis',
     subtitle: 'Decomposition of ROE',
@@ -52,3 +52,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'The DuPont formula shows that a company can increase its ROE by having high profit margins, turning over its assets quickly, or using more leverage.',
     formula: 'ROE = Net Profit Margin × Asset Turnover × Equity Multiplier'
 };
+
+export default CONFIG;

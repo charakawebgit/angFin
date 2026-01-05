@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateSampleSkewness, calculateExcessKurtosis } from '@shared/lib/math/stats.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'skew-kurt',
     title: 'Skewness & Kurtosis',
     subtitle: 'Shape of distribution',
@@ -31,3 +31,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'Skewness indicates if the data is biased to one side. Kurtosis indicates if the data has heavy tails or is peaked.',
     formula: 'Skew = [n/(n-1)(n-2)] * ∑[(xi-x̄)/s]³, Kurt = [n(n+1)/(n-1)(n-2)(n-3)] * ∑[(xi-x̄)/s]⁴ - [3(n-1)²/(n-2)(n-3)]'
 };
+
+export default CONFIG;

@@ -1,7 +1,7 @@
 import { CalculatorConfig, TVMVar } from '../model/types';
 import { solveTvm } from '@shared/lib/math/tvm.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'tvm-solver',
     title: 'Financial Solver',
     subtitle: 'Comprehensive TVM Calculator',
@@ -52,3 +52,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'The TVM Solver allows you to find one variable when the other four are known. Remember that cash outflows (like investments) are usually negative, and inflows are positive.',
     formula: 'FV + PV*(1+i)^n + PMT*[((1+i)^n - 1)/i] = 0'
 };
+
+export default CONFIG;

@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateBankDiscountYield, calculateEffectiveAnnualYield } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'rbd-eay',
     title: 'Yield Conversions',
     subtitle: 'Money market yields',
@@ -36,3 +36,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'RBD uses a 360-day year and par value, while EAY uses a 365-day year and purchase price with compounding.',
     formula: 'Rbd = (D/F) * (360/t), Eay = (1+HPY)^{365/t} - 1'
 };
+
+export default CONFIG;

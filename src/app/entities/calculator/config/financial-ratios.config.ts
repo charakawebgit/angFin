@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculateFinancialRatios } from '@shared/lib/math/amortization.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'financial-ratios',
     title: 'Financial Ratios',
     subtitle: 'Liquidity and Valuations',
@@ -46,3 +46,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'Liquidity ratios measure a company\'s ability to pay off short-term debt, while leverage ratios assess long-term solvency.',
     formula: 'Varies by ratio (e.g., Current Ratio = Assets / Liabilities)'
 };
+
+export default CONFIG;

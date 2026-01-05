@@ -1,7 +1,7 @@
 import { CalculatorConfig } from '../model/types';
 import { calculatePortfolioReturn } from '@shared/lib/math/investment.utils';
 
-export const CONFIG: CalculatorConfig = {
+const CONFIG: CalculatorConfig = {
     id: 'portfolio-return',
     title: 'Portfolio Return',
     subtitle: 'Weighted average return',
@@ -26,3 +26,5 @@ export const CONFIG: CalculatorConfig = {
     insights: 'The return of a portfolio is the weighted average of the returns of its components. Rebalancing is necessary to maintain target weights.',
     formula: 'Rp = ∑ (wi * Ri)'
 };
+
+export default CONFIG;

@@ -1,14 +1,15 @@
-import { Component, input, output, ChangeDetectionStrategy, effect, inject, Injector, runInInjectionContext, linkedSignal, computed } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy, inject, signal, OnDestroy, effect, untracked } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Subscription, asapScheduler } from 'rxjs';
+import { observeOn, debounceTime } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { form, Field, FieldTree } from '@angular/forms/signals';
+import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { InputComponent } from '@shared/ui/input.component';
 import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 import { CardComponent } from '@shared/ui/card.component';
 import { CalculatorConfig, CalculatorData } from '@entities/calculator/model/types';
-import { buildFormSchema } from '@shared/lib/forms/field-to-schema.utils';
-
-// The `form()` return shape is intentionally left loosely typed here.
+import { asList } from '@shared/lib/math/casting.utils';
 
 @Component({
   selector: 'app-calculator-form',
@@ -18,20 +19,20 @@ import { buildFormSchema } from '@shared/lib/forms/field-to-schema.utils';
     InputComponent,
     DynamicListInputComponent,
     CardComponent,
-    Field,
+    ReactiveFormsModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (calcForm(); as cForm) {
+    @if (formGroup(); as fg) {
       @let cfg = config()!;
       <app-card [title]="cfg.subtitle || 'Parameters'" subtitle="Fill in the required fields">
-        <div class="space-y-5">
+        <form [formGroup]="fg" class="space-y-5">
           @for (field of cfg.fields; track field.key) {
             @if (field.type === 'number') {
               <app-input
                 [id]="field.key"
                 [label]="field.label"
-                [field]="getField(field.key)"
+                [control]="getControl(field.key)"
                 type="number"
                 [prefix]="field.prefix"
                 [suffix]="field.suffix"
@@ -41,7 +42,7 @@ import { buildFormSchema } from '@shared/lib/forms/field-to-schema.utils';
               <app-dynamic-list-input
                 [id]="field.key"
                 [label]="field.label"
-                [items]="asList(localData()[field.key])"
+                [items]="asList(fg.get(field.key)?.value)"
                 (changed)="updateData(field.key, $event)"
               />
             } @else if (field.type === 'select') {
@@ -51,8 +52,7 @@ import { buildFormSchema } from '@shared/lib/forms/field-to-schema.utils';
                 </label>
                 <select
                   [id]="field.key"
-                  [value]="localData()[field.key]"
-                  (change)="onSelectChange(field.key, $event)"
+                  [formControlName]="field.key"
                   class="w-full h-12 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none cursor-pointer"
                 >
                   @for (opt of field.options; track opt.value) {
@@ -62,67 +62,73 @@ import { buildFormSchema } from '@shared/lib/forms/field-to-schema.utils';
               </div>
             }
           }
-        </div>
+        </form>
       </app-card>
     }
   `,
 })
-
-export class CalculatorFormComponent {
-  // Use optional inputs to make the component resilient in tests and host
-  // environments; effects guard access until values are available.
+export class CalculatorFormComponent implements OnDestroy {
   config = input<CalculatorConfig>();
   data = input<CalculatorData>();
   valid = output<boolean>();
   dataChanged = output<{ key: string; value: CalculatorData[string] }>();
 
-  // Sync external data changes into local data using linkedSignal
-  localData = linkedSignal<CalculatorData>(() => this.data() || {});
+  protected formGroup = signal<FormGroup | null>(null);
 
-  // The form is derived from config and localData. 
-  // We use a computed signal that handles the injection context.
-  calcForm = computed(() => {
-    const cfg = this.config();
-    if (!cfg) return null;
-
-    // We need an injection context for the form library
-    return runInInjectionContext(this.injector, () => {
-      // Build the schema using a centralized helper
-      return form(this.localData, buildFormSchema<CalculatorData>(cfg.fields));
-    });
-  });
-
-  private injector = inject(Injector);
+  private fb = inject(FormBuilder);
+  private sub = new Subscription();
 
   constructor() {
-    // Emit validity changes using an effect
+    this.sub.add(toObservable(this.config).pipe(observeOn(asapScheduler)).subscribe(cfg => {
+      if (!cfg) {
+        this.formGroup.set(null);
+        return;
+      }
+
+      const group: Record<string, unknown> = {};
+      cfg.fields.forEach(field => {
+        const val = this.data()?.[field.key] ?? field.defaultValue ?? '';
+        group[field.key] = [val, field.required ? [Validators.required] : []];
+      });
+
+      const fg = this.fb.group(group);
+
+      this.sub.add(fg.valueChanges.pipe(debounceTime(50)).subscribe(vals => {
+        Object.keys(vals).forEach(key => {
+          this.updateData(key, vals[key] as CalculatorData[string]);
+        });
+        this.valid.emit(fg.valid);
+      }));
+
+      this.formGroup.set(fg);
+      this.valid.emit(fg.valid);
+    }));
+
+    // Robust Sync: If the parent updates data() externally (e.g. via a Route State or Reset),
+    // sync it into the formGroup without re-emitting through valueChanges event.
     effect(() => {
-      const f = this.calcForm();
-      if (f) {
-        // Access validity from the form signal
-        this.valid.emit(Boolean(f().valid?.()));
+      const externalData = this.data();
+      const fg = this.formGroup();
+      if (fg && externalData) {
+        untracked(() => {
+          fg.patchValue(externalData, { emitEvent: false });
+          this.valid.emit(fg.valid);
+        });
       }
     });
   }
 
-  getField(key: string): FieldTree<string | number, string | number> {
-    const f = this.calcForm();
-    if (!f) return {} as FieldTree<string | number, string | number>;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const formObj = f() as any;
-    return formObj[key] as FieldTree<string | number, string | number>;
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
+
+  getControl(key: string): FormControl {
+    return this.formGroup()?.get(key) as FormControl;
+  }
+
+  protected asList = asList;
 
   updateData(key: string, value: CalculatorData[string]) {
-    this.dataChanged.emit({ key, value: value as CalculatorData[string] });
-  }
-
-  asList(val: unknown): (string | number)[] {
-    return Array.isArray(val) ? val as (string | number)[] : [];
-  }
-
-  onSelectChange(key: string, event: Event) {
-    const select = event.target as HTMLSelectElement;
-    this.updateData(key, select.value);
+    this.dataChanged.emit({ key, value });
   }
 }
