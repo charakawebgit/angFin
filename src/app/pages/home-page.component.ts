@@ -21,7 +21,7 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
         <div class="absolute inset-0 pointer-events-none" style="background: var(--glow-accent);"></div>
         <div class="relative flex flex-col gap-10">
           <div class="flex flex-col gap-4">
-            <span class="nav-chip w-fit bg-white/10 text-slate-100">Financial Intelligence - Zoneless</span>
+            <span class="nav-chip w-fit text-[color:var(--text-primary)]">Financial Intelligence - Zoneless</span>
             <div class="flex flex-wrap items-center gap-4">
               <h1 class="text-5xl md:text-6xl font-black leading-[1.05]">
                 Reimagined tools for <span class="text-transparent bg-clip-text" style="background: var(--glow-primary);">capital strategy</span>
@@ -31,22 +31,22 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
                 Live Analytics
               </div>
             </div>
-            <p class="text-lg md:text-xl text-slate-300 max-w-3xl">
+            <p class="text-lg md:text-xl text-[color:var(--text-muted)] max-w-3xl">
               Curated calculators for valuation, risk, and cashflow modeling with a refreshed interface built for focus and speed.
             </p>
           </div>
 
           <div class="flex flex-col lg:flex-row gap-4 items-start">
             <div class="relative flex-grow w-full group">
-              <lucide-icon name="search" class="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-500" />
+              <lucide-icon name="search" class="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-[color:var(--text-muted)]" />
               <input
                 #searchInput
                 type="text"
                 [formControl]="searchControl"
                 placeholder="Find a calculator by name, domain, or category"
-                class="w-full h-14 pl-14 pr-14 rounded-2xl bg-slate-900/60 border border-white/10 text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/60 transition"
+                class="w-full h-14 pl-14 pr-14 rounded-2xl bg-[color:var(--surface-soft)] border border-[color:var(--panel-outline)] text-[color:var(--text-primary)] placeholder:[color:var(--text-muted)] outline-none focus:ring-2 focus:ring-[color:var(--accent-1)] focus:border-[color:var(--accent-1)] transition"
               />
-              <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs font-semibold uppercase tracking-[0.22em] hidden md:inline-flex">
+              <div class="absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)] text-xs font-semibold uppercase tracking-[0.22em] hidden md:inline-flex">
                 ⌘ K
               </div>
             </div>
@@ -54,16 +54,16 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
             <div class="flex flex-wrap gap-2">
               <button
                 (click)="selectedCategory.set('All')"
-                [class]="selectedCategory() === 'All' ? 'bg-white text-slate-900 shadow-lg' : 'bg-white/10 text-slate-200'"
-                class="px-4 h-12 rounded-full text-xs font-bold uppercase tracking-[0.2em] border border-white/10 transition"
+                [class]="selectedCategory() === 'All' ? 'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)] shadow-lg' : 'bg-[color:var(--surface-contrast)] text-[color:var(--text-muted)]'"
+                class="px-4 h-12 rounded-full text-xs font-bold uppercase tracking-[0.2em] border border-[color:var(--panel-outline)] transition"
               >
                 All
               </button>
               @for (cat of categories(); track cat) {
                 <button
                   (click)="selectedCategory.set(cat)"
-                  [class]="selectedCategory() === cat ? 'bg-white text-slate-900 shadow-lg' : 'bg-white/10 text-slate-200'"
-                  class="px-4 h-12 rounded-full text-xs font-bold uppercase tracking-[0.2em] border border-white/10 transition"
+                  [class]="selectedCategory() === cat ? 'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)] shadow-lg' : 'bg-[color:var(--surface-contrast)] text-[color:var(--text-muted)]'"
+                  class="px-4 h-12 rounded-full text-xs font-bold uppercase tracking-[0.2em] border border-[color:var(--panel-outline)] transition"
                 >
                   {{ cat }}
                 </button>
@@ -86,7 +86,7 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
           @for (calc of filteredCalculators(); track calc.id) {
             <a [routerLink]="['/calculator', calc.id]" class="surface-panel p-6 rounded-3xl flex flex-col gap-4 group hover:translate-y-[-4px] transition duration-300">
               <div class="flex items-start justify-between">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400/40 via-indigo-500/30 to-fuchsia-400/30 border border-white/10 flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400/40 via-indigo-500/30 to-fuchsia-400/30 border border-[color:var(--panel-outline)] flex items-center justify-center text-[color:var(--text-primary)] shadow-lg group-hover:scale-105 transition">
                   <lucide-icon [name]="calc.icon" class="w-6 h-6" />
                 </div>
                 <div class="badge-soft">{{ calc.category }}</div>
@@ -94,7 +94,7 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 
               <div class="space-y-2">
                 <h3 class="text-xl font-black tracking-tight">{{ calc.title }}</h3>
-                <p class="text-sm text-slate-300 leading-relaxed line-clamp-3">{{ calc.description }}</p>
+                <p class="text-sm text-[color:var(--text-muted)] leading-relaxed line-clamp-3">{{ calc.description }}</p>
               </div>
 
               <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200 group-hover:text-white transition">
@@ -104,10 +104,10 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
             </a>
           } @empty {
             <div class="col-span-full surface-panel rounded-3xl p-12 text-center">
-              <lucide-icon name="search-x" class="w-10 h-10 text-slate-500 mx-auto mb-4" />
+              <lucide-icon name="search-x" class="w-10 h-10 text-[color:var(--text-muted)] mx-auto mb-4" />
               <h3 class="text-2xl font-black mb-2">No tools found</h3>
-              <p class="text-slate-400">Nothing matches "{{ searchQuery() }}". Try another phrase.</p>
-              <button (click)="clearSearch()" class="mt-6 px-6 py-3 rounded-2xl bg-white text-slate-900 font-bold uppercase tracking-[0.2em]">Reset</button>
+              <p class="text-[color:var(--text-muted)]">Nothing matches "{{ searchQuery() }}". Try another phrase.</p>
+              <button (click)="clearSearch()" class="mt-6 px-6 py-3 rounded-2xl bg-[color:var(--surface-soft)] text-[color:var(--text-primary)] font-bold uppercase tracking-[0.2em] border border-[color:var(--panel-outline)]">Reset</button>
             </div>
           }
         }

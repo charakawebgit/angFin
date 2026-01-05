@@ -32,7 +32,7 @@ import { castToNumber } from '@entities/finance/lib/casting.utils';
                         
                         <button 
                           (click)="copyToClipboard(results()[$index], res.label)"
-                          class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+                          class="p-2 rounded-lg bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] hover:text-[color:var(--accent-1)] hover:bg-[color:var(--surface-contrast)] transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-1)]/40"
                           [title]="'Copy ' + res.label"
                           [aria-label]="'Copy ' + res.label"
                         >
@@ -44,10 +44,10 @@ import { castToNumber } from '@entities/finance/lib/casting.utils';
                         </button>
                       </div>
                       
-                      <p id="label-{{$index}}" class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{{ res.label }}</p>
+                      <p id="label-{{$index}}" class="text-[10px] font-black text-[color:var(--text-muted)] uppercase tracking-widest">{{ res.label }}</p>
     
                       @if (res.type === 'percent') {
-                        <div class="mt-6 w-full max-w-[200px] mx-auto h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner" role="progressbar" [attr.aria-valuenow]="results()[$index]" aria-valuemin="0" aria-valuemax="100" [attr.aria-labelledby]="'label-' + $index">
+                        <div class="mt-6 w-full max-w-[200px] mx-auto h-1.5 bg-[color:var(--surface-contrast)] rounded-full overflow-hidden shadow-inner" role="progressbar" [attr.aria-valuenow]="results()[$index]" aria-valuemin="0" aria-valuemax="100" [attr.aria-labelledby]="'label-' + $index">
                           <div 
                             class="h-full rounded-full bg-gradient-to-r transition-all duration-1000 ease-out"
                             [class]="getGradientClass(res.themeColor)"
@@ -61,13 +61,13 @@ import { castToNumber } from '@entities/finance/lib/casting.utils';
             </div>
           } @else {
             <!-- Empty State -->
-            <div class="text-slate-300 dark:text-slate-700 space-y-6 py-10 w-full flex flex-col items-center">
-               <div class="w-24 h-24 bg-slate-50 dark:bg-slate-900 rounded-3xl flex items-center justify-center border border-slate-100 dark:border-slate-800/50 animate-pulse">
+            <div class="text-[color:var(--text-muted)] space-y-6 py-10 w-full flex flex-col items-center">
+               <div class="w-24 h-24 bg-[color:var(--surface-soft)] rounded-3xl flex items-center justify-center border border-[color:var(--panel-outline)] animate-pulse">
                 <lucide-icon [name]="config().icon" class="w-12 h-12 opacity-40" />
               </div>
               <div class="space-y-1">
-                <p class="text-sm font-black uppercase tracking-widest text-slate-400 dark:text-slate-600">Awaiting Input</p>
-                <p class="text-xs font-medium italic text-slate-400 dark:text-slate-500">Provide all parameters to calculate</p>
+                <p class="text-sm font-black uppercase tracking-widest text-[color:var(--text-muted)]">Awaiting Input</p>
+                <p class="text-xs font-medium italic text-[color:var(--text-muted)]">Provide all parameters to calculate</p>
               </div>
             </div>
           }
@@ -80,7 +80,7 @@ import { castToNumber } from '@entities/finance/lib/casting.utils';
                  @let res = config().results[0];
                  @let val = castToNumber(results()[0]);
 
-                 <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate mr-4">
+                 <span class="text-xs font-bold text-[color:var(--text-muted)] uppercase tracking-wider truncate mr-4">
                      {{ res.label }}
                  </span>
                  
@@ -92,8 +92,8 @@ import { castToNumber } from '@entities/finance/lib/casting.utils';
                       }
                  </span>
              } @else {
-                 <span class="text-sm font-medium text-slate-400 dark:text-slate-500 italic">Enter parameters...</span>
-                 <lucide-icon name="more-horizontal" class="w-5 h-5 text-slate-300 dark:text-slate-700 animate-pulse" />
+               <span class="text-sm font-medium text-[color:var(--text-muted)] italic">Enter parameters...</span>
+               <lucide-icon name="more-horizontal" class="w-5 h-5 text-[color:var(--text-muted)] animate-pulse" />
              }
         </div>
     }

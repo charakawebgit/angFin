@@ -49,13 +49,18 @@ type ControlValue = number | string | (string | number)[];
                   />
                 } @else if (field.type === 'select') {
                     <div class="space-y-1.5 flex flex-col">
-                        <label [for]="field.key" class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">
+                        <label [for]="field.key" class="text-xs font-semibold uppercase tracking-[0.18em] ml-1 text-[color:var(--text-muted)]">
                         {{ field.label }}
                         </label>
                         <select
                         [id]="field.key"
                         [formControlName]="field.key"
-                        class="w-full h-12 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none cursor-pointer"
+                        class="w-full h-12 px-4 rounded-xl appearance-none cursor-pointer transition-all"
+                        [class]="[
+                          'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)]',
+                          'border border-[color:var(--panel-outline)]',
+                          'focus:outline-none focus:ring-2 focus:ring-[color:var(--accent-1)]/20 focus:border-[color:var(--accent-1)]'
+                        ].join(' ')"
                         >
                         @for (opt of field.options; track opt.value) {
                             <option [value]="opt.value">{{ opt.label }}</option>

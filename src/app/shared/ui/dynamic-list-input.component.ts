@@ -16,7 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   template: `
     <div class="space-y-3">
       <div class="flex items-center justify-between px-1" aria-live="polite">
-        <label [for]="id()" class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">
+        <label [for]="id()" class="text-xs font-semibold uppercase tracking-[0.18em] ml-1 text-[color:var(--text-muted)]">
           {{ label() }}
         </label>
           {{ items().length }} Items
@@ -27,7 +27,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
           #newItemInput
           type="number"
           [id]="id()"
-          class="flex-grow h-11 px-4 rounded-2xl bg-slate-900/60 border border-white/10 text-slate-100 placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/60 transition-all text-sm font-medium shadow-sm"
+          class="flex-grow h-11 px-4 rounded-2xl bg-[color:var(--surface-soft)] border border-[color:var(--panel-outline)] text-[color:var(--text-primary)] placeholder:[color:var(--text-muted)] outline-none focus:ring-2 focus:ring-[color:var(--accent-1)] focus:border-[color:var(--accent-1)] transition-all text-sm font-medium shadow-sm"
           placeholder="Add value..."
           (keyup.enter)="addItem(newItemInput)"
           (blur)="markTouched()"
@@ -44,13 +44,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         </button>
       </div>
 
-      <div class="flex flex-wrap gap-2 min-h-[44px] p-2 rounded-2xl border border-dashed border-white/10 bg-white/5" aria-live="polite">
+      <div class="flex flex-wrap gap-2 min-h-[44px] p-2 rounded-2xl border border-dashed border-[color:var(--panel-outline)] bg-[color:var(--surface-soft)]" aria-live="polite">
         @for (item of items(); track $index) {
-          <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/60 border border-white/10 shadow-sm group hover:border-cyan-400/50 transition-all animate-in zoom-in duration-200">
-            <span class="text-sm font-bold text-slate-100">{{ item }}</span>
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[color:var(--surface-contrast)] border border-[color:var(--panel-outline)] shadow-sm group hover:border-[color:var(--accent-1)] transition-all animate-in zoom-in duration-200">
+            <span class="text-sm font-bold text-[color:var(--text-primary)]">{{ item }}</span>
             <button
               (click)="removeItem($index)"
-              class="text-slate-400 hover:text-red-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50"
+              class="text-[color:var(--text-muted)] hover:text-red-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50"
               [attr.aria-label]="'Remove ' + item + ' from list'"
               [disabled]="disabled()"
             >
@@ -59,7 +59,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
           </div>
         } @empty {
           <div class="w-full flex items-center justify-center py-2">
-            <span class="text-[11px] font-medium text-slate-400 italic">No values added yet</span>
+            <span class="text-[11px] font-medium text-[color:var(--text-muted)] italic">No values added yet</span>
           </div>
         }
       </div>

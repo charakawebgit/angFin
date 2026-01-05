@@ -13,23 +13,23 @@ import { CalculatorConfig } from '@entities/calculator/model/types';
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <app-card title="Financial Insights">
           <div class="flex gap-4 items-start text-left">
-            <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-900/20 text-blue-600 dark:text-blue-400">
+            <div class="p-2 rounded-xl border border-[color:var(--panel-outline)] bg-[color:var(--surface-soft)] text-[color:var(--accent-1)]">
               <lucide-icon name="lightbulb" class="w-5 h-5" />
             </div>
             <div class="space-y-3 w-full">
               @if (config().insights) {
-              <div class="relative pl-4 border-l-2 border-blue-500/30">
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
+              <div class="relative pl-4 border-l-2" [style.borderColor]="'var(--panel-outline)'">
+                <p class="text-sm text-[color:var(--text-muted)] leading-relaxed font-medium italic">
                   "{{ config().insights }}"
                 </p>
               </div>
             }
             @if (config().formula) {
-              <div class="group relative overflow-hidden rounded-xl bg-slate-900 dark:bg-black border border-slate-800 p-4 shadow-lg">
-                <div class="absolute top-0 right-0 p-2 opacity-50">
-                    <lucide-icon name="sigma" class="w-4 h-4 text-slate-700" />
+              <div class="group relative overflow-hidden rounded-xl bg-[color:var(--surface-contrast)] border border-[color:var(--panel-outline)] p-4 shadow-lg">
+                <div class="absolute top-0 right-0 p-2 opacity-60 text-[color:var(--text-muted)]">
+                    <lucide-icon name="sigma" class="w-4 h-4" />
                 </div>
-                <div class="font-mono text-center text-sm font-medium text-emerald-400 tracking-wide">
+                <div class="font-mono text-center text-sm font-medium text-[color:var(--accent-1)] tracking-wide">
                   {{ config().formula }}
                 </div>
               </div>
@@ -41,16 +41,16 @@ import { CalculatorConfig } from '@entities/calculator/model/types';
         @if (config().references && config().references!.length > 0) {
           <app-card title="Educational Resources">
             <div class="space-y-4">
-              <div class="flex items-center gap-3 text-emerald-600 dark:text-emerald-400">
+              <div class="flex items-center gap-3 text-[color:var(--accent-1)]">
                 <lucide-icon name="scroll-text" class="w-5 h-5" />
                 <span class="text-xs font-black uppercase tracking-widest">Learn More</span>
               </div>
               <ul class="space-y-2">
                 @for (ref of config().references; track ref.url) {
                   <li>
-                    <a [href]="ref.url" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-slate-100 dark:border-white/5 transition-all group overflow-hidden">
-                      <span class="text-xs font-bold text-slate-700 dark:text-slate-300 truncate pr-4">{{ ref.title }}</span>
-                      <lucide-icon name="arrow-up-right" class="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                    <a [href]="ref.url" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-[color:var(--surface-soft)] hover:bg-[color:var(--surface-contrast)] border border-[color:var(--panel-outline)] transition-all group overflow-hidden">
+                      <span class="text-xs font-bold text-[color:var(--text-primary)] truncate pr-4">{{ ref.title }}</span>
+                      <lucide-icon name="arrow-up-right" class="w-3.5 h-3.5 text-[color:var(--text-muted)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
                     </a>
                   </li>
                 }
