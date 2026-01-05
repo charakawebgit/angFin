@@ -80,6 +80,7 @@ export class CalculatorFormComponent implements OnDestroy {
   constructor() {
     effect(() => {
       const cfg = this.config();
+      console.log('DEBUG: Effect ran. Config:', cfg ? cfg.id : 'null');
       if (!cfg) {
         untracked(() => this.formGroup.set(null));
         return;
