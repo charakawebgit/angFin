@@ -7,7 +7,7 @@ import { LucideAngularModule, Calculator } from 'lucide-angular';
 import { InputComponent } from '@shared/ui/input.component';
 import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 
-describe.skip('CalculatorFormComponent', () => {
+describe('CalculatorFormComponent', () => {
   const mockConfig: CalculatorConfig = {
     id: 'test-calc',
     title: 'Test Calculator',

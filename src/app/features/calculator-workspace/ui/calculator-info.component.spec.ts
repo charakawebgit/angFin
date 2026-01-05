@@ -1,13 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { render, screen } from '@testing-library/angular';
+import { describe, it, expect } from 'vitest';
 import { CalculatorInfoComponent } from './calculator-info.component';
 import { CalculatorConfig } from '@entities/calculator/model/types';
-import { LucideAngularModule, Lightbulb, ScrollText, ArrowUpRight } from 'lucide-angular';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('CalculatorInfoComponent', () => {
-    let component: CalculatorInfoComponent;
-    let fixture: ComponentFixture<CalculatorInfoComponent>;
-
     const fullConfig: CalculatorConfig = {
         id: 'full',
         title: 'Full Info',
@@ -20,42 +17,34 @@ describe('CalculatorInfoComponent', () => {
         insights: 'This is a test insight.',
         formula: 'A + B = C',
         references: [
-            { title: 'Learn React', url: 'https://react.dev' }, // Irony intent
+            { title: 'Learn React', url: 'https://react.dev' },
             { title: 'Learn Angular', url: 'https://angular.dev' }
         ],
         calculate: () => []
     };
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [CalculatorInfoComponent, LucideAngularModule.pick({ Lightbulb, ScrollText, ArrowUpRight })]
-        }).compileComponents();
+    it('should render insights and formula when provided', async () => {
+        await render(CalculatorInfoComponent, {
+            inputs: { config: fullConfig },
+            providers: [provideZonelessChangeDetection()]
+        });
 
-        fixture = TestBed.createComponent(CalculatorInfoComponent);
-        component = fixture.componentInstance;
+        expect(screen.getByText(/This is a test insight/i)).toBeTruthy();
+        expect(screen.getByText(/A \+ B = C/i)).toBeTruthy();
     });
 
-    it('should render insights and formula when provided', () => {
-        fixture.componentRef.setInput('config', fullConfig);
-        fixture.detectChanges();
+    it('should render references list when provided', async () => {
+        await render(CalculatorInfoComponent, {
+            inputs: { config: fullConfig },
+            providers: [provideZonelessChangeDetection()]
+        });
 
-        const root = fixture.nativeElement as HTMLElement;
-        expect(root.textContent).toContain('This is a test insight.');
-        expect(root.textContent).toContain('A + B = C');
+        expect(screen.getByText(/Learn Angular/i)).toBeTruthy();
+        const link = screen.getByRole('link', { name: /Learn Angular/i });
+        expect(link.getAttribute('href')).toBe('https://angular.dev');
     });
 
-    it('should render references list when provided', () => {
-        fixture.componentRef.setInput('config', fullConfig);
-        fixture.detectChanges();
-
-        const root = fixture.nativeElement as HTMLElement;
-        expect(root.textContent).toContain('Learn Angular');
-        const links = root.querySelectorAll('a');
-        expect(links.length).toBe(2);
-        expect(links[1].getAttribute('href')).toBe('https://angular.dev');
-    });
-
-    it('should not render anything if no info is present', () => {
+    it('should not render anything if no info is present', async () => {
         const emptyConfig: CalculatorConfig = {
             id: 'empty',
             title: 'Empty',
@@ -68,10 +57,11 @@ describe('CalculatorInfoComponent', () => {
             calculate: () => []
         };
 
-        fixture.componentRef.setInput('config', emptyConfig);
-        fixture.detectChanges();
+        const { container } = await render(CalculatorInfoComponent, {
+            inputs: { config: emptyConfig },
+            providers: [provideZonelessChangeDetection()]
+        });
 
-        const root = fixture.nativeElement as HTMLElement;
-        expect(root.textContent).toBe('');
+        expect(container.textContent?.trim()).toBe('');
     });
 });
