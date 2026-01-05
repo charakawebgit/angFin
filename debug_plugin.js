@@ -1,5 +1,5 @@
 try {
-    const pkg = require('@analogjs/vite-plugin-angular');
+    const pkg = require('@analogjs/vitest-angular');
     console.log('Keys:', Object.keys(pkg));
     console.log('Type of angular:', typeof pkg.angular);
     console.log('Type of default:', typeof pkg.default);

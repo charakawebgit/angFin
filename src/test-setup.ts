@@ -1,4 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
+import * as matchers from 'vitest-axe/matchers';
+import { expect } from 'vitest';
 
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+expect.extend(matchers);
+
+TestBed.initTestEnvironment(BrowserTestingModule, platformBrowserTesting());
