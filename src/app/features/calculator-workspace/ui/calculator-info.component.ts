@@ -18,15 +18,22 @@ import { CalculatorConfig } from '@entities/calculator/model/types';
             </div>
             <div class="space-y-3 w-full">
               @if (config().insights) {
-                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                  {{ config().insights }}
+              <div class="relative pl-4 border-l-2 border-blue-500/30">
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
+                  "{{ config().insights }}"
                 </p>
-              }
-              @if (config().formula) {
-                <div class="bg-slate-50 dark:bg-slate-950/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800/50 font-mono text-xs text-center text-slate-500 dark:text-slate-400 w-full overflow-x-auto">
-                  Formula: {{ config().formula }}
+              </div>
+            }
+            @if (config().formula) {
+              <div class="group relative overflow-hidden rounded-xl bg-slate-900 dark:bg-black border border-slate-800 p-4 shadow-lg">
+                <div class="absolute top-0 right-0 p-2 opacity-50">
+                    <lucide-icon name="sigma" class="w-4 h-4 text-slate-700" />
                 </div>
-              }
+                <div class="font-mono text-center text-sm font-medium text-emerald-400 tracking-wide">
+                  {{ config().formula }}
+                </div>
+              </div>
+            }
             </div>
           </div>
         </app-card>

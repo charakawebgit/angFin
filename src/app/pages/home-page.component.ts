@@ -11,7 +11,7 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calculator-list',
-  imports: [LucideAngularModule, RouterLink, CardComponent, ReactiveFormsModule, SkeletonComponent],
+  imports: [LucideAngularModule, RouterLink, ReactiveFormsModule, SkeletonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // host binding for keyboard shortcuts
   host: {

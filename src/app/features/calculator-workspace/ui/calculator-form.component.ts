@@ -25,42 +25,57 @@ import { asList } from '@entities/finance/lib/casting.utils';
     @if (formGroup(); as fg) {
       @let cfg = config()!;
       <app-card [title]="cfg.subtitle || 'Parameters'" subtitle="Fill in the required fields">
-        <form [formGroup]="fg" class="space-y-5">
-          @for (field of cfg.fields; track field.key) {
-            @if (field.type === 'number') {
-              <app-input
-                [id]="field.key"
-                [label]="field.label"
-                [control]="getControl(field.key)"
-                type="number"
-                [prefix]="field.prefix"
-                [suffix]="field.suffix"
-                [placeholder]="field.placeholder || ''"
-              />
-            } @else if (field.type === 'list') {
-              <app-dynamic-list-input
-                [id]="field.key"
-                [label]="field.label"
-                [items]="asList(fg.get(field.key)?.value)"
-                (changed)="updateData(field.key, $event)"
-              />
-            } @else if (field.type === 'select') {
-              <div class="space-y-1.5 flex flex-col">
-                <label [for]="field.key" class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">
-                  {{ field.label }}
-                </label>
-                <select
-                  [id]="field.key"
-                  [formControlName]="field.key"
-                  class="w-full h-12 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none cursor-pointer"
-                >
-                  @for (opt of field.options; track opt.value) {
-                    <option [value]="opt.value">{{ opt.label }}</option>
-                  }
-                </select>
+        <form [formGroup]="fg" class="space-y-6">
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+            @for (field of cfg.fields; track field.key) {
+              <div [class]="field.type === 'list' ? 'col-span-full' : ''">
+                @if (field.type === 'number') {
+                  <app-input
+                    [id]="field.key"
+                    [label]="field.label"
+                    [control]="getControl(field.key)"
+                    type="number"
+                    [prefix]="field.prefix"
+                    [suffix]="field.suffix"
+                    [placeholder]="field.placeholder || ''"
+                  />
+                } @else if (field.type === 'list') {
+                  <app-dynamic-list-input
+                    [id]="field.key"
+                    [label]="field.label"
+                    [items]="asList(fg.get(field.key)?.value)"
+                    (changed)="updateData(field.key, $event)"
+                  />
+                } @else if (field.type === 'select') {
+                    <div class="space-y-1.5 flex flex-col">
+                        <label [for]="field.key" class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1">
+                        {{ field.label }}
+                        </label>
+                        <select
+                        [id]="field.key"
+                        [formControlName]="field.key"
+                        class="w-full h-12 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none cursor-pointer"
+                        >
+                        @for (opt of field.options; track opt.value) {
+                            <option [value]="opt.value">{{ opt.label }}</option>
+                        }
+                        </select>
+                    </div>
+                }
               </div>
             }
-          }
+          </div>
+          
+          <div class="flex justify-end pt-2">
+            <button 
+                type="button" 
+                (click)="fg.reset()"
+                class="text-xs font-bold text-slate-400 hover:text-red-500 dark:hover:text-red-400 uppercase tracking-widest flex items-center gap-2 transition-colors group"
+            >
+                <lucide-icon name="trash-2" class="w-4 h-4 transition-transform group-hover:scale-110" />
+                Clear Inputs
+            </button>
+          </div>
         </form>
       </app-card>
     }
