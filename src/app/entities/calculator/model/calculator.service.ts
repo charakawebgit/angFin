@@ -55,9 +55,13 @@ export class CalculatorService {
                     return config;
                 } else {
                     console.error(`[CalculatorService] Module for ${id} missing default export:`, module);
+                    throw new Error(`Module for ${id} missing default export`);
                 }
             } catch (error) {
                 console.error(`[CalculatorService] Failed to load ${id}:`, error);
+                this.currentConfig.set(null);
+                this.loading.set(false);
+                return null;
             }
         }
 

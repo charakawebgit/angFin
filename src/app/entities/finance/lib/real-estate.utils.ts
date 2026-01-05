@@ -11,7 +11,12 @@ export interface AmortizationResult {
         monthlyPayment: number;
         totalInterest: number;
     };
-    schedule?: unknown[]; // Simplified for now since not used in summary
+    schedule?: {
+        period: number;
+        interest: number;
+        principal: number;
+        balance: number;
+    }[];
 }
 
 export function calculateAmortization(params: AmortizationParams): AmortizationResult {
