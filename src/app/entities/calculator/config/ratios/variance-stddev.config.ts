@@ -1,4 +1,4 @@
-import { CalculatorConfig } from '../model/types';
+import { CalculatorConfig } from '../../model/types';
 import { calculateStandardDeviation, calculateSampleVariance } from '@entities/finance/lib/stats.utils';
 
 const CONFIG: CalculatorConfig = {

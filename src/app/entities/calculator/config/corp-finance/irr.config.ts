@@ -1,4 +1,4 @@
-import { CalculatorConfig } from '../model/types';
+import { CalculatorConfig } from '../../model/types';
 import { calculateIrr } from '@entities/finance/lib/investment.utils';
 
 const CONFIG: CalculatorConfig = {

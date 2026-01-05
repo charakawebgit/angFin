@@ -1,4 +1,4 @@
-import { CalculatorConfig } from '../model/types';
+import { CalculatorConfig } from '../../model/types';
 import { calculateBankDiscountYield, calculateEffectiveAnnualYield } from '@entities/finance/lib/investment.utils';
 
 const CONFIG: CalculatorConfig = {

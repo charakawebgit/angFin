@@ -1,4 +1,4 @@
-import { CalculatorConfig } from '../model/types';
+import { CalculatorConfig } from '../../model/types';
 import { calculateConvexity } from '@entities/finance/lib/fixed-income.utils';
 
 const CONFIG: CalculatorConfig = {

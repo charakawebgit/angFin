@@ -1,4 +1,4 @@
-import { CalculatorConfig } from '../model/types';
+import { CalculatorConfig } from '../../model/types';
 import { calculateYtm } from '@entities/finance/lib/fixed-income.utils';
 
 const CONFIG: CalculatorConfig = {

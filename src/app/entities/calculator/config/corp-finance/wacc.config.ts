@@ -1,4 +1,4 @@
-import { CalculatorConfig } from '../model/types';
+import { CalculatorConfig } from '../../model/types';
 import { calculateWacc } from '@entities/finance/lib/equity.utils';
 
 const CONFIG: CalculatorConfig = {

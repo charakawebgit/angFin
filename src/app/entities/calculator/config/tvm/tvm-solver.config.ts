@@ -1,4 +1,4 @@
-import { CalculatorConfig, TVMVar } from '../model/types';
+import { CalculatorConfig, TVMVar } from '../../model/types';
 import { solveTvm } from '@entities/finance/lib/tvm.utils';
 
 const CONFIG: CalculatorConfig = {

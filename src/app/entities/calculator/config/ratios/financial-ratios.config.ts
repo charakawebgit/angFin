@@ -1,4 +1,4 @@
-import { CalculatorConfig } from '../model/types';
+import { CalculatorConfig } from '../../model/types';
 import { calculateFinancialRatios } from '@entities/finance/lib/amortization.utils';
 
 const CONFIG: CalculatorConfig = {
