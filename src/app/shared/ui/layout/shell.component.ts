@@ -4,7 +4,7 @@ import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { trigger, transition, style, animate, query } from '@angular/animations';
 import { filter } from 'rxjs';
 import { CalculatorService } from '@entities/calculator/model/calculator.service';
-import { MetaService } from '@core/services/meta.service';
+import { MetaService } from '@shared/lib/meta.service';
 import { HeaderComponent } from './header.component';
 import { FooterComponent } from './footer.component';
 
