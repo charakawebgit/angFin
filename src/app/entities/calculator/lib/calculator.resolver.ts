@@ -14,5 +14,12 @@ export const CalculatorResolver: ResolveFn<CalculatorConfig | null> = async (rou
     }
 
     const config = await calcService.loadConfig(id);
-    return config || null;
+
+    if (!config) {
+        // Redirect if calculator not found AND return null to satisfy type
+        await router.navigate(['/']);
+        return null;
+    }
+
+    return config;
 };
