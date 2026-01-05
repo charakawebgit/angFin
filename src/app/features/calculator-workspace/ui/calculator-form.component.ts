@@ -1,7 +1,6 @@
 import { Component, input, output, ChangeDetectionStrategy, inject, signal, OnDestroy, effect, untracked } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { Subscription, asapScheduler } from 'rxjs';
-import { observeOn, debounceTime } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
@@ -79,15 +78,16 @@ export class CalculatorFormComponent implements OnDestroy {
   private sub = new Subscription();
 
   constructor() {
-    this.sub.add(toObservable(this.config).pipe(observeOn(asapScheduler)).subscribe(cfg => {
+    effect(() => {
+      const cfg = this.config();
       if (!cfg) {
-        this.formGroup.set(null);
+        untracked(() => this.formGroup.set(null));
         return;
       }
 
       const group: Record<string, unknown> = {};
       cfg.fields.forEach(field => {
-        const val = this.data()?.[field.key] ?? field.defaultValue ?? '';
+        const val = untracked(() => this.data()?.[field.key]) ?? field.defaultValue ?? '';
         group[field.key] = [val, field.required ? [Validators.required] : []];
       });
 
@@ -100,9 +100,11 @@ export class CalculatorFormComponent implements OnDestroy {
         this.valid.emit(fg.valid);
       }));
 
-      this.formGroup.set(fg);
-      this.valid.emit(fg.valid);
-    }));
+      untracked(() => {
+        this.formGroup.set(fg);
+        this.valid.emit(fg.valid);
+      });
+    });
 
     // Robust Sync: If the parent updates data() externally (e.g. via a Route State or Reset),
     // sync it into the formGroup without re-emitting through valueChanges event.

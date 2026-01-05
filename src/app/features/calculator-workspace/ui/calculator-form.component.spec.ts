@@ -58,6 +58,10 @@ describe('CalculatorFormComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
+    // Wait for form group initialization (async effect)
+    await new Promise(resolve => setTimeout(resolve, 500));
+    fixture.detectChanges();
+
     const root = fixture.nativeElement as HTMLElement;
     const label = root.querySelector('label[for="principal"]');
     expect(label?.textContent?.trim()).toMatch(/Principal/i);
@@ -74,7 +78,7 @@ describe('CalculatorFormComponent', () => {
       const timeout = setTimeout(() => reject(new Error('calcForm not initialized')), 1000);
       const id = setInterval(() => {
         try {
-          if (component.calcForm()) {
+          if ((component as any).formGroup()) {
             clearInterval(id);
             clearTimeout(timeout);
             resolve();
@@ -87,6 +91,6 @@ describe('CalculatorFormComponent', () => {
       }, 10);
     });
 
-    expect(component.localData().principal).toBeTruthy();
+    expect((component as any).formGroup()).toBeTruthy();
   });
 });

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { App } from './app';
+import { App } from './app.component';
 
 describe('App', () => {
   it('should construct', () => {

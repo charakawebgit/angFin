@@ -10,18 +10,16 @@ describe('CalculatorResultsComponent', () => {
 
     const mockConfig: CalculatorConfig = {
         id: 'test',
-        name: 'Test Calc', // Changed title to name to match type definition if necessary, or just mock what's needed
         title: 'Test Calc',
         description: 'Test Description',
         category: 'Test',
         icon: 'calculator',
         fields: [],
         results: [
-            { label: 'Monthly Payment', type: 'currency', themeColor: 'indigo' },
-            { label: 'Total Interest', type: 'currency', themeColor: 'red' },
-            { label: 'Score', type: 'percent', themeColor: 'emerald' }
+            { label: 'Monthly Payment', type: 'currency', themeColor: 'indigo', calculate: () => 0 },
+            { label: 'Total Interest', type: 'currency', themeColor: 'red', calculate: () => 0 },
+            { label: 'Score', type: 'percent', themeColor: 'emerald', calculate: () => 0 }
         ],
-        calculate: () => []
     };
 
     beforeEach(async () => {
@@ -71,12 +69,13 @@ describe('CalculatorResultsComponent', () => {
     });
 
     it('should copy to clipboard', async () => {
-        // Mock clipboard API
+        // Mock clipboard API safely
         const writeTextSpy = vi.fn().mockResolvedValue(undefined);
-        Object.assign(navigator, {
-            clipboard: {
+        Object.defineProperty(navigator, 'clipboard', {
+            value: {
                 writeText: writeTextSpy
-            }
+            },
+            writable: true
         });
 
         const mockResults: ResultValue[] = [500, 1000, 0.5];

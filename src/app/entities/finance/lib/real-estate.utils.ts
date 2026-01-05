@@ -28,6 +28,15 @@ export function calculateAmortization(params: AmortizationParams): AmortizationR
     let monthlyPayment = new Decimal(0);
     let totalInterest = new Decimal(0);
 
+    if (n.isZero()) {
+        return {
+            summary: {
+                monthlyPayment: 0,
+                totalInterest: 0
+            }
+        };
+    }
+
     if (!rMonthly.isZero()) {
         // M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1 ]
         const numerator = rMonthly.times(rMonthly.plus(1).pow(n));
@@ -37,6 +46,8 @@ export function calculateAmortization(params: AmortizationParams): AmortizationR
         // Simple division if rate is 0
         if (!n.isZero()) {
             monthlyPayment = P.div(n);
+        } else {
+            monthlyPayment = new Decimal(0);
         }
     }
 

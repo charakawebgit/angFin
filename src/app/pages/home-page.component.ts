@@ -1,16 +1,22 @@
-import { Component, computed, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, signal, OnInit, ChangeDetectionStrategy, OnDestroy, ElementRef, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { CardComponent } from '@shared/ui/card.component';
 import { SkeletonComponent } from '@shared/ui/skeleton.component';
 import { CalculatorService } from '@entities/calculator/model/calculator.service';
 import { MetaService } from '@shared/lib/meta.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calculator-list',
-  imports: [LucideAngularModule, RouterLink, CardComponent, FormsModule, SkeletonComponent],
+  imports: [LucideAngularModule, RouterLink, CardComponent, ReactiveFormsModule, SkeletonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // host binding for keyboard shortcuts
+  host: {
+    '(window:keydown)': 'handleKeydown($event)'
+  },
   template: `
     <div class="space-y-16 pb-20 overflow-hidden">
       <!-- Hero Section -->
@@ -40,11 +46,17 @@ import { MetaService } from '@shared/lib/meta.service';
             <div class="relative flex-grow group">
               <lucide-icon name="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
               <input 
+                #searchInput
                 type="text" 
-                [(ngModel)]="searchQuery"
-                placeholder="Search tools (e.g. NPV, IRR, Black Scholes...)" 
-                class="w-full h-14 pl-12 pr-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-medium shadow-xl shadow-blue-500/5 dark:text-white"
+                [formControl]="searchControl"
+                placeholder="Search tools..." 
+                class="w-full h-14 pl-12 pr-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-medium shadow-xl shadow-blue-500/5 dark:text-white placeholder:text-slate-400"
               />
+              <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                 <kbd class="hidden md:inline-flex h-6 items-center gap-1 rounded border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 font-mono text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                   <span class="text-xs">⌘</span>K
+                 </kbd>
+              </div>
             </div>
             
             <div class="flex flex-wrap items-center justify-center gap-2">
@@ -113,12 +125,15 @@ import { MetaService } from '@shared/lib/meta.service';
             </app-card>
           </a>
         } @empty {
-          <div class="col-span-full py-20 text-center animate-in fade-in duration-500">
-            <div class="w-20 h-20 bg-slate-100 dark:bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-6">
-              <lucide-icon name="search-x" class="w-10 h-10 text-slate-300 dark:text-slate-700" />
+          <div class="col-span-full py-24 text-center animate-in fade-in duration-500">
+            <div class="w-24 h-24 bg-slate-50 dark:bg-slate-900/50 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-slate-100 dark:border-slate-800">
+              <lucide-icon name="search-x" class="w-10 h-10 text-slate-300 dark:text-slate-600" />
             </div>
-            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">No matching tools found</h3>
-            <p class="text-slate-500 dark:text-slate-400">Try adjusting your search or category filters.</p>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2 font-display">No tools found</h3>
+            <p class="text-slate-500 dark:text-slate-400">We couldn't find any calculators matching "{{ searchQuery() }}"</p>
+            <button (click)="clearSearch()" class="mt-6 text-blue-600 dark:text-blue-400 text-sm font-bold hover:underline">
+              Clear search filters
+            </button>
           </div>
         }
       }
@@ -129,9 +144,25 @@ export class CalculatorListComponent implements OnInit {
   private calcService = inject(CalculatorService);
   private metaService = inject(MetaService);
 
+  // ViewChild for focus management
+  searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
+
   calculators = this.calcService.calculatorsList;
   selectedCategory = signal<string>('All');
-  searchQuery = signal<string>('');
+
+  // Reactive Form Control for Search
+  searchControl = new FormControl('');
+
+  // Convert stream to signal with debounce
+  searchQuery = toSignal(
+    this.searchControl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged()
+    ),
+    { initialValue: '' }
+  );
+
   isLoading = signal<boolean>(true);
 
   categories = computed(() => {
@@ -141,7 +172,7 @@ export class CalculatorListComponent implements OnInit {
 
   filteredCalculators = computed(() => {
     const selected = this.selectedCategory();
-    const query = this.searchQuery().toLowerCase().trim();
+    const query = (this.searchQuery() || '').toLowerCase().trim();
 
     let list = this.calculators();
     if (selected !== 'All') {
@@ -160,7 +191,30 @@ export class CalculatorListComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.metaService.updateTitle('Dashboard - Professional Suite');
     // Simulate premium loading feel
     setTimeout(() => this.isLoading.set(false), 800);
+  }
+
+  handleKeydown(event: KeyboardEvent) {
+    // CMD/CTRL + K to focus search
+    if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+      event.preventDefault();
+      this.searchInput()?.nativeElement.focus();
+    }
+    // Forward slash to focus search (if not already typing)
+    if (event.key === '/' && document.activeElement !== this.searchInput()?.nativeElement) {
+      event.preventDefault();
+      this.searchInput()?.nativeElement.focus();
+    }
+    // ESC to blur
+    if (event.key === 'Escape') {
+      this.searchInput()?.nativeElement.blur();
+    }
+  }
+
+  clearSearch() {
+    this.searchControl.setValue('');
+    this.selectedCategory.set('All');
   }
 }
