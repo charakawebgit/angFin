@@ -11,7 +11,7 @@ export class AppTitleStrategy extends TitleStrategy {
     private calcService = inject(CalculatorService);
 
     override updateTitle(routerState: RouterStateSnapshot) {
-        const url = routerState.url;
+        const url = routerState.url.split('?')[0]; // Strip query params
         const parts = url.split('/');
         const id = parts[parts.length - 1];
 
