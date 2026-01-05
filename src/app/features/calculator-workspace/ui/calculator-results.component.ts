@@ -32,7 +32,7 @@ import { castToNumber } from '@entities/finance/lib/casting.utils';
                         
                         <button 
                           (click)="copyToClipboard(results()[$index], res.label)"
-                          class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 outline-none focus:ring-2 focus:ring-blue-500/20"
+                          class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
                           [title]="'Copy ' + res.label"
                           [aria-label]="'Copy ' + res.label"
                         >
@@ -107,12 +107,33 @@ export class CalculatorResultsComponent {
 
   copiedField = signal<string | null>(null);
 
-  copyToClipboard(value: ResultValue, fieldId: string) {
+  async copyToClipboard(value: ResultValue, fieldId: string) {
     const text = value && typeof value === 'object' ? JSON.stringify(value) : String(value ?? '');
-    navigator.clipboard.writeText(text).then(() => {
+
+    try {
+      if (typeof navigator !== 'undefined' && navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        this.fallbackCopy(text);
+      }
+
       this.copiedField.set(fieldId);
       setTimeout(() => this.copiedField.set(null), 2000);
-    });
+    } catch (error: unknown) {
+      console.error('Copy failed', error);
+    }
+  }
+
+  private fallbackCopy(value: string) {
+    const textarea = document.createElement('textarea');
+    textarea.value = value;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'absolute';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
   }
 
   getProgressBarWidth(value: ResultValue): string {

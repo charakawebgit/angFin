@@ -2,13 +2,15 @@ import { Component, input, output, ChangeDetectionStrategy, inject, signal, OnDe
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators, NonNullableFormBuilder, ValidatorFn } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { InputComponent } from '@shared/ui/input.component';
 import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
 import { CardComponent } from '@shared/ui/card.component';
 import { CalculatorConfig, CalculatorData } from '@entities/calculator/model/types';
 import { asList } from '@entities/finance/lib/casting.utils';
+
+type ControlValue = number | string | (string | number)[];
 
 @Component({
   selector: 'app-calculator-form',
@@ -43,8 +45,7 @@ import { asList } from '@entities/finance/lib/casting.utils';
                   <app-dynamic-list-input
                     [id]="field.key"
                     [label]="field.label"
-                    [items]="asList(fg.get(field.key)?.value)"
-                    (changed)="updateData(field.key, $event)"
+                    [formControlName]="field.key"
                   />
                 } @else if (field.type === 'select') {
                     <div class="space-y-1.5 flex flex-col">
@@ -87,10 +88,29 @@ export class CalculatorFormComponent implements OnDestroy {
   valid = output<boolean>();
   dataChanged = output<{ key: string; value: CalculatorData[string] }>();
 
-  protected formGroup = signal<FormGroup | null>(null);
+  protected formGroup = signal<FormGroup<Record<string, FormControl<ControlValue>>> | null>(null);
 
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private sub = new Subscription();
+
+  private getInitialValue(field: CalculatorConfig['fields'][number]): ControlValue {
+    const external = untracked(() => this.data()?.[field.key]);
+    if (field.type === 'list') return asList(external ?? field.defaultValue);
+    if (field.type === 'select') {
+      const first = field.options?.[0]?.value ?? '';
+      return (external ?? field.defaultValue ?? first) as ControlValue;
+    }
+    // number fallback
+    return Number(external ?? field.defaultValue ?? 0);
+  }
+
+  private buildValidators(field: CalculatorConfig['fields'][number]): ValidatorFn[] {
+    const validators: ValidatorFn[] = [];
+    if (field.required) validators.push(Validators.required);
+    if (typeof field.min === 'number') validators.push(Validators.min(field.min));
+    if (typeof field.max === 'number') validators.push(Validators.max(field.max));
+    return validators;
+  }
 
   constructor() {
     effect((onCleanup) => {
@@ -101,13 +121,25 @@ export class CalculatorFormComponent implements OnDestroy {
         return;
       }
 
-      const group: Record<string, unknown> = {};
+      const controls: Record<string, FormControl<ControlValue>> = {};
       cfg.fields.forEach(field => {
-        const val = untracked(() => this.data()?.[field.key]) ?? field.defaultValue ?? '';
-        group[field.key] = [val, field.required ? [Validators.required] : []];
+        const validators = this.buildValidators(field);
+        const initial = this.getInitialValue(field);
+
+        if (field.type === 'list') {
+          controls[field.key] = this.fb.control(asList(initial), { validators });
+          return;
+        }
+
+        if (field.type === 'select') {
+          controls[field.key] = this.fb.control(String(initial), { validators });
+          return;
+        }
+
+        controls[field.key] = this.fb.control(Number(initial), { validators });
       });
 
-      const fg = this.fb.group(group);
+      const fg = this.fb.group(controls);
 
       const sub = fg.valueChanges.pipe(debounceTime(50)).subscribe(vals => {
         Object.keys(vals).forEach(key => {
@@ -146,11 +178,9 @@ export class CalculatorFormComponent implements OnDestroy {
     this.sub.unsubscribe();
   }
 
-  getControl(key: string): FormControl {
-    return this.formGroup()?.get(key) as FormControl;
+  getControl(key: string): FormControl<ControlValue> {
+    return this.formGroup()?.get(key) as FormControl<ControlValue>;
   }
-
-  protected asList = asList;
 
   updateData(key: string, value: CalculatorData[string]) {
     this.dataChanged.emit({ key, value });

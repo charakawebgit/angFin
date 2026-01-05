@@ -9,36 +9,37 @@ export type Theme = 'light' | 'dark';
 export class ThemeService {
     private platformId = inject(PLATFORM_ID);
     private themeKey = 'angfin-theme-preference';
+    private themeState = signal<Theme>('light');
 
-    // Primary signal for the current theme
-    theme = signal<Theme>('light');
+    // Expose readonly theme signal for UI consumption
+    theme = this.themeState.asReadonly();
 
     constructor() {
-        if (isPlatformBrowser(this.platformId)) {
-            // Initialize from localStorage or system preference
-            const saved = localStorage.getItem(this.themeKey) as Theme | null;
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (!isPlatformBrowser(this.platformId)) return;
 
-            this.theme.set(saved || (prefersDark ? 'dark' : 'light'));
+        // Initialize from localStorage or system preference
+        const saved = localStorage.getItem(this.themeKey) as Theme | null;
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-            // Sync theme to document body whenever it changes
-            effect(() => {
-                const current = this.theme();
-                if (current === 'dark') {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
-                localStorage.setItem(this.themeKey, current);
-            });
-        }
+        this.themeState.set(saved || (prefersDark ? 'dark' : 'light'));
+
+        // Sync theme to document body whenever it changes
+        effect(() => {
+            const current = this.themeState();
+            if (current === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            localStorage.setItem(this.themeKey, current);
+        });
     }
 
     toggleTheme() {
-        this.theme.update(t => t === 'light' ? 'dark' : 'light');
+        this.themeState.update(t => t === 'light' ? 'dark' : 'light');
     }
 
     isDark() {
-        return this.theme() === 'dark';
+        return this.themeState() === 'dark';
     }
 }
