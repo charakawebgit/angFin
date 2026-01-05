@@ -1,6 +1,10 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
-import { App } from './app/app.component';
+import { AppComponent } from './app/app.component';
+import Decimal from 'decimal.js';
 
-bootstrapApplication(App, appConfig)
+// Initialize globals before bootstrap
+Decimal.set({ precision: 50 });
+
+bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
