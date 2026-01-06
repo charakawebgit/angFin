@@ -1,19 +1,25 @@
 import { Component, input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
-import { CardComponent } from '@shared/ui/card.component';
 import { TableComponent } from '@shared/ui/table.component';
 import { CalculatorConfig, ResultValue } from '@entities/calculator/model/types';
 import { castToNumber, castToArray } from '@entities/finance/lib/casting.utils';
 
 @Component({
   selector: 'app-calculator-results',
-  imports: [CommonModule, LucideAngularModule, CardComponent, TableComponent],
+  imports: [CommonModule, LucideAngularModule, TableComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (viewMode() === 'full') {
-      <app-card [title]="config().results[0]?.label || 'Results'" subtitle="Analysis Report">
-        <div class="flex flex-col h-full py-2 text-left" aria-live="polite">
+      <div class="space-y-6">
+        <div class="flex items-center gap-4">
+           <h3 class="text-sm font-semibold text-[color:var(--text-primary)] whitespace-nowrap">
+             {{ config().results[0]?.label || 'Analysis Results' }}
+           </h3>
+           <div class="h-px bg-[color:var(--border)] w-full"></div>
+        </div>
+
+        <div class="flex flex-col h-full text-left" aria-live="polite">
           @if (isValid()) {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 w-full animate-in fade-in slide-in-from-left-4 duration-500">
               @for (res of config().results; track res.label) {
@@ -83,7 +89,7 @@ import { castToNumber, castToArray } from '@entities/finance/lib/casting.utils';
             </div>
           }
         </div>
-      </app-card>
+      </div>
     } @else {
         <!-- Compact Mode (Mobile Sticky) -->
         <div class="flex items-center justify-between w-full h-full px-4" aria-live="polite">
@@ -154,26 +160,20 @@ export class CalculatorResultsComponent {
     return `${clamped}%`;
   }
 
-  getThemeClass(color?: string) {
-    switch (color) {
-      case 'emerald': return 'bg-emerald-500/10';
-      case 'amber': return 'bg-amber-500/10';
-      case 'rose': return 'bg-rose-500/10';
-      case 'sky': return 'bg-sky-500/10';
-      default: return 'bg-indigo-500/10';
-    }
-  }
 
-  getGradientClass(color?: string) {
-    switch (color) {
-      case 'emerald': return 'from-emerald-600 to-teal-700 dark:from-emerald-400 dark:to-teal-500';
-      case 'amber': return 'from-amber-600 to-orange-700 dark:from-amber-400 dark:to-orange-500';
-      case 'rose': return 'from-rose-600 to-pink-700 dark:from-rose-400 dark:to-pink-500';
-      case 'sky': return 'from-sky-600 to-blue-700 dark:from-sky-400 dark:to-blue-500';
-      default: return 'from-indigo-600 to-blue-700 dark:from-indigo-400 dark:to-blue-500';
-    }
-  }
 
   protected castToNumber = castToNumber;
   protected castToArray = castToArray;
+
+  protected readonly gradientMap: Record<string, string> = {
+    emerald: 'from-emerald-600 to-teal-700 dark:from-emerald-400 dark:to-teal-500',
+    amber: 'from-amber-600 to-orange-700 dark:from-amber-400 dark:to-orange-500',
+    rose: 'from-rose-600 to-pink-700 dark:from-rose-400 dark:to-pink-500',
+    sky: 'from-sky-600 to-blue-700 dark:from-sky-400 dark:to-blue-500',
+    default: 'from-indigo-600 to-blue-700 dark:from-indigo-400 dark:to-blue-500'
+  };
+
+  getGradientClass(color?: string) {
+    return this.gradientMap[color || 'default'] || this.gradientMap['default'];
+  }
 }

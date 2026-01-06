@@ -106,11 +106,10 @@ export class CalculatorFormComponent implements OnDestroy {
     const cfg = this.config();
     if (!cfg) return [];
 
-    // Group fields
     const groups = new Map<string, CalculatorConfig['fields']>();
-
-    // Initialize default group to ensure order if mixed
-    // groups.set('default', []);
+    if (cfg.fields.some(f => !f.group || f.group === 'default')) {
+      groups.set('default', []);
+    }
 
     cfg.fields.forEach(f => {
       const gName = f.group || 'default';
@@ -118,21 +117,7 @@ export class CalculatorFormComponent implements OnDestroy {
       groups.get(gName)!.push(f);
     });
 
-    // Convert to array
-    const result: { name: string; fields: CalculatorConfig['fields'] }[] = [];
-
-    // If we have "default" group, let's put it first if it exists
-    if (groups.has('default')) {
-      result.push({ name: 'default', fields: groups.get('default')! });
-      groups.delete('default');
-    }
-
-    // Add rest
-    groups.forEach((fields, name) => {
-      result.push({ name, fields });
-    });
-
-    return result;
+    return Array.from(groups.entries()).map(([name, fields]) => ({ name, fields }));
   });
 
   protected formGroup = signal<FormGroup<Record<string, FormControl<ControlValue>>> | null>(null);
@@ -162,7 +147,6 @@ export class CalculatorFormComponent implements OnDestroy {
   constructor() {
     effect((onCleanup) => {
       const cfg = this.config();
-      // console.log('DEBUG: Effect ran. Config:', cfg ? cfg.id : 'null'); // Removed debug log
       if (!cfg) {
         untracked(() => this.formGroup.set(null));
         return;

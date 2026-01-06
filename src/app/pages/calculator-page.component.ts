@@ -42,7 +42,7 @@ import { CalculatorInfoComponent } from '@features/calculator-workspace/ui/calcu
            </div>
 
            <!-- Right Pane: Results (Main Content Area) -->
-           <div class="flex-grow bg-slate-50/50 p-6 lg:p-10">
+           <div class="flex-grow bg-white p-6 lg:p-8">
              <div class="max-w-5xl mx-auto space-y-8">
                <app-calculator-results 
                  [config]="config()!" 

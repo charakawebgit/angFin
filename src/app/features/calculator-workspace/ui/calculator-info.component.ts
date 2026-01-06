@@ -1,17 +1,23 @@
 import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
-import { CardComponent } from '@shared/ui/card.component';
 import { CalculatorConfig } from '@entities/calculator/model/types';
 
 @Component({
   selector: 'app-calculator-info',
-  imports: [CommonModule, LucideAngularModule, CardComponent],
+  imports: [CommonModule, LucideAngularModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (config().insights || config().formula || (config().references && config().references!.length > 0)) {
       <div class="flex flex-col gap-6 animate-in slide-in-from-bottom duration-700 delay-200">
-        <app-card title="Financial Insights">
+        
+        <!-- Insights Section -->
+        <div class="space-y-6">
+          <div class="flex items-center gap-4">
+             <h3 class="text-sm font-semibold text-[color:var(--text-primary)] whitespace-nowrap">Financial Insights</h3>
+             <div class="h-px bg-[color:var(--border)] w-full"></div>
+          </div>
+
           <div class="flex gap-4 items-start text-left">
             <div class="p-2 rounded-xl border border-[color:var(--panel-outline)] bg-[color:var(--surface-soft)] text-[color:var(--accent-1)]">
               <lucide-icon name="lightbulb" class="w-5 h-5" />
@@ -25,7 +31,7 @@ import { CalculatorConfig } from '@entities/calculator/model/types';
               </div>
             }
             @if (config().formula) {
-              <div class="group relative overflow-hidden rounded-xl bg-[color:var(--surface-contrast)] border border-[color:var(--panel-outline)] p-4 shadow-lg">
+              <div class="group relative overflow-hidden rounded-xl bg-[color:var(--surface-contrast)] border border-[color:var(--panel-outline)] p-4 shadow-sm">
                 <div class="absolute top-0 right-0 p-2 opacity-60 text-[color:var(--text-muted)]">
                     <lucide-icon name="sigma" class="w-4 h-4" />
                 </div>
@@ -36,15 +42,16 @@ import { CalculatorConfig } from '@entities/calculator/model/types';
             }
             </div>
           </div>
-        </app-card>
-
+        </div>
+ 
         @if (config().references && config().references!.length > 0) {
-          <app-card title="Educational Resources">
+          <div class="space-y-6">
+            <div class="flex items-center gap-4">
+               <h3 class="text-sm font-semibold text-[color:var(--text-primary)] whitespace-nowrap">Educational Resources</h3>
+               <div class="h-px bg-[color:var(--border)] w-full"></div>
+            </div>
+
             <div class="space-y-4">
-              <div class="flex items-center gap-3 text-[color:var(--accent-1)]">
-                <lucide-icon name="scroll-text" class="w-5 h-5" />
-                <span class="text-xs font-bold text-[color:var(--text-primary)]">Learn More</span>
-              </div>
               <ul class="space-y-2">
                 @for (ref of config().references; track ref.url) {
                   <li>
@@ -56,7 +63,7 @@ import { CalculatorConfig } from '@entities/calculator/model/types';
                 }
               </ul>
             </div>
-          </app-card>
+          </div>
         }
       </div>
     }
