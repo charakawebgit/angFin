@@ -25,19 +25,22 @@ import { CalculatorInfoComponent } from '@features/calculator-workspace/ui/calcu
         <div class="flex flex-col lg:flex-row min-h-[calc(100vh-80px)]">
            
            <!-- Left Pane: Inputs (Scrollable independent of results if needed, but here we keep it simple) -->
-           <div class="w-full lg:w-[400px] xl:w-[450px] flex-shrink-0 p-6 lg:p-8 bg-white border-b lg:border-b-0 lg:border-r border-slate-200 z-10">
-              <div class="lg:sticky lg:top-24 space-y-8">
-                 <div class="mb-6">
-                    <h1 class="text-2xl font-bold text-slate-900 tracking-tight">{{ config()?.title }}</h1>
-                    <p class="text-slate-500 mt-1 text-sm">{{ config()?.subtitle }}</p>
-                 </div>
+           <div class="w-full lg:w-[400px] xl:w-[450px] flex-shrink-0 bg-white border-b lg:border-b-0 lg:border-r border-slate-200 z-10 flex flex-col">
+              
+              <div class="p-6 lg:p-8 flex-grow overflow-y-auto">
+                 <div class="space-y-8">
+                   <div class="mb-6">
+                      <h1 class="text-2xl font-bold text-slate-900 tracking-tight">{{ config()?.title }}</h1>
+                      <p class="text-slate-500 mt-1 text-sm">{{ config()?.subtitle }}</p>
+                   </div>
 
-                 <app-calculator-form 
-                   [config]="config()!" 
-                   [data]="data()" 
-                   (valid)="setValid($event)"
-                   (dataChanged)="updateData($event.key, $event.value)" 
-                 />
+                   <app-calculator-form 
+                     [config]="config()!" 
+                     [data]="data()" 
+                     (valid)="setValid($event)"
+                     (dataChanged)="updateData($event.key, $event.value)" 
+                   />
+                 </div>
               </div>
            </div>
 

@@ -2,7 +2,6 @@ import { Component, computed, inject, signal, OnInit, ChangeDetectionStrategy, E
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
-import { SkeletonComponent } from '@shared/ui/skeleton.component';
 import { CalculatorService } from '@entities/calculator/model/calculator.service';
 import { MetaService } from '@shared/lib/meta.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -10,114 +9,124 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calculator-list',
-  imports: [LucideAngularModule, RouterLink, ReactiveFormsModule, SkeletonComponent],
+  imports: [LucideAngularModule, RouterLink, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '(window:keydown)': 'handleKeydown($event)'
   },
   template: `
-    <div class="space-y-14 pb-16">
-      <section class="relative overflow-hidden surface-panel px-8 py-16">
-        <div class="absolute inset-0 pointer-events-none" style="background: var(--glow-accent);"></div>
-        <div class="relative flex flex-col gap-10">
-          <div class="flex flex-col gap-4">
-            <span class="nav-chip w-fit">Financial Intelligence - Zoneless</span>
-            <div class="flex flex-wrap items-center gap-4">
-              <h1 class="text-5xl md:text-6xl font-black leading-[1.05]">
-                Reimagined tools for <span class="text-transparent bg-clip-text" style="background: var(--glow-primary);">capital strategy</span>
-              </h1>
-              <div class="badge-soft animate-pulse-glow">
-                <lucide-icon name="activity" class="w-4 h-4" />
-                Live Analytics
-              </div>
+    <div class="min-h-screen bg-white">
+      <!-- Hero Section -->
+      <section class="border-b border-slate-200 bg-white pt-20 pb-16 px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto space-y-10">
+          <div class="max-w-3xl space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold uppercase tracking-wider">
+               <lucide-icon name="terminal" class="w-3.5 h-3.5" />
+               <span>Financial Terminal</span>
             </div>
-            <p class="text-lg md:text-xl text-[color:var(--text-muted)] max-w-3xl">
-              Curated calculators for valuation, risk, and cashflow modeling with a refreshed interface built for focus and speed.
+            
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1]">
+              Capital strategy tools <br class="hidden lg:block"/> for modern finance.
+            </h1>
+            
+            <p class="text-xl text-slate-500 max-w-2xl leading-relaxed">
+              Professional-grade valuation models, risk analyzers, and cashflow engines. 
+              Zero latency. Local execution.
             </p>
           </div>
 
-          <div class="flex flex-col lg:flex-row gap-4 items-start">
-            <div class="relative flex-grow w-full group">
-              <lucide-icon name="search" class="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-[color:var(--text-muted)]" />
-              <input
+          <!-- Search Bar -->
+          <div class="relative max-w-2xl group">
+             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+               <lucide-icon name="search" class="w-5 h-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+             </div>
+             <input
                 #searchInput
                 type="text"
                 [formControl]="searchControl"
-                placeholder="Find a calculator by name, domain, or category"
-                class="input-premium"
-              />
-              <div class="absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)] text-xs font-semibold uppercase tracking-[0.22em] hidden md:inline-flex">
-                ⌘ K
-              </div>
-            </div>
+                placeholder="Search calculators (e.g. 'WACC', 'Amortization')..."
+                class="w-full h-14 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl text-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all font-medium"
+             />
+             <div class="absolute inset-y-0 right-4 flex items-center">
+                <span class="text-xs font-bold text-slate-400 bg-white border border-slate-200 px-2 py-1 rounded-md hidden md:block">⌘ K</span>
+             </div>
+          </div>
 
-            <div class="flex flex-wrap gap-2">
+          <!-- Categories -->
+          <div class="flex flex-wrap gap-2 pt-2">
+             <button
+               (click)="selectedCategory.set('All')"
+               class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 border"
+               [class]="selectedCategory() === 'All' 
+                  ? 'bg-slate-900 text-white border-slate-900' 
+                  : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'"
+             >
+               All Tools
+             </button>
+             @for (cat of categories(); track cat) {
                <button
-                 (click)="selectedCategory.set('All')"
-                 [class]="selectedCategory() === 'All' ? 'bg-[color:var(--accent-1)] text-[color:var(--surface)] shadow-lg' : 'cta-ghost text-[color:var(--text-muted)]'"
-                 class="px-5 h-12 rounded-full text-xs font-bold uppercase tracking-[0.2em] transition"
+                 (click)="selectedCategory.set(cat)"
+                 class="px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 border"
+                 [class]="selectedCategory() === cat 
+                    ? 'bg-slate-900 text-white border-slate-900' 
+                    : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'"
                >
-                 All
+                 {{ cat }}
                </button>
-              @for (cat of categories(); track cat) {
-                <button
-                  (click)="selectedCategory.set(cat)"
-                  [class]="selectedCategory() === cat ? 'bg-[color:var(--accent-1)] text-[color:var(--surface)] shadow-lg' : 'cta-ghost text-[color:var(--text-muted)]'"
-                  class="px-5 h-12 rounded-full text-xs font-bold uppercase tracking-[0.2em] transition"
-                >
-                  {{ cat }}
-                </button>
-              }
-            </div>
+             }
           </div>
         </div>
       </section>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[minmax(200px,auto)]">
-        @if (isLoading()) {
-          @for (i of [1,2,3,4,5,6,7,8]; track $index) {
-            <div class="surface-panel p-6 rounded-3xl animate-pulse space-y-4">
-              <app-skeleton height="48px" width="48px" borderRadius="1rem" />
-              <app-skeleton height="22px" width="70%" />
-              <app-skeleton height="16px" width="90%" />
-            </div>
-          }
-        } @else {
-          @for (calc of filteredCalculators(); track calc.id) {
-            <a [routerLink]="['/calculator', calc.id]" 
-               [class.md:col-span-2]="isFeatured(calc)"
-               [class.md:row-span-1]="isFeatured(calc)" 
-               class="surface-panel p-6 rounded-3xl flex flex-col gap-4 group hover:translate-y-[-4px] transition duration-300 relative overflow-hidden">
-               @if (isFeatured(calc)) {
-                 <div class="absolute top-0 right-0 w-32 h-32 bg-[image:var(--glow-accent)] opacity-20 blur-3xl rounded-full pointer-events-none"></div>
-               }
-              <div class="flex items-start justify-between">
-                <div class="w-12 h-12 rounded-2xl bg-[image:var(--glow-primary)] border border-[color:var(--panel-outline)] flex items-center justify-center text-[color:var(--surface)] shadow-lg group-hover:scale-105 transition">
-                  <lucide-icon [name]="calc.icon" class="w-6 h-6" />
+      <!-- Directory Grid -->
+      <section class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @if (isLoading()) {
+              @for (i of [1,2,3,4,5,6]; track $index) {
+                <div class="h-48 rounded-xl bg-slate-50 border border-slate-100 animate-pulse"></div>
+              }
+            } @else {
+              @for (calc of filteredCalculators(); track calc.id) {
+                <a [routerLink]="['/calculator', calc.id]" 
+                   class="group flex flex-col p-6 rounded-2xl bg-white border border-slate-200 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/5 transition-all duration-300 relative overflow-hidden"
+                >
+                   <div class="flex items-start justify-between mb-4">
+                      <div class="p-3 rounded-lg bg-slate-50 text-slate-700 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 ring-1 ring-slate-100 group-hover:ring-blue-600">
+                         <lucide-icon [name]="calc.icon" class="w-6 h-6" />
+                      </div>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-50 text-slate-600 border border-slate-100">
+                        {{ calc.category }}
+                      </span>
+                   </div>
+
+                   <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
+                     {{ calc.title }}
+                   </h3>
+                   <p class="text-sm text-slate-500 leading-relaxed mb-4 line-clamp-2">
+                     {{ calc.description }}
+                   </p>
+
+                   <div class="mt-auto flex items-center text-sm font-semibold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity -translate-x-2 group-hover:translate-x-0 duration-300">
+                      Open Tool <lucide-icon name="arrow-right" class="w-4 h-4 ml-1" />
+                   </div>
+                </a>
+              } @empty {
+                <div class="col-span-full py-20 text-center">
+                   <div class="inline-flex p-4 rounded-full bg-slate-50 mb-4">
+                     <lucide-icon name="search-x" class="w-8 h-8 text-slate-400" />
+                   </div>
+                   <h3 class="text-lg font-semibold text-slate-900">No tools found</h3>
+                   <p class="text-slate-500 mt-1">We couldn't find anything for "{{ searchQuery() }}"</p>
+                   <button (click)="clearSearch()" class="mt-6 text-blue-600 font-bold hover:underline">Clear Search</button>
                 </div>
-                <div class="badge-soft">{{ calc.category }}</div>
-              </div>
-
-              <div class="space-y-2">
-                <h3 class="text-2xl font-black tracking-tight">{{ calc.title }}</h3>
-                <p class="text-sm text-[color:var(--text-muted)] leading-relaxed" [class.line-clamp-3]="!isFeatured(calc)">{{ calc.description }}</p>
-              </div>
-
-              <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--accent-1)] group-hover:text-[color:var(--text-primary)] transition">
-                Launch
-                <lucide-icon name="arrow-up-right" class="w-4 h-4" />
-              </div>
-            </a>
-          } @empty {
-            <div class="col-span-full surface-panel rounded-3xl p-12 text-center">
-              <lucide-icon name="search-x" class="w-10 h-10 text-[color:var(--text-muted)] mx-auto mb-4" />
-              <h3 class="text-2xl font-black mb-2">No tools found</h3>
-              <p class="text-[color:var(--text-muted)]">Nothing matches "{{ searchQuery() }}". Try another phrase.</p>
-              <button (click)="clearSearch()" class="mt-6 px-6 py-3 rounded-2xl bg-[color:var(--surface-soft)] text-[color:var(--text-primary)] font-bold uppercase tracking-[0.2em] border border-[color:var(--panel-outline)]">Reset</button>
-            </div>
-          }
-        }
-      </div>
+              }
+            }
+         </div>
+         
+         <div class="mt-20 pt-8 border-t border-slate-100 text-center text-sm text-slate-400">
+            <p>© 2026 AngFin Professional Suite. Local Execution Environment.</p>
+         </div>
+      </section>
     </div>
   `,
 })

@@ -95,6 +95,10 @@ type ControlValue = number | string | (string | number)[];
       </div>
     }
   `,
+  host: {
+    '(window:keydown.escape)': 'handleEscape()',
+    '(window:keydown.enter)': 'handleEnter($any($event))'
+  }
 })
 export class CalculatorFormComponent implements OnDestroy {
   config = input<CalculatorConfig>();
@@ -215,5 +219,16 @@ export class CalculatorFormComponent implements OnDestroy {
 
   updateData(key: string, value: CalculatorData[string]) {
     this.dataChanged.emit({ key, value });
+  }
+
+  handleEscape() {
+    this.formGroup()?.reset();
+  }
+
+  handleEnter(event: Event) {
+    // If not in a textarea, blur the focus to "Submit" the value
+    // This gives the feeling of "Calculating" and hides mobile keyboard
+    if (event.target instanceof HTMLTextAreaElement) return;
+    (event.target as HTMLElement).blur();
   }
 }
