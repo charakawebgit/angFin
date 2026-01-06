@@ -77,10 +77,7 @@ export class InputComponent {
 
   protected inputClasses() {
     return [
-      'w-full px-4 py-3 rounded-2xl outline-none transition-all text-sm font-medium shadow-sm',
-      'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)] placeholder:[color:var(--text-muted)]',
-      'border border-[color:var(--panel-outline)]',
-      'focus:ring-2 focus:ring-[color:var(--accent-1)] focus:border-[color:var(--accent-1)]',
+      'input-premium shadow-sm text-sm font-medium',
       this.prefix() ? 'pl-9' : 'pl-4',
       this.suffix() ? 'pr-9' : 'pr-4',
       this.hasError

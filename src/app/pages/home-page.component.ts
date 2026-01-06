@@ -21,7 +21,7 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
         <div class="absolute inset-0 pointer-events-none" style="background: var(--glow-accent);"></div>
         <div class="relative flex flex-col gap-10">
           <div class="flex flex-col gap-4">
-            <span class="nav-chip w-fit text-[color:var(--text-primary)]">Financial Intelligence - Zoneless</span>
+            <span class="nav-chip w-fit">Financial Intelligence - Zoneless</span>
             <div class="flex flex-wrap items-center gap-4">
               <h1 class="text-5xl md:text-6xl font-black leading-[1.05]">
                 Reimagined tools for <span class="text-transparent bg-clip-text" style="background: var(--glow-primary);">capital strategy</span>
@@ -44,7 +44,7 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
                 type="text"
                 [formControl]="searchControl"
                 placeholder="Find a calculator by name, domain, or category"
-                class="w-full h-14 pl-14 pr-14 rounded-2xl bg-[color:var(--surface-soft)] border border-[color:var(--panel-outline)] text-[color:var(--text-primary)] placeholder:[color:var(--text-muted)] outline-none focus:ring-2 focus:ring-[color:var(--accent-1)] focus:border-[color:var(--accent-1)] transition"
+                class="input-premium"
               />
               <div class="absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--text-muted)] text-xs font-semibold uppercase tracking-[0.22em] hidden md:inline-flex">
                 ⌘ K
@@ -52,18 +52,18 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
             </div>
 
             <div class="flex flex-wrap gap-2">
-              <button
-                (click)="selectedCategory.set('All')"
-                [class]="selectedCategory() === 'All' ? 'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)] shadow-lg' : 'bg-[color:var(--surface-contrast)] text-[color:var(--text-muted)]'"
-                class="px-4 h-12 rounded-full text-xs font-bold uppercase tracking-[0.2em] border border-[color:var(--panel-outline)] transition"
-              >
-                All
-              </button>
+               <button
+                 (click)="selectedCategory.set('All')"
+                 [class]="selectedCategory() === 'All' ? 'bg-[color:var(--accent-1)] text-[color:var(--surface)] shadow-lg' : 'cta-ghost text-[color:var(--text-muted)]'"
+                 class="px-5 h-12 rounded-full text-xs font-bold uppercase tracking-[0.2em] transition"
+               >
+                 All
+               </button>
               @for (cat of categories(); track cat) {
                 <button
                   (click)="selectedCategory.set(cat)"
-                  [class]="selectedCategory() === cat ? 'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)] shadow-lg' : 'bg-[color:var(--surface-contrast)] text-[color:var(--text-muted)]'"
-                  class="px-4 h-12 rounded-full text-xs font-bold uppercase tracking-[0.2em] border border-[color:var(--panel-outline)] transition"
+                  [class]="selectedCategory() === cat ? 'bg-[color:var(--accent-1)] text-[color:var(--surface)] shadow-lg' : 'cta-ghost text-[color:var(--text-muted)]'"
+                  class="px-5 h-12 rounded-full text-xs font-bold uppercase tracking-[0.2em] transition"
                 >
                   {{ cat }}
                 </button>
@@ -86,7 +86,7 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
           @for (calc of filteredCalculators(); track calc.id) {
             <a [routerLink]="['/calculator', calc.id]" class="surface-panel p-6 rounded-3xl flex flex-col gap-4 group hover:translate-y-[-4px] transition duration-300">
               <div class="flex items-start justify-between">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400/40 via-indigo-500/30 to-fuchsia-400/30 border border-[color:var(--panel-outline)] flex items-center justify-center text-[color:var(--text-primary)] shadow-lg group-hover:scale-105 transition">
+                <div class="w-12 h-12 rounded-2xl bg-[image:var(--glow-primary)] border border-[color:var(--panel-outline)] flex items-center justify-center text-[color:var(--surface)] shadow-lg group-hover:scale-105 transition">
                   <lucide-icon [name]="calc.icon" class="w-6 h-6" />
                 </div>
                 <div class="badge-soft">{{ calc.category }}</div>
@@ -97,7 +97,7 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
                 <p class="text-sm text-[color:var(--text-muted)] leading-relaxed line-clamp-3">{{ calc.description }}</p>
               </div>
 
-              <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200 group-hover:text-white transition">
+              <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--accent-1)] group-hover:text-[color:var(--text-primary)] transition">
                 Launch
                 <lucide-icon name="arrow-up-right" class="w-4 h-4" />
               </div>

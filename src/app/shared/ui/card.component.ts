@@ -14,7 +14,7 @@ import { Component, input, ChangeDetectionStrategy } from '@angular/core';
               <p class="text-xs text-[color:var(--text-muted)] mt-1 font-medium">{{ subtitle() }}</p>
             }
           </div>
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-400/30 via-indigo-500/30 to-fuchsia-400/30 border border-[color:var(--panel-outline)] shadow-inner"></div>
+          <div class="w-10 h-10 rounded-2xl bg-[image:var(--glow-primary)] border border-[color:var(--panel-outline)] shadow-inner"></div>
         </div>
       }
       <div class="p-7">
