@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
       @if (label()) {
         <label
           [for]="id()"
-          class="text-xs font-semibold uppercase tracking-[0.18em] ml-1 text-[color:var(--text-muted)]"
+          class="text-sm font-bold uppercase tracking-[0.14em] ml-1 text-[color:var(--text-muted)]"
         >
           {{ label() }}
         </label>
@@ -77,7 +77,7 @@ export class InputComponent {
 
   protected inputClasses() {
     return [
-      'input-premium shadow-sm text-sm font-medium',
+      'input-premium shadow-sm font-medium',
       this.prefix() ? 'pl-9' : 'pl-4',
       this.suffix() ? 'pr-9' : 'pr-4',
       this.hasError
