@@ -84,7 +84,13 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
           }
         } @else {
           @for (calc of filteredCalculators(); track calc.id) {
-            <a [routerLink]="['/calculator', calc.id]" class="surface-panel p-6 rounded-3xl flex flex-col gap-4 group hover:translate-y-[-4px] transition duration-300">
+            <a [routerLink]="['/calculator', calc.id]" 
+               [class.md:col-span-2]="isFeatured(calc)"
+               [class.md:row-span-1]="isFeatured(calc)" 
+               class="surface-panel p-6 rounded-3xl flex flex-col gap-4 group hover:translate-y-[-4px] transition duration-300 relative overflow-hidden">
+               @if (isFeatured(calc)) {
+                 <div class="absolute top-0 right-0 w-32 h-32 bg-[image:var(--glow-accent)] opacity-20 blur-3xl rounded-full pointer-events-none"></div>
+               }
               <div class="flex items-start justify-between">
                 <div class="w-12 h-12 rounded-2xl bg-[image:var(--glow-primary)] border border-[color:var(--panel-outline)] flex items-center justify-center text-[color:var(--surface)] shadow-lg group-hover:scale-105 transition">
                   <lucide-icon [name]="calc.icon" class="w-6 h-6" />
@@ -93,8 +99,8 @@ import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
               </div>
 
               <div class="space-y-2">
-                <h3 class="text-xl font-black tracking-tight">{{ calc.title }}</h3>
-                <p class="text-sm text-[color:var(--text-muted)] leading-relaxed line-clamp-3">{{ calc.description }}</p>
+                <h3 class="text-2xl font-black tracking-tight">{{ calc.title }}</h3>
+                <p class="text-sm text-[color:var(--text-muted)] leading-relaxed" [class.line-clamp-3]="!isFeatured(calc)">{{ calc.description }}</p>
               </div>
 
               <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--accent-1)] group-hover:text-[color:var(--text-primary)] transition">

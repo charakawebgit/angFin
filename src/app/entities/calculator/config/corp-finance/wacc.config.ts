@@ -9,11 +9,56 @@ const CONFIG: CalculatorConfig = {
     icon: 'landmark',
     category: 'Equity',
     fields: [
-        { key: 'equityValue', label: 'Market Value of Equity', type: 'number', defaultValue: 1000000, prefix: '$', required: true },
-        { key: 'debtValue', label: 'Market Value of Debt', type: 'number', defaultValue: 500000, prefix: '$', required: true },
-        { key: 'costOfEquity', label: 'Cost of Equity (%)', type: 'number', defaultValue: 10, suffix: '%', required: true },
-        { key: 'costOfDebt', label: 'Pre-tax Cost of Debt (%)', type: 'number', defaultValue: 6, suffix: '%', required: true },
-        { key: 'taxRate', label: 'Corporate Tax Rate (%)', type: 'number', defaultValue: 25, suffix: '%', required: true },
+        {
+            key: 'equityValue',
+            label: 'Market Value of Equity',
+            type: 'number',
+            defaultValue: 1000000,
+            prefix: '$',
+            required: true,
+            group: 'Equity Structure',
+            description: 'The total value of the company\'s shares (Market Cap).'
+        },
+        {
+            key: 'costOfEquity',
+            label: 'Cost of Equity (%)',
+            type: 'number',
+            defaultValue: 10,
+            suffix: '%',
+            required: true,
+            group: 'Equity Structure',
+            description: 'The return required by equity investors (often calculated via CAPM).'
+        },
+        {
+            key: 'debtValue',
+            label: 'Market Value of Debt',
+            type: 'number',
+            defaultValue: 500000,
+            prefix: '$',
+            required: true,
+            group: 'Debt Structure',
+            description: 'The total value of the company\'s interest-bearing debt.'
+        },
+        {
+            key: 'costOfDebt',
+            label: 'Pre-tax Cost of Debt (%)',
+            type: 'number',
+            defaultValue: 6,
+            suffix: '%',
+            required: true,
+            group: 'Debt Structure',
+            description: 'The effective interest rate the company pays on its debts.'
+        },
+        {
+            key: 'taxRate',
+            label: 'Corporate Tax Rate (%)',
+            type: 'number',
+            defaultValue: 25,
+            suffix: '%',
+            required: true,
+            group: 'Debt Structure',
+            description: 'The marginal tax rate (interest expense is tax-deductible).'
+        },
     ],
     results: [
         {

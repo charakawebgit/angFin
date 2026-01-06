@@ -54,11 +54,31 @@ export function calculateAmortization(params: AmortizationParams): AmortizationR
     const totalPayment = monthlyPayment.times(n);
     totalInterest = totalPayment.minus(P);
 
+    const schedule: AmortizationResult['schedule'] = [];
+    let balance = P;
+
+    for (let i = 1; i <= n.toNumber(); i++) {
+        const interest = balance.times(rMonthly);
+        const principal = monthlyPayment.minus(interest);
+        balance = balance.minus(principal);
+
+        // Handle last payment rounding differences
+        if (balance.lessThan(0)) balance = new Decimal(0);
+
+        schedule.push({
+            period: i,
+            interest: interest.toNumber(),
+            principal: principal.toNumber(),
+            balance: balance.toNumber()
+        });
+    }
+
     return {
         summary: {
             monthlyPayment: monthlyPayment.toNumber(),
             totalInterest: totalInterest.toNumber()
-        }
+        },
+        schedule
     };
 }
 

@@ -81,6 +81,8 @@ export interface FieldConfig {
     required?: boolean;
     min?: number;
     max?: number;
+    group?: string;
+    description?: string;
 }
 
 export type CalculatorData = Record<string, number | number[] | string | (string | number)[] | undefined>;
@@ -94,8 +96,11 @@ export interface ResultItem {
 
 export interface ResultConfig<T = ResultValue> {
     label: string;
-    type: 'currency' | 'percent' | 'number' | 'amortization' | 'black-scholes' | 'dupont';
+    type: 'currency' | 'percent' | 'number' | 'amortization' | 'black-scholes' | 'dupont' | 'table';
     themeColor?: string;
+    tableConfig?: {
+        columns: { header: string; key: string; format?: 'currency' | 'percent' | 'number' | 'text'; align?: 'left' | 'right' | 'center' }[];
+    };
     calculate: (data: CalculatorData) => T;
 }
 

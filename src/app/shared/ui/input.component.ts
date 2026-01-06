@@ -8,14 +8,23 @@ import { CommonModule } from '@angular/common';
   imports: [ReactiveFormsModule, LucideAngularModule, CommonModule],
   template: `
     <div class="flex flex-col gap-1.5">
-      @if (label()) {
-        <label
-          [for]="id()"
-          class="text-sm font-bold uppercase tracking-[0.14em] ml-1 text-[color:var(--text-muted)]"
-        >
-          {{ label() }}
-        </label>
-      }
+        <div class="flex items-center gap-2 mb-1">
+          <label
+            [for]="id()"
+            class="text-sm font-bold uppercase tracking-[0.14em] ml-1 text-[color:var(--text-muted)]"
+          >
+            {{ label() }}
+          </label>
+          @if (description()) {
+            <div class="group/tooltip relative flex items-center justify-center cursor-help">
+              <lucide-icon name="info" class="w-4 h-4 text-[color:var(--text-muted)] hover:text-[color:var(--accent-1)] transition-colors" />
+              <div class="absolute left-1/2 bottom-full mb-2 -translate-x-1/2 w-48 p-2 bg-slate-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 z-50 pointer-events-none text-center">
+                {{ description() }}
+                <div class="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+              </div>
+            </div>
+          }
+        </div>
       <div class="relative group">
         @if (prefix()) {
           <span
@@ -60,6 +69,7 @@ import { CommonModule } from '@angular/common';
 export class InputComponent {
   id = input.required<string>();
   label = input<string>();
+  description = input<string>();
   placeholder = input<string>('');
   type = input<'text' | 'number'>('text');
   prefix = input<string>();

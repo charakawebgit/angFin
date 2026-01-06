@@ -18,3 +18,11 @@ export function castToNumber(val: unknown): number {
 export function asList(val: unknown): (string | number)[] {
     return Array.isArray(val) ? (val as (string | number)[]) : [];
 }
+
+/**
+ * Safely casts a value to a generic array.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function castToArray(val: unknown): any[] {
+    return Array.isArray(val) ? val : [];
+}

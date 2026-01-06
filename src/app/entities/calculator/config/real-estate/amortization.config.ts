@@ -32,6 +32,26 @@ const CONFIG: CalculatorConfig = {
                 interestRate: (d['interestRate'] as number) / 100,
                 loanTerm: d['loanTerm'] as number
             }).summary.totalInterest
+        },
+        {
+            label: 'Amortization Schedule',
+            type: 'table',
+            tableConfig: {
+                columns: [
+                    { header: 'Period', key: 'period', align: 'center' },
+                    { header: 'Principal', key: 'principal', format: 'currency', align: 'right' },
+                    { header: 'Interest', key: 'interest', format: 'currency', align: 'right' },
+                    { header: 'Balance', key: 'balance', format: 'currency', align: 'right' }
+                ]
+            },
+            calculate: (d) => {
+                const res = calculateAmortization({
+                    loanAmount: Number(d['loanAmount']),
+                    interestRate: Number(d['interestRate']) / 100,
+                    loanTerm: Number(d['loanTerm'])
+                });
+                return res.schedule || [];
+            }
         }
     ],
     insights: 'Amortization is the process of spreading out a loan into a series of fixed payments. Early payments consist mostly of interest.',

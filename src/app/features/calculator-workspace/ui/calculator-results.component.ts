@@ -2,12 +2,13 @@ import { Component, input, signal, ChangeDetectionStrategy } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 import { CardComponent } from '@shared/ui/card.component';
+import { TableComponent } from '@shared/ui/table.component';
 import { CalculatorConfig, ResultValue } from '@entities/calculator/model/types';
-import { castToNumber } from '@entities/finance/lib/casting.utils';
+import { castToNumber, castToArray } from '@entities/finance/lib/casting.utils';
 
 @Component({
   selector: 'app-calculator-results',
-  imports: [CommonModule, LucideAngularModule, CardComponent],
+  imports: [CommonModule, LucideAngularModule, CardComponent, TableComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (viewMode() === 'full') {
@@ -57,6 +58,20 @@ import { castToNumber } from '@entities/finance/lib/casting.utils';
                       }
                   </div>
                 </div>
+              }
+              
+              <!-- Table Results -->
+              @for (res of config().results; track res.label) {
+                @if (res.type === 'table' && res.tableConfig) {
+                  <div class="w-full mt-8 animate-in slide-in-from-bottom duration-700 delay-200">
+                    <div class="flex items-center gap-2 mb-4">
+                      <h3 class="text-lg font-bold text-[color:var(--text-primary)]">{{ res.label }}</h3>
+                      <div class="h-px bg-[color:var(--border)] flex-grow"></div>
+                    </div>
+                    @let tableData = castToArray(results()[$index]);
+                    <app-table [columns]="res.tableConfig.columns" [data]="tableData" />
+                  </div>
+                }
               }
             </div>
           } @else {
@@ -164,4 +179,5 @@ export class CalculatorResultsComponent {
   }
 
   protected castToNumber = castToNumber;
+  protected castToArray = castToArray;
 }

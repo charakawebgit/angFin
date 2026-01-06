@@ -1,4 +1,4 @@
-import { Component, input, output, ChangeDetectionStrategy, inject, signal, OnDestroy, effect, untracked } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy, inject, signal, OnDestroy, effect, untracked, computed } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
@@ -28,46 +28,60 @@ type ControlValue = number | string | (string | number)[];
       @let cfg = config()!;
       <app-card [title]="cfg.subtitle || 'Parameters'" subtitle="Fill in the required fields">
         <form [formGroup]="fg" class="space-y-6">
-          <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
-            @for (field of cfg.fields; track field.key) {
-              <div [class]="field.type === 'list' ? 'col-span-full' : ''">
-                @if (field.type === 'number') {
-                  <app-input
-                    [id]="field.key"
-                    [label]="field.label"
-                    [control]="getControl(field.key)"
-                    type="number"
-                    [prefix]="field.prefix"
-                    [suffix]="field.suffix"
-                    [placeholder]="field.placeholder || ''"
-                  />
-                } @else if (field.type === 'list') {
-                  <app-dynamic-list-input
-                    [id]="field.key"
-                    [label]="field.label"
-                    [formControlName]="field.key"
-                  />
-                } @else if (field.type === 'select') {
-                    <div class="space-y-1.5 flex flex-col">
-                        <label [for]="field.key" class="text-xs font-semibold uppercase tracking-[0.18em] ml-1 text-[color:var(--text-muted)]">
-                        {{ field.label }}
-                        </label>
-                        <select
-                        [id]="field.key"
-                        [formControlName]="field.key"
-                        class="w-full h-12 px-4 rounded-xl appearance-none cursor-pointer transition-all"
-                        [class]="[
-                          'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)]',
-                          'border border-[color:var(--panel-outline)]',
-                          'focus:outline-none focus:ring-2 focus:ring-[color:var(--accent-1)]/20 focus:border-[color:var(--accent-1)]'
-                        ].join(' ')"
-                        >
-                        @for (opt of field.options; track opt.value) {
-                            <option [value]="opt.value">{{ opt.label }}</option>
-                        }
-                        </select>
-                    </div>
+          <div class="space-y-8">
+            @for (group of groupedFields(); track group.name) {
+              <div class="space-y-4">
+                @if (group.name !== 'default') {
+                   <div class="flex items-center gap-4">
+                     <h3 class="text-xs font-bold uppercase tracking-widest text-[color:var(--accent-2)] whitespace-nowrap">{{ group.name }}</h3>
+                     <div class="h-px bg-[color:var(--border)] w-full"></div>
+                   </div>
                 }
+                
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+                  @for (field of group.fields; track field.key) {
+                    <div [class]="field.type === 'list' ? 'col-span-full' : ''">
+                      @if (field.type === 'number') {
+                        <app-input
+                          [id]="field.key"
+                          [label]="field.label"
+                          [description]="field.description"
+                          [control]="getControl(field.key)"
+                          type="number"
+                          [prefix]="field.prefix"
+                          [suffix]="field.suffix"
+                          [placeholder]="field.placeholder || ''"
+                        />
+                      } @else if (field.type === 'list') {
+                        <app-dynamic-list-input
+                          [id]="field.key"
+                          [label]="field.label"
+                          [formControlName]="field.key"
+                        />
+                      } @else if (field.type === 'select') {
+                          <div class="space-y-1.5 flex flex-col">
+                              <label [for]="field.key" class="text-xs font-semibold uppercase tracking-[0.18em] ml-1 text-[color:var(--text-muted)]">
+                              {{ field.label }}
+                              </label>
+                              <select
+                              [id]="field.key"
+                              [formControlName]="field.key"
+                              class="w-full h-12 px-4 rounded-xl appearance-none cursor-pointer transition-all"
+                              [class]="[
+                                'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)]',
+                                'border border-[color:var(--panel-outline)]',
+                                'focus:outline-none focus:ring-2 focus:ring-[color:var(--accent-1)]/20 focus:border-[color:var(--accent-1)]'
+                              ].join(' ')"
+                              >
+                              @for (opt of field.options; track opt.value) {
+                                  <option [value]="opt.value">{{ opt.label }}</option>
+                              }
+                              </select>
+                          </div>
+                      }
+                    </div>
+                  }
+                </div>
               </div>
             }
           </div>
@@ -92,6 +106,39 @@ export class CalculatorFormComponent implements OnDestroy {
   data = input<CalculatorData>();
   valid = output<boolean>();
   dataChanged = output<{ key: string; value: CalculatorData[string] }>();
+
+  groupedFields = computed(() => {
+    const cfg = this.config();
+    if (!cfg) return [];
+
+    // Group fields
+    const groups = new Map<string, CalculatorConfig['fields']>();
+
+    // Initialize default group to ensure order if mixed
+    // groups.set('default', []);
+
+    cfg.fields.forEach(f => {
+      const gName = f.group || 'default';
+      if (!groups.has(gName)) groups.set(gName, []);
+      groups.get(gName)!.push(f);
+    });
+
+    // Convert to array
+    const result: { name: string; fields: CalculatorConfig['fields'] }[] = [];
+
+    // If we have "default" group, let's put it first if it exists
+    if (groups.has('default')) {
+      result.push({ name: 'default', fields: groups.get('default')! });
+      groups.delete('default');
+    }
+
+    // Add rest
+    groups.forEach((fields, name) => {
+      result.push({ name, fields });
+    });
+
+    return result;
+  });
 
   protected formGroup = signal<FormGroup<Record<string, FormControl<ControlValue>>> | null>(null);
 
