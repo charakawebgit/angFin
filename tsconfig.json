@@ -36,6 +36,8 @@
     {
       "path": "./tsconfig.app.json"
     },
-
+    {
+      "path": "./projects/ang-fin2/tsconfig.app.json"
+    }
   ]
 }
