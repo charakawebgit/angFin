@@ -19,26 +19,45 @@ import { CalculatorInfoComponent } from '@features/calculator-workspace/ui/calcu
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (config()) {
-      <div class="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
-           <app-calculator-form 
-             [config]="config()!" 
-             [data]="data()" 
-             (valid)="setValid($event)"
-             (dataChanged)="updateData($event.key, $event.value)" 
-           />
+      <div class="w-full max-w-[1920px] mx-auto animate-in fade-in duration-700">
+        
+        <!-- Desktop: Split Pane Layout -->
+        <div class="flex flex-col lg:flex-row min-h-[calc(100vh-80px)]">
+           
+           <!-- Left Pane: Inputs (Scrollable independent of results if needed, but here we keep it simple) -->
+           <div class="w-full lg:w-[400px] xl:w-[450px] flex-shrink-0 p-6 lg:p-8 bg-white border-b lg:border-b-0 lg:border-r border-slate-200 z-10">
+              <div class="lg:sticky lg:top-24 space-y-8">
+                 <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-slate-900 tracking-tight">{{ config()?.title }}</h1>
+                    <p class="text-slate-500 mt-1 text-sm">{{ config()?.subtitle }}</p>
+                 </div>
 
-           <div class="md:sticky md:top-24 self-start">
-             <app-calculator-results 
-               [config]="config()!" 
-               [results]="results()" 
-               [isValid]="isValid()" 
-             />
+                 <app-calculator-form 
+                   [config]="config()!" 
+                   [data]="data()" 
+                   (valid)="setValid($event)"
+                   (dataChanged)="updateData($event.key, $event.value)" 
+                 />
+              </div>
            </div>
+
+           <!-- Right Pane: Results (Main Content Area) -->
+           <div class="flex-grow bg-slate-50/50 p-6 lg:p-10">
+             <div class="max-w-5xl mx-auto space-y-8">
+               <app-calculator-results 
+                 [config]="config()!" 
+                 [results]="results()" 
+                 [isValid]="isValid()" 
+               />
+               
+               <app-calculator-info [config]="config()!" />
+             </div>
+           </div>
+
         </div>
 
-        <!-- Mobile Sticky Result Bar -->
-        <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 shadow-2xl h-16 safe-area-bottom">
+        <!-- Mobile Sticky Result Bar (Only visible on small screens) -->
+        <div class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-t border-slate-200 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)] h-16 safe-area-bottom px-4">
              <app-calculator-results 
                [config]="config()!" 
                [results]="results()" 
@@ -46,17 +65,15 @@ import { CalculatorInfoComponent } from '@features/calculator-workspace/ui/calcu
                viewMode="compact"
              />
         </div>
-
-        <app-calculator-info [config]="config()!" />
       </div>
     } @else {
       <div class="max-w-4xl mx-auto flex flex-col items-center justify-center py-20 text-center space-y-4">
-        <lucide-icon name="search-x" class="w-16 h-16 text-slate-300 dark:text-slate-700" />
+        <lucide-icon name="search-x" class="w-16 h-16 text-slate-300" />
         <div>
-          <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Calculator Not Found</h2>
+          <h2 class="text-xl font-bold text-slate-900">Calculator Not Found</h2>
           <p class="text-slate-500">The calculator you are looking for might have been moved or doesn't exist.</p>
         </div>
-        <a href="/" class="px-6 h-12 inline-flex items-center justify-center bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors">
+        <a href="/" class="px-6 h-12 inline-flex items-center justify-center bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors">
           Return to Dashboard
         </a>
       </div>

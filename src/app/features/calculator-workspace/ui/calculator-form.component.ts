@@ -6,7 +6,7 @@ import { FormGroup, FormControl, ReactiveFormsModule, Validators, NonNullableFor
 import { LucideAngularModule } from 'lucide-angular';
 import { InputComponent } from '@shared/ui/input.component';
 import { DynamicListInputComponent } from '@shared/ui/dynamic-list-input.component';
-import { CardComponent } from '@shared/ui/card.component';
+
 import { CalculatorConfig, CalculatorData } from '@entities/calculator/model/types';
 import { asList } from '@entities/finance/lib/casting.utils';
 
@@ -19,21 +19,20 @@ type ControlValue = number | string | (string | number)[];
     LucideAngularModule,
     InputComponent,
     DynamicListInputComponent,
-    CardComponent,
     ReactiveFormsModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (formGroup(); as fg) {
-      @let cfg = config()!;
-      <app-card [title]="cfg.subtitle || 'Parameters'" subtitle="Fill in the required fields">
+
+      <div class="space-y-6">
         <form [formGroup]="fg" class="space-y-6">
           <div class="space-y-8">
             @for (group of groupedFields(); track group.name) {
               <div class="space-y-4">
                 @if (group.name !== 'default') {
                    <div class="flex items-center gap-4">
-                     <h3 class="text-xs font-bold uppercase tracking-widest text-[color:var(--accent-2)] whitespace-nowrap">{{ group.name }}</h3>
+                     <h3 class="text-sm font-semibold text-[color:var(--text-primary)] whitespace-nowrap">{{ group.name }}</h3>
                      <div class="h-px bg-[color:var(--border)] w-full"></div>
                    </div>
                 }
@@ -60,18 +59,14 @@ type ControlValue = number | string | (string | number)[];
                         />
                       } @else if (field.type === 'select') {
                           <div class="space-y-1.5 flex flex-col">
-                              <label [for]="field.key" class="text-xs font-semibold uppercase tracking-[0.18em] ml-1 text-[color:var(--text-muted)]">
+                              <label [for]="field.key" class="text-sm font-medium ml-1 text-[color:var(--text-primary)]">
                               {{ field.label }}
                               </label>
                               <select
                               [id]="field.key"
                               [formControlName]="field.key"
-                              class="w-full h-12 px-4 rounded-xl appearance-none cursor-pointer transition-all"
-                              [class]="[
-                                'bg-[color:var(--surface-soft)] text-[color:var(--text-primary)]',
-                                'border border-[color:var(--panel-outline)]',
-                                'focus:outline-none focus:ring-2 focus:ring-[color:var(--accent-1)]/20 focus:border-[color:var(--accent-1)]'
-                              ].join(' ')"
+                              class="input-standard appearance-none cursor-pointer"
+                              [class]="'bg-[color:var(--surface-soft)]'"
                               >
                               @for (opt of field.options; track opt.value) {
                                   <option [value]="opt.value">{{ opt.label }}</option>
@@ -97,7 +92,7 @@ type ControlValue = number | string | (string | number)[];
             </button>
           </div>
         </form>
-      </app-card>
+      </div>
     }
   `,
 })

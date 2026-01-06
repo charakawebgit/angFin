@@ -10,7 +10,7 @@ import { CalculatorConfig } from '@entities/calculator/model/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (config().insights || config().formula || (config().references && config().references!.length > 0)) {
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="flex flex-col gap-6 animate-in slide-in-from-bottom duration-700 delay-200">
         <app-card title="Financial Insights">
           <div class="flex gap-4 items-start text-left">
             <div class="p-2 rounded-xl border border-[color:var(--panel-outline)] bg-[color:var(--surface-soft)] text-[color:var(--accent-1)]">
@@ -19,8 +19,8 @@ import { CalculatorConfig } from '@entities/calculator/model/types';
             <div class="space-y-3 w-full">
               @if (config().insights) {
               <div class="relative pl-4 border-l-2" [style.borderColor]="'var(--panel-outline)'">
-                <p class="text-sm text-[color:var(--text-muted)] leading-relaxed font-medium italic">
-                  "{{ config().insights }}"
+                <p class="text-sm text-slate-600 leading-relaxed font-normal">
+                  {{ config().insights }}
                 </p>
               </div>
             }
@@ -43,7 +43,7 @@ import { CalculatorConfig } from '@entities/calculator/model/types';
             <div class="space-y-4">
               <div class="flex items-center gap-3 text-[color:var(--accent-1)]">
                 <lucide-icon name="scroll-text" class="w-5 h-5" />
-                <span class="text-xs font-black uppercase tracking-widest">Learn More</span>
+                <span class="text-xs font-bold text-[color:var(--text-primary)]">Learn More</span>
               </div>
               <ul class="space-y-2">
                 @for (ref of config().references; track ref.url) {

@@ -12,77 +12,73 @@ import { castToNumber, castToArray } from '@entities/finance/lib/casting.utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (viewMode() === 'full') {
-      <app-card [title]="config().results[0]?.label || 'Results'" subtitle="Active Analysis">
-        <div class="flex flex-col items-center justify-center h-full py-6 text-center" aria-live="polite">
+      <app-card [title]="config().results[0]?.label || 'Results'" subtitle="Analysis Report">
+        <div class="flex flex-col h-full py-2 text-left" aria-live="polite">
           @if (isValid()) {
-            <div class="space-y-10 w-full animate-in zoom-in duration-500">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 w-full animate-in fade-in slide-in-from-left-4 duration-500">
               @for (res of config().results; track res.label) {
                 @let val = castToNumber(results()[$index]);
-                <div class="group relative flex flex-col items-center px-4">
-                  <div class="absolute -inset-4 blur-3xl rounded-full opacity-10 group-hover:opacity-20 transition-opacity" [class]="getThemeClass(res.themeColor)"></div>
-                  
-                  <div class="relative w-full">
-                      <div class="flex items-center justify-center gap-4 mb-2">
-                         <span class="text-5xl md:text-6xl font-black bg-clip-text text-transparent bg-gradient-to-br tracking-tighter font-display" [class]="getGradientClass(res.themeColor)">
+                 
+                <!-- Only show scalar results in this grid, tables handles separately -->
+                @if (res.type !== 'table') {
+                  <div class="relative w-full group flex flex-col gap-2 p-3 rounded-lg hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
+                      <div class="flex items-center justify-between">
+                         <p class="text-xs font-semibold uppercase tracking-wider text-[color:var(--text-muted)]">{{ res.label }}</p>
+                         <button 
+                           (click)="copyToClipboard(results()[$index], res.label)"
+                           class="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-[color:var(--accent-1)]"
+                           [title]="'Copy ' + res.label"
+                         >
+                            @if (copiedField() === res.label) {
+                                <lucide-icon name="check" class="w-3.5 h-3.5 text-emerald-500" />
+                            } @else {
+                                <lucide-icon name="copy" class="w-3.5 h-3.5" />
+                            }
+                         </button>
+                      </div>
+
+                      <div class="flex items-center gap-3">
+                         <span class="text-2xl lg:text-3xl font-bold tracking-tight text-[color:var(--text-primary)]">
                           @switch (res.type) {
                             @case ('currency') { {{ val | currency:'USD':'symbol':'1.0-2' }} }
                             @case ('percent') { {{ val | percent:'1.2-2' }} }
                             @default { {{ val | number:'1.0-4' }} }
                           }
                         </span>
-                        
-                        <button 
-                          (click)="copyToClipboard(results()[$index], res.label)"
-                          class="p-2 rounded-lg bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] hover:text-[color:var(--accent-1)] hover:bg-[color:var(--surface-contrast)] transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-1)]/40"
-                          [title]="'Copy ' + res.label"
-                          [aria-label]="'Copy ' + res.label"
-                        >
-                          @if (copiedField() === res.label) {
-                            <lucide-icon name="check" class="w-4 h-4 text-emerald-500" />
-                          } @else {
-                            <lucide-icon name="copy" class="w-4 h-4" />
-                          }
-                        </button>
                       </div>
-                      
-                      <p id="label-{{$index}}" class="text-[10px] font-black text-[color:var(--text-muted)] uppercase tracking-widest">{{ res.label }}</p>
     
                       @if (res.type === 'percent') {
-                        <div class="mt-6 w-full max-w-[200px] mx-auto h-1.5 bg-[color:var(--surface-contrast)] rounded-full overflow-hidden shadow-inner" role="progressbar" [attr.aria-valuenow]="results()[$index]" aria-valuemin="0" aria-valuemax="100" [attr.aria-labelledby]="'label-' + $index">
+                        <div class="mt-1 w-full h-1 bg-[color:var(--surface-contrast)] rounded-full overflow-hidden" role="progressbar">
                           <div 
-                            class="h-full rounded-full bg-gradient-to-r transition-all duration-1000 ease-out"
-                            [class]="getGradientClass(res.themeColor)"
+                            class="h-full rounded-full transition-all duration-1000 ease-out bg-[color:var(--color-success)]"
                             [style.width]="getProgressBarWidth(results()[$index])"
                           ></div>
                         </div>
                       }
                   </div>
-                </div>
+                }
               }
+            </div>
               
-              <!-- Table Results -->
+              <!-- Table Results take full width below -->
               @for (res of config().results; track res.label) {
                 @if (res.type === 'table' && res.tableConfig) {
-                  <div class="w-full mt-8 animate-in slide-in-from-bottom duration-700 delay-200">
-                    <div class="flex items-center gap-2 mb-4">
-                      <h3 class="text-lg font-bold text-[color:var(--text-primary)]">{{ res.label }}</h3>
-                      <div class="h-px bg-[color:var(--border)] flex-grow"></div>
-                    </div>
+                  <div class="w-full mt-6 pt-4 border-t border-slate-100 animate-in fade-in duration-700">
+                    <h3 class="text-sm font-semibold text-[color:var(--text-primary)] mb-4">{{ res.label }}</h3>
                     @let tableData = castToArray(results()[$index]);
                     <app-table [columns]="res.tableConfig.columns" [data]="tableData" />
                   </div>
                 }
               }
-            </div>
           } @else {
             <!-- Empty State -->
-            <div class="text-[color:var(--text-muted)] space-y-6 py-10 w-full flex flex-col items-center">
-               <div class="w-24 h-24 bg-[color:var(--surface-soft)] rounded-3xl flex items-center justify-center border border-[color:var(--panel-outline)] animate-pulse">
-                <lucide-icon [name]="config().icon" class="w-12 h-12 opacity-40" />
+            <div class="text-[color:var(--text-muted)] space-y-4 py-8 w-full flex flex-col items-start px-1">
+               <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100">
+                <lucide-icon [name]="config().icon" class="w-6 h-6 text-slate-400" />
               </div>
               <div class="space-y-1">
-                <p class="text-sm font-black uppercase tracking-widest text-[color:var(--text-muted)]">Awaiting Input</p>
-                <p class="text-xs font-medium italic text-[color:var(--text-muted)]">Provide all parameters to calculate</p>
+                <p class="text-sm font-semibold text-[color:var(--text-primary)]">Awaiting Configuration</p>
+                <p class="text-sm text-[color:var(--text-muted)]">Adjust inputs to generate report.</p>
               </div>
             </div>
           }

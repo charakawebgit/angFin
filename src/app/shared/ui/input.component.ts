@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
         <div class="flex items-center gap-2 mb-1">
           <label
             [for]="id()"
-            class="text-sm font-bold uppercase tracking-[0.14em] ml-1 text-[color:var(--text-muted)]"
+            class="text-sm font-medium ml-1 text-[color:var(--text-primary)]"
           >
             {{ label() }}
           </label>
@@ -87,9 +87,9 @@ export class InputComponent {
 
   protected inputClasses() {
     return [
-      'input-premium shadow-sm font-medium',
-      this.prefix() ? 'pl-9' : 'pl-4',
-      this.suffix() ? 'pr-9' : 'pr-4',
+      'input-standard shadow-sm font-medium text-sm',
+      this.prefix() ? 'pl-10' : 'px-4', // Standardized: 10 (2.5rem) for icon, 4 (1rem) for text
+      this.suffix() ? 'pr-10' : 'pr-4',
       this.hasError
         ? 'border-red-400/80 focus:ring-red-400/40'
         : ''
